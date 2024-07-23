@@ -57,6 +57,8 @@ class GeneticAlgorithm(Solution):
 
     def solution_gen_alg(self):
 
+        # поставить проверку на первое поколение
+        # print(self.population)
         self.time_to_crossing = 0
         self.time_to_mutation = 0
         self.time_to_selection = 0

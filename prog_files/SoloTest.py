@@ -2,7 +2,7 @@ import SolutionByGeneticAlgorithm
 from prog_files import AdditionalSolutions
 import matplotlib.pyplot as plt
 from prog_files.WorkWithVertices import WorkWithVertices
-
+from prog_files.GenerateStartPopulation import GenStartPop
 
 class Solution:
 
@@ -73,7 +73,15 @@ class Solution:
         self.sol_by_genetic_algorithm.initialization_status_of_searching_parent(
             self.settings_gen_alg['status_of_searching_parent'])
 
-        self.sol_by_genetic_algorithm.generation_population()
+        # раюота со старотовой популяцией
+        population_size = self.general_settings['population_size']
+        method_of_generation_start_population = self.settings_gen_alg['method_of_generation_start_population']
+
+        gen_start_pop = GenStartPop(self.number_of_vertices, population_size, method_of_generation_start_population)
+        start_pop = gen_start_pop.generation_start_population()
+        # офнуть куда-то
+
+        self.sol_by_genetic_algorithm.set_population(start_pop)
 
         self.sol_by_genetic_algorithm.start_solution()
 

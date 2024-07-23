@@ -17,7 +17,6 @@ class RunningAlgorithm:
 
     def star_alg(self):
         self.save_settings()
-
         state_mode = self.general_settings['state_mode']
         if state_mode == 'solo_test':
             solution = SoloTest.Solution(self.general_settings, self.settings_mandatory_alg)

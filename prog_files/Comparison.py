@@ -3,7 +3,7 @@ from prog_files.WorkWithVertices import WorkWithVertices
 import matplotlib.pyplot as plt
 import numpy as np
 import tkinter.messagebox
-
+from GenerateStartPopulation import GenStartPop
 
 class Comparison:
 
@@ -61,6 +61,18 @@ class Comparison:
         self.second_gen_alg.initialization_status_of_searching_parent(
             self.settings_additional_alg['status_of_searching_parent'])
 
+
+        # инициализация методов генерации первого поколения
+
+        method_of_generation_start_population_first_alg = self.settings_mandatory_alg[
+            'method_of_generation_start_population']
+        method_of_generation_start_population_second_alg = self.settings_additional_alg[
+            'method_of_generation_start_population']
+        self.gen_start_pop_first = GenStartPop(self.number_of_vertices, self.population_size,
+                                               method_of_generation_start_population_first_alg)
+        self.gen_start_pop_second = GenStartPop(self.number_of_vertices, self.population_size,
+                                                method_of_generation_start_population_second_alg)
+
     def start_comparison(self):
 
         for i in range(self.number_of_comparisons):
@@ -68,8 +80,11 @@ class Comparison:
 
             population = self.generation_start_population()
 
-            self.first_gen_alg.set_population(population)
-            self.second_gen_alg.set_population(population.copy())
+            pop_1 = self.gen_start_pop_first.generation_start_population()
+            pop_2 = self.gen_start_pop_second.generation_start_population()
+
+            self.first_gen_alg.set_population(pop_1)
+            self.second_gen_alg.set_population(pop_2)
 
             adjacency_matrix = self.work_with_vertices.initialization_adjacency_matrix()
 
@@ -127,6 +142,7 @@ class Comparison:
         print("Вычисления закончены")
 
     #эту функцию нужно перенести в  класс ген агл
+    # нужно делегировать всю ответсвтенность за генерацию новому классц
     def generation_start_population(self):
         if self.generation_of_the_starting_pop == 'random_selection':
             population = np.array([np.random.choice(self.number_of_vertices, self.number_of_vertices, replace=False)

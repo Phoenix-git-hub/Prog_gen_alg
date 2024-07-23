@@ -11,10 +11,13 @@ class AlgorithmWindow:
         self.window.title(name_window)
         self.window.resizable(width=False, height=False)
 
-        settings = ('crossing_method', 'mutation_method', 'selection_method', 'status_of_searching_parent')
+        settings = ('crossing_method', 'mutation_method', 'selection_method', 'status_of_searching_parent',
+                    'method_of_generation_start_population')
         self.parameters = dict.fromkeys(settings)
 
         self.status_of_searching_parent = tkinter.StringVar(value='random_search')
+
+        self.method_of_generation_start_population = tkinter.StringVar(value='random_gen')
 
         self.crossing_methods = ('crossing_pass', 'two_point_crossing', 'orderly_crossing_OX1',
                                  'one_point_crossing_OX1', 'displayed_crossing', 'cycle_crossover',
@@ -37,6 +40,27 @@ class AlgorithmWindow:
         self.display_mutation_methods()
         self.display_selection_methods()
         self.display_status_of_searching_parent()
+
+        self.display_method_of_generation_start_population()
+
+    def display_method_of_generation_start_population(self):
+        lab = tkinter.Label(self.window, text='Метод генерации первого поколения:', font=("Arial Bold", 15))
+        lab.place(x=40, y=195, width=350, height=20)
+
+        random_gen = tkinter.Radiobutton(self.window, text='случайно', value='random_gen',
+                                         variable=self.method_of_generation_start_population, font=("Arial Bold", 15))
+        random_gen.place(x=40, y=217, width=120, height=20)
+
+        ordered_gen = tkinter.Radiobutton(self.window, text='последовательно', value='ordered_gen',
+                                          variable=self.method_of_generation_start_population,
+                                          font=("Arial Bold", 15))
+        ordered_gen.place(x=170, y=217, width=190, height=25)
+
+        greedy_algorithm_gen = tkinter.Radiobutton(self.window, text='на основе жадного алгоритма',
+                                                   value='greedy_algorithm_gen',
+                                                   variable=self.method_of_generation_start_population,
+                                                   font=("Arial Bold", 15))
+        greedy_algorithm_gen.place(x=44, y=245, width=300, height=25)
 
 
 
@@ -84,6 +108,7 @@ class AlgorithmWindow:
         self.parameters['mutation_method'] = self.value_mutation_methods.get()
         self.parameters['selection_method'] = self.value_selection_methods.get()
         self.parameters['status_of_searching_parent'] = self.status_of_searching_parent.get()
+        self.parameters['method_of_generation_start_population'] = self.method_of_generation_start_population
 
         return self.parameters
 
