@@ -73,8 +73,6 @@ class Solution:
         self.sol_by_genetic_algorithm.initialization_status_of_searching_parent(
             self.settings_gen_alg['status_of_searching_parent'])
 
-        self.sol_by_genetic_algorithm.generation_start_population()
-
         self.sol_by_genetic_algorithm.start_solution()
 
         self.sol_by_genetic_algorithm.display_sol()

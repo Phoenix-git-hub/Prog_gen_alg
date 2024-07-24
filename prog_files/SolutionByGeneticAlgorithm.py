@@ -64,17 +64,25 @@ class GeneticAlgorithm(Solution):
         # поставить проверку на первое поколение
         # print(self.population)
 
-        print(self.method_of_generation_start_population)
         self.time_to_crossing = 0
         self.time_to_mutation = 0
         self.time_to_selection = 0
         self.time_to_calculat_statistics = 0
         self.full_time = 0
-
-        self.meanFitnessValues.append(self.average_fitness_value(self.population))
-        self.minFitnessValues.append(self.find_best(self.population)[1])
+        self.time_to_generate_first_pop = 0
 
         start_full_time = time.perf_counter()
+        start_gen_first_pop = time.perf_counter()
+        self.generation_start_population()
+        end_gen_first_pop = time.perf_counter()
+        self.time_to_generate_first_pop += end_gen_first_pop - start_gen_first_pop
+
+        st = time.perf_counter()
+        self.meanFitnessValues.append(self.average_fitness_value(self.population))
+        self.minFitnessValues.append(self.find_best(self.population)[1])
+        ed = time.perf_counter()
+        self.time_to_calculat_statistics += ed - st
+
         for i in range(self.number_of_generations):
             # бухнуть декоратор ? ???
 
@@ -155,7 +163,7 @@ class GeneticAlgorithm(Solution):
     def get_time(self):
         # нужно написать какие паарметры и в каком порядке возвращает жтот метод
         return self.time_to_crossing, self.time_to_mutation, self.time_to_selection,\
-            self.time_to_calculat_statistics, self.full_time
+            self.time_to_calculat_statistics, self.full_time, self.time_to_generate_first_pop
 
     def get_time_to_crossing(self):
         return self.time_to_crossing
@@ -180,21 +188,26 @@ class GeneticAlgorithm(Solution):
         average_full_time = self.full_time / self.number_of_generations
 
         return average_time_to_mutation, average_time_to_selection, \
-            average_time_to_calculat_statistics, average_full_time, average_time_to_crossing
+            average_time_to_calculat_statistics, average_full_time, average_time_to_crossing,
+
+    def get_time_to_generate_first_pop(self):
+        return self.time_to_generate_first_pop
 
     def output_all_time_to_console(self):
+        # переделать
+
         average_time_to_crossing = self.time_to_crossing / self.number_of_generations
         average_time_to_mutation = self.time_to_mutation / self.number_of_generations
         average_time_to_selection = self.time_to_selection / self.number_of_generations
         average_time_to_calculat_statistics = self.time_to_calculat_statistics / self.number_of_generations
-        average_full_time = self.full_time / self.number_of_generations
 
         print('\n')
-        print(f'Все время на программу: {self.full_time}, среднее: {average_full_time}')
-        print(f'Время на скрещивание: {self.time_to_crossing}, среднее: {average_time_to_crossing}')
-        print(f'Время на мутации: {self.time_to_mutation}, среднее: {average_time_to_mutation}')
-        print(f'Время на отбор: {self.time_to_selection}, среднее: {average_time_to_selection}')
-        print(f'Время на сбор статистики: {self.time_to_calculat_statistics}, среднее: {average_time_to_calculat_statistics}')
+        print(f'Все время на программу: {self.full_time}')
+        print(f'Время на скрещивание: {self.time_to_crossing}, за итерацию: {average_time_to_crossing}')
+        print(f'Время на мутации: {self.time_to_mutation}, за итерацию: {average_time_to_mutation}')
+        print(f'Время на отбор: {self.time_to_selection}, за итерацию: {average_time_to_selection}')
+        print(f'Время на сбор статистики: {self.time_to_calculat_statistics}, за итерацию: {average_time_to_calculat_statistics}')
+        print(f'Время на генерацию первого поколения: {self.time_to_generate_first_pop}')
         print('\n')
 
     def set_adjacency_matrix(self, adjacency_matrix):

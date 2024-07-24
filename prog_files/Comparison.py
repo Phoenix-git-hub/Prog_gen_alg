@@ -37,12 +37,14 @@ class Comparison:
         self.average_time_to_selection_1 = 0
         self.average_time_to_calculat_statistics_1 = 0
         self.average_full_time_1 = 0
+        self.time_to_generate_first_pop_1 = 0
 
         self.average_time_to_crossing_2 = 0
         self.average_time_to_mutation_2 = 0
         self.average_time_to_selection_2 = 0
         self.average_time_to_calculat_statistics_2 = 0
         self.average_full_time_2 = 0
+        self.time_to_generate_first_pop_2 = 0
 
         #все выделить в отдельные классы
         self.first_gen_alg = GeneticAlgorithm(self.population_size, self.number_of_generations,
@@ -76,9 +78,6 @@ class Comparison:
             self.first_gen_alg.set_adjacency_matrix(adjacency_matrix)
             self.second_gen_alg.set_adjacency_matrix(adjacency_matrix)
 
-            self.first_gen_alg.generation_start_population()
-            self.second_gen_alg.generation_start_population()
-
             self.first_gen_alg.start_solution()
             self.second_gen_alg.start_solution()
 
@@ -89,13 +88,14 @@ class Comparison:
             self.average_time_to_selection_1 += self.first_gen_alg.get_time_to_selection()
             self.average_time_to_calculat_statistics_1 += self.first_gen_alg.get_time_to_calculat_statistics()
             self.average_full_time_1 +=self.first_gen_alg.get_full_time()
+            self.time_to_generate_first_pop_1 += self.first_gen_alg.get_time_to_generate_first_pop()
 
             self.average_time_to_crossing_2 += self.second_gen_alg.get_time_to_crossing()
             self.average_time_to_mutation_2 += self.second_gen_alg.get_time_to_mutation()
             self.average_time_to_selection_2 += self.second_gen_alg.get_time_to_selection()
             self.average_time_to_calculat_statistics_2 += self.second_gen_alg.get_time_to_calculat_statistics()
             self.average_full_time_2 += self.second_gen_alg.get_full_time()
-
+            self.time_to_generate_first_pop_2 += self.second_gen_alg.get_time_to_generate_first_pop()
 
             mean_fitness_values_1 = self.first_gen_alg.get_mean_fitness_values()
             min_fitness_values_1 = self.first_gen_alg.get_min_fitness_values()
@@ -115,17 +115,20 @@ class Comparison:
             self.average_mean_val_2[ind] /= self.number_of_comparisons
             self.average_min_val_2[ind] /= self.number_of_comparisons
 
+        # блять все в новые функции
         self.average_time_to_crossing_1 /= self.number_of_comparisons
         self.average_time_to_mutation_1 /= self.number_of_comparisons
         self.average_time_to_selection_1 /= self.number_of_comparisons
         self.average_time_to_calculat_statistics_1 /= self.number_of_comparisons
         self.average_full_time_1 /= self.number_of_comparisons
+        self.time_to_generate_first_pop_1 /= self.number_of_comparisons
 
         self.average_time_to_crossing_2 /= self.number_of_comparisons
         self.average_time_to_mutation_2 /= self.number_of_comparisons
         self.average_time_to_selection_2 /= self.number_of_comparisons
         self.average_time_to_calculat_statistics_2 /= self.number_of_comparisons
         self.average_full_time_2 /= self.number_of_comparisons
+        self.time_to_generate_first_pop_2 /= self.number_of_comparisons
 
         print("Вычисления закончены")
 
@@ -148,3 +151,4 @@ class Comparison:
         print(f'Среднее время мутации - {self.average_time_to_mutation_1}, второго - {self.average_time_to_mutation_2}')
         print(f'Среднее время селекции - {self.average_time_to_selection_1}, второго - {self.average_time_to_selection_2 }')
         print(f'Среднее время калькулирование - {self.average_time_to_calculat_statistics_1}, второго - {self.average_time_to_calculat_statistics_2 }')
+        print(f'Среднее время на создание первого поколения - {self.time_to_generate_first_pop_1}, второго - {self.time_to_generate_first_pop_2}')
