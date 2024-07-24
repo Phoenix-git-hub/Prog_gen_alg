@@ -77,13 +77,13 @@ class Comparison:
         for i in range(self.number_of_comparisons):
             print(i)
 
-            pop_1 = self.gen_start_pop_first.generation_start_population()
-            pop_2 = self.gen_start_pop_second.generation_start_population()
+            adjacency_matrix = self.work_with_vertices.initialization_adjacency_matrix()
+
+            pop_1 = self.gen_start_pop_first.generation_start_population(adjacency_matrix)
+            pop_2 = self.gen_start_pop_second.generation_start_population(adjacency_matrix)
 
             self.first_gen_alg.set_population(pop_1)
             self.second_gen_alg.set_population(pop_2)
-
-            adjacency_matrix = self.work_with_vertices.initialization_adjacency_matrix()
 
             self.first_gen_alg.set_adjacency_matrix(adjacency_matrix)
             self.second_gen_alg.set_adjacency_matrix(adjacency_matrix)

@@ -105,10 +105,16 @@ class SolutionByDynamicProgramming(SolDynamicProgramming):
 
 
 class SolutionByDynamicProgWithAllVertices(SolDynamicProgramming):
-    def __init__(self, adjacency_matrix, coordinates_of_vertices, number_of_vertices, place_on_screen):
+    def __init__(self, adjacency_matrix, coordinates_of_vertices=0, number_of_vertices=0, place_on_screen=0):
         name_of_method = "Solution by greedy algorithm"
         super(SolutionByDynamicProgWithAllVertices, self).__init__(adjacency_matrix, coordinates_of_vertices,
                                                                    number_of_vertices, name_of_method,  place_on_screen)
+
+    def set_adjacency_matrix(self, adjacency_matrix):
+        self.adjacency_matrix = adjacency_matrix
+
+    def set_number_of_vertices(self, number_of_vertices):
+        self.number_of_vertices = number_of_vertices
 
     def solution(self):
         permutation, distance = self.find_best_solution_by_dynamic_programming_al_v()

@@ -78,7 +78,7 @@ class Solution:
         method_of_generation_start_population = self.settings_gen_alg['method_of_generation_start_population']
 
         gen_start_pop = GenStartPop(self.number_of_vertices, population_size, method_of_generation_start_population)
-        start_pop = gen_start_pop.generation_start_population()
+        start_pop = gen_start_pop.generation_start_population(self.adjacency_matrix)
         # офнуть куда-то
 
         self.sol_by_genetic_algorithm.set_population(start_pop)

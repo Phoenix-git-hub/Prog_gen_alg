@@ -22,7 +22,7 @@ class MainWindow:
         self.value_ent_number_of_vertices = tkinter.StringVar(value='10')
         self.value_ent_number_of_generations = tkinter.StringVar(value='1000')
         self.value_ent_population_size = tkinter.StringVar(value='10')
-        self.value_ent_measure_of_disorder = tkinter.StringVar(value='10')
+        self.value_ent_measure_of_disorder = tkinter.StringVar(value='0')
 
         # вместо одного списка настроек нужно сделать несколько: solutions_settings, state_mode, gen_alg_settings
         settings = ('state_mode', 'status_of_generation_adjacency_matrix', 'state_dynamic',
