@@ -1,17 +1,18 @@
 from SolutionByGeneticAlgorithm import GeneticAlgorithm
 from prog_files.WorkWithVertices import WorkWithVertices
 import matplotlib.pyplot as plt
-import numpy as np
-import tkinter.messagebox
-from GenerateStartPopulation import GenStartPop
 
 class Comparison:
-
     def __init__(self, general_settings, settings_mandatory_alg, settings_additional_alg, settings_comparison_alg):
         self.general_settings = general_settings
         self.settings_mandatory_alg = settings_mandatory_alg
         self.settings_additional_alg = settings_additional_alg
         self.settings_comparison_alg = settings_comparison_alg
+
+        method_of_generation_start_population_first_alg = self.settings_mandatory_alg[
+            'method_of_generation_start_population']
+        method_of_generation_start_population_second_alg = self.settings_additional_alg[
+            'method_of_generation_start_population']
 
         self.number_of_comparisons = self.settings_comparison_alg['number_of_comparisons']
 
@@ -44,7 +45,8 @@ class Comparison:
         self.average_full_time_2 = 0
 
         #все выделить в отдельные классы
-        self.first_gen_alg = GeneticAlgorithm(self.population_size, self.number_of_generations, self.number_of_vertices)
+        self.first_gen_alg = GeneticAlgorithm(self.population_size, self.number_of_generations,
+                                              self.number_of_vertices, method_of_generation_start_population_first_alg)
 
         self.first_gen_alg.initialization_selection_method(self.settings_mandatory_alg['selection_method'])
         self.first_gen_alg.initialization_crossing_method(self.settings_mandatory_alg['crossing_method'])
@@ -52,7 +54,8 @@ class Comparison:
         self.first_gen_alg.initialization_status_of_searching_parent(
             self.settings_mandatory_alg['status_of_searching_parent'])
 
-        self.second_gen_alg = GeneticAlgorithm(self.population_size, self.number_of_generations, self.number_of_vertices)
+        self.second_gen_alg = GeneticAlgorithm(self.population_size, self.number_of_generations,
+                                               self.number_of_vertices, method_of_generation_start_population_second_alg)
 
         self.second_gen_alg.initialization_selection_method(self.settings_additional_alg['selection_method'])
         self.second_gen_alg.initialization_crossing_method(self.settings_additional_alg['crossing_method'])
@@ -61,16 +64,7 @@ class Comparison:
             self.settings_additional_alg['status_of_searching_parent'])
 
 
-        # инициализация методов генерации первого поколения
 
-        method_of_generation_start_population_first_alg = self.settings_mandatory_alg[
-            'method_of_generation_start_population']
-        method_of_generation_start_population_second_alg = self.settings_additional_alg[
-            'method_of_generation_start_population']
-        self.gen_start_pop_first = GenStartPop(self.number_of_vertices, self.population_size,
-                                               method_of_generation_start_population_first_alg)
-        self.gen_start_pop_second = GenStartPop(self.number_of_vertices, self.population_size,
-                                                method_of_generation_start_population_second_alg)
 
     def start_comparison(self):
 
@@ -79,14 +73,11 @@ class Comparison:
 
             adjacency_matrix = self.work_with_vertices.initialization_adjacency_matrix()
 
-            pop_1 = self.gen_start_pop_first.generation_start_population(adjacency_matrix)
-            pop_2 = self.gen_start_pop_second.generation_start_population(adjacency_matrix)
-
-            self.first_gen_alg.set_population(pop_1)
-            self.second_gen_alg.set_population(pop_2)
-
             self.first_gen_alg.set_adjacency_matrix(adjacency_matrix)
             self.second_gen_alg.set_adjacency_matrix(adjacency_matrix)
+
+            self.first_gen_alg.generation_start_population()
+            self.second_gen_alg.generation_start_population()
 
             self.first_gen_alg.start_solution()
             self.second_gen_alg.start_solution()

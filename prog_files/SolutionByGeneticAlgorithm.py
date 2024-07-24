@@ -6,10 +6,14 @@ from prog_files.MethodOfSelection import MethodsOfSelection
 import matplotlib.pyplot as plt
 import time
 
+import tkinter.messagebox
+from AdditionalSolutions import SolutionByDynamicProgWithAllVertices
+
 class GeneticAlgorithm(Solution):
 
     def __init__(self,  population_size, number_of_generations, number_of_vertices,
-                 adjacency_matrix=None, coordinates_of_vertices=None, place_on_screen=None):
+                 method_of_generation_start_population, adjacency_matrix=None,
+                 coordinates_of_vertices=None, place_on_screen=None):
 
         self.crossing_method = None
         self.mutation_method = None
@@ -17,7 +21,7 @@ class GeneticAlgorithm(Solution):
 
         self.number_of_generations = number_of_generations
         self.population_size = population_size
-
+        self.method_of_generation_start_population = method_of_generation_start_population.get()
         #переименовать переменные
         self.meanFitnessValues = []
         self.minFitnessValues = []
@@ -56,9 +60,11 @@ class GeneticAlgorithm(Solution):
         return np.array(permutation), distance
 
     def solution_gen_alg(self):
-
+        #gjcnfdbnm ghjdthre yf yfkbxbt gthdjuj gjrjktybz
         # поставить проверку на первое поколение
         # print(self.population)
+
+        print(self.method_of_generation_start_population)
         self.time_to_crossing = 0
         self.time_to_mutation = 0
         self.time_to_selection = 0
@@ -93,7 +99,13 @@ class GeneticAlgorithm(Solution):
             self.minFitnessValues.append(self.find_best(self.population)[1])
             end_time_to_calculat_statistics = time.perf_counter()
             self.time_to_calculat_statistics += end_time_to_calculat_statistics - start_time_to_calculat_statistics
-            del new_population
+
+            # with open('.txt', 'a') as f:
+            #     f.write('0000000000' + str(i) + '\n')
+            #     for item in self.population:
+            #         f.write(str(item) + '\n')
+            #     f.write('\n')
+            # del new_population
 
         end_full_time = time.perf_counter()
         self.full_time += end_full_time - start_full_time
@@ -191,3 +203,25 @@ class GeneticAlgorithm(Solution):
 
     def set_population(self, population):
         self.population = population
+
+    def generation_start_population(self):
+        del self.population
+        # нужно создать тест на наличие матрици смежности
+        if self.method_of_generation_start_population == 'random_gen':
+            self.population = np.array([np.random.choice(self.number_of_vertices, self.number_of_vertices, replace=False)
+                                   for _ in range(self.population_size)])
+        elif self.method_of_generation_start_population == 'ordered_gen':
+            self.population = np.zeros(shape=(self.population_size, self.number_of_vertices), dtype=int)
+            for i in range(self.population_size):
+                for j in range(self.number_of_vertices):
+                    self.population[i][j] = j
+        elif self.method_of_generation_start_population == 'greedy_algorithm_gen':
+            sol_din_pr = SolutionByDynamicProgWithAllVertices(self.adjacency_matrix,
+                                                              number_of_vertices=self.number_of_vertices)
+            individual = sol_din_pr.solution()[0]
+            self.population = np.array([individual for _ in range(self.population_size)])
+
+        else:
+            string = """Неизвестное значение self.settings_comparison_alg['generation_of_the_starting_population']
+            класса 'SolutionByGeneticAlgoritm'"""
+            tkinter.messagebox.showerror("Ошибка", string)

@@ -58,10 +58,11 @@ class Solution:
     def solve_by_genetic_algorithm(self):
         number_of_generations = self.general_settings['number_of_generations']
         population_size = self.general_settings['population_size']
-
+        method_of_generation_start_pop = self.settings_gen_alg['method_of_generation_start_population']
         self.sol_by_genetic_algorithm = SolutionByGeneticAlgorithm.GeneticAlgorithm(population_size,
                                                                                     number_of_generations,
                                                                                     self.number_of_vertices,
+                                                                                    method_of_generation_start_pop,
                                                                                     self.adjacency_matrix,
                                                                                     self.coordinates_of_vertices,
                                                                                     self.places_on_screen["upper right"])
@@ -73,15 +74,7 @@ class Solution:
         self.sol_by_genetic_algorithm.initialization_status_of_searching_parent(
             self.settings_gen_alg['status_of_searching_parent'])
 
-        # раюота со старотовой популяцией
-        population_size = self.general_settings['population_size']
-        method_of_generation_start_population = self.settings_gen_alg['method_of_generation_start_population']
-
-        gen_start_pop = GenStartPop(self.number_of_vertices, population_size, method_of_generation_start_population)
-        start_pop = gen_start_pop.generation_start_population(self.adjacency_matrix)
-        # офнуть куда-то
-
-        self.sol_by_genetic_algorithm.set_population(start_pop)
+        self.sol_by_genetic_algorithm.generation_start_population()
 
         self.sol_by_genetic_algorithm.start_solution()
 
