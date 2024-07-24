@@ -2,7 +2,6 @@ import SolutionByGeneticAlgorithm
 from prog_files import AdditionalSolutions
 import matplotlib.pyplot as plt
 from prog_files.WorkWithVertices import WorkWithVertices
-from prog_files.GenerateStartPopulation import GenStartPop
 
 class Solution:
 
