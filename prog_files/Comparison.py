@@ -14,7 +14,6 @@ class Comparison:
         self.settings_comparison_alg = settings_comparison_alg
 
         self.number_of_comparisons = self.settings_comparison_alg['number_of_comparisons']
-        self.generation_of_the_starting_pop = self.settings_comparison_alg['generation_of_the_starting_population']
 
         measure_of_disorder = self.general_settings['measure_of_disorder']
         status_of_gen_adj_mat = self.general_settings['status_of_generation_adjacency_matrix']
@@ -78,8 +77,6 @@ class Comparison:
         for i in range(self.number_of_comparisons):
             print(i)
 
-            population = self.generation_start_population()
-
             pop_1 = self.gen_start_pop_first.generation_start_population()
             pop_2 = self.gen_start_pop_second.generation_start_population()
 
@@ -141,24 +138,6 @@ class Comparison:
 
         print("Вычисления закончены")
 
-    #эту функцию нужно перенести в  класс ген агл
-    # нужно делегировать всю ответсвтенность за генерацию новому классц
-    def generation_start_population(self):
-        if self.generation_of_the_starting_pop == 'random_selection':
-            population = np.array([np.random.choice(self.number_of_vertices, self.number_of_vertices, replace=False)
-                                   for _ in range(self.population_size)])
-            return population
-        elif self.generation_of_the_starting_pop == 'in_ascending_order':
-            population = np.zeros(shape=(self.population_size, self.number_of_vertices), dtype=int)
-            for i in range(self.population_size):
-                for j in range(self.number_of_vertices):
-                    population[i][j] = j
-            return population
-        else:
-            string = """Неизвестное значение self.settings_comparison_alg['generation_of_the_starting_population']
-            класса 'WindowComparison'"""
-            tkinter.messagebox.showerror("Ошибка", string)
-
     def visualization_progression(self):
         plt.figure('Сравнение двух функций').clear()
         plt.plot(self.average_mean_val_1, color='blue')
@@ -173,7 +152,6 @@ class Comparison:
         plt.show()
 
     def output_time_to_console(self):
-        print(1)
         print(f'Среднее время первого - {self.average_full_time_1}, второго - {self.average_full_time_2}')
         print(f'Среднее время на скрещивание - {self.average_time_to_crossing_1}, второго - {self.average_time_to_crossing_2 }')
         print(f'Среднее время мутации - {self.average_time_to_mutation_1}, второго - {self.average_time_to_mutation_2}')

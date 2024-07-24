@@ -191,9 +191,3 @@ class GeneticAlgorithm(Solution):
 
     def set_population(self, population):
         self.population = population
-
-    def generation_population(self):
-        # сюда вписать генерацию на основе вершин
-        self.population = np.array([np.random.choice(self.number_of_vertices, self.number_of_vertices, replace=False)
-                                     for i in range(self.population_size)])
-
