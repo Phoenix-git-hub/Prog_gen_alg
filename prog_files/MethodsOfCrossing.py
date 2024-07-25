@@ -108,84 +108,78 @@ class MethodsOfCrossing:
 
     def orderly_crossing_ox1(self, index, index_2):
         '''Начинает запонять со второй точки разрыва'''
-
+        # Начинает считывать с самого начала особи
         '''Дефолтное упорядоченное скрещивание из книжки (Га на python) старая
         '''
-        # не проверял
         first_limit = random.randrange(0, self.number_of_vertices + 1)
         second_limit = random.randrange(0, self.number_of_vertices + 1)
 
         if second_limit < first_limit:
             first_limit, second_limit = second_limit, first_limit
-        # print(f'first_limit: {first_limit}, second_limit: {second_limit}')
-        parent_2 = self.population[index].copy()
-        parent_1 = self.population[index_2].copy()
-        # print(f'parent_1 : {parent_1}, parent_2: {parent_2}')
 
-        set_2 = set(parent_2[first_limit:second_limit])
+        parent_1 = self.population[index].copy()
+        parent_2 = self.population[index_2].copy()
+
         set_1 = set(parent_1[first_limit:second_limit])
+        set_2 = set(parent_2[first_limit:second_limit])
 
         ind_1 = second_limit
         ind_2 = second_limit
         for i in range(self.number_of_vertices):
             if ind_1 >= self.number_of_vertices:
                 ind_1 = 0
-            if parent_1[i] in set_2:
-                set_2.discard(parent_1[i])
+            if parent_2[i] in set_1:
+                set_1.discard(parent_2[i])
             else:
-                self.new_population[index][ind_1] = parent_1[i]
+                self.new_population[index][ind_1] = parent_2[i]
                 ind_1 += 1
 
             if ind_2 >= self.number_of_vertices:
                 ind_2 = 0
-            if parent_2[i] in set_1:
-                set_1.discard(parent_2[i])
+            if parent_1[i] in set_2:
+                set_2.discard(parent_1[i])
             else:
-                self.new_population[index_2][ind_2] = parent_2[i]
+                self.new_population[index_2][ind_2] = parent_1[i]
                 ind_2 += 1
 
     def one_point_crossing_ox1(self, index, index_2):
         '''
         Как предыдущее на одноточечное
         '''
-        # не проверял
         section_point = random.randrange(0, self.number_of_vertices)
-
-        parent_2 = self.population[index].copy()
-        parent_1 = self.population[index_2].copy()
-        set_2 = set(parent_2[:section_point])
+        parent_1 = self.population[index].copy()
+        parent_2 = self.population[index_2].copy()
         set_1 = set(parent_1[:section_point])
+        set_2 = set(parent_2[:section_point])
         ind_1 = 0
         ind_2 = 0
 
         for i in range(self.number_of_vertices):
-            if parent_1[i] in set_2:
-                set_2.discard(parent_1[i])
-            else:
-                self.new_population[index][section_point + ind_1] = parent_1[i]
-                ind_1 += 1
-
             if parent_2[i] in set_1:
                 set_1.discard(parent_2[i])
             else:
-                self.new_population[index_2][section_point + ind_2] = parent_2[i]
+                self.new_population[index][section_point + ind_1] = parent_2[i]
+                ind_1 += 1
+
+            if parent_1[i] in set_2:
+                set_2.discard(parent_1[i])
+            else:
+                self.new_population[index_2][section_point + ind_2] = parent_1[i]
                 ind_2 += 1
 
     def displayed_crossing(self, index, index_2):
-
+        # как двухточечное скрешивание OX1 но заполение начинается с начала, и смотреть начинает с начала
         first_limit = random.randrange(0, self.number_of_vertices + 1)
         second_limit = random.randrange(0, self.number_of_vertices + 1)
 
         if second_limit < first_limit:
-            a = first_limit
-            first_limit = second_limit
-            second_limit = a
+            first_limit, second_limit = second_limit, first_limit
 
-        parent_2 = self.population[index].copy()
-        parent_1 = self.population[index_2].copy()
+        parent_1 = self.population[index].copy()
+        parent_2 = self.population[index_2].copy()
 
-        set_2 = set(parent_2[first_limit:second_limit])
         set_1 = set(parent_1[first_limit:second_limit])
+        set_2 = set(parent_2[first_limit:second_limit])
 
         ind_1 = 0
         ind_2 = 0
@@ -194,18 +188,18 @@ class MethodsOfCrossing:
         for i in range(self.number_of_vertices):
             if ind_1 == first_limit:
                 raz_lim_1 = second_limit - first_limit
-            if parent_1[i] in set_2:
-                set_2.discard(parent_1[i])
+            if parent_2[i] in set_1:
+                set_1.discard(parent_2[i])
             else:
-                self.new_population[index][raz_lim_1 + ind_1] = parent_1[i]
+                self.new_population[index][raz_lim_1 + ind_1] = parent_2[i]
                 ind_1 += 1
 
             if ind_2 == first_limit:
                 raz_lim_2 = second_limit - first_limit
-            if parent_2[i] in set_1:
-                set_1.discard(parent_2[i])
+            if parent_1[i] in set_2:
+                set_2.discard(parent_1[i])
             else:
-                self.new_population[index_2][raz_lim_2 + ind_2] = parent_2[i]
+                self.new_population[index_2][raz_lim_2 + ind_2] = parent_1[i]
                 ind_2 += 1
 
     def cycle_crossover(self, index, index_2):
@@ -225,7 +219,6 @@ class MethodsOfCrossing:
                 stop = parent_1[i]
                 num = parent_2[i]
                 while num != stop:
-
                     ind = np.where(parent_1 == num)[0][0]
                     num = parent_2[ind]
                     sketch[ind] = flag
@@ -250,9 +243,8 @@ class MethodsOfCrossing:
         second_limit = random.randrange(0, self.number_of_vertices + 1)
 
         if second_limit < first_limit:
-            a = first_limit
-            first_limit = second_limit
-            second_limit = a
+            first_limit, second_limit = second_limit, first_limit
+
         #print(f'first_limit: {first_limit}, second_limit: {second_limit}')
         parent_2 = self.population[index].copy()
         parent_1 = self.population[index_2].copy()
