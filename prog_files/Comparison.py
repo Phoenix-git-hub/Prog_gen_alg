@@ -149,18 +149,23 @@ class Comparison:
         # MSPE
         dev_min_from_mean_1 = 0
         dev_min_from_mean_2 = 0
+        dev_first_from_second = 0
 
         for i in range(self.number_of_generations):
             dev_min_from_mean_1 += ((self.average_mean_val_1[i] - self.average_min_val_1[i]) / self.average_min_val_1[i]) ** 2
             dev_min_from_mean_2 += ((self.average_mean_val_2[i] - self.average_min_val_2[i]) / self.average_min_val_1[i]) ** 2
-
+            dev_first_from_second += ((self.average_mean_val_2[i] - self.average_mean_val_1[i]) / ((self.average_mean_val_2[i] + self.average_mean_val_1[i]) / 2)) ** 2
         dev_min_from_mean_1 /= self.number_of_generations
         dev_min_from_mean_2 /= self.number_of_generations
         dev_min_from_mean_1 *= 100
         dev_min_from_mean_2 *= 100
 
-        print(f'Среднеквадратичная ошибка в процентах первого алгоритма - {dev_min_from_mean_1}')
-        print(f'Среднеквадратичная ошибка в процентах второго алгоритма - {dev_min_from_mean_2}')
+        dev_first_from_second /= self.number_of_generations
+        dev_first_from_second *= 100
+
+        print(f'Среднеквадратичная разница лучшего со средним решением в процентах первого алгоритма - {dev_min_from_mean_1}')
+        print(f'Среднеквадратичная разница лучшего со средним решением в процентах второго алгоритма - {dev_min_from_mean_2}')
+        print(f'Среднеквадратичная разница алгоритмов в процентах - {dev_first_from_second}')
 
     def output_time_to_console(self):
         print(f'Среднее время первого - {self.average_full_time_1}, второго - {self.average_full_time_2}')

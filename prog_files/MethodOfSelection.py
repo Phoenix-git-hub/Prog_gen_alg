@@ -64,6 +64,8 @@ class MethodsOfSelection:
                 index += 1
 
     def roulette_selection(self, population, new_population):
+
+        # сделать с помощью choise numpy
         value_fitness = dict()
 
         flag_min_val = True
