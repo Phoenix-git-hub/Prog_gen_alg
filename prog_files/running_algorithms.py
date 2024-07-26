@@ -27,6 +27,7 @@ class RunningAlgorithm:
                                     self.settings_additional_alg, self.settings_comparison_alg)
             comparison.start_comparison()
             comparison.output_time_to_console()
+            comparison.output_deviation_to_console()
             comparison.visualization_progression()
         else:
             tkinter.messagebox.showerror("Ошибка", "Неизвестное значение 'settings['state_mode']' класса 'MainWindow'")

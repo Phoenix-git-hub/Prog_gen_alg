@@ -145,6 +145,23 @@ class Comparison:
 
         plt.show()
 
+    def output_deviation_to_console(self):
+        # MSPE
+        dev_min_from_mean_1 = 0
+        dev_min_from_mean_2 = 0
+
+        for i in range(self.number_of_generations):
+            dev_min_from_mean_1 += ((self.average_mean_val_1[i] - self.average_min_val_1[i]) / self.average_min_val_1[i]) ** 2
+            dev_min_from_mean_2 += ((self.average_mean_val_2[i] - self.average_min_val_2[i]) / self.average_min_val_1[i]) ** 2
+
+        dev_min_from_mean_1 /= self.number_of_generations
+        dev_min_from_mean_2 /= self.number_of_generations
+        dev_min_from_mean_1 *= 100
+        dev_min_from_mean_2 *= 100
+
+        print(f'Среднеквадратичная ошибка в процентах первого алгоритма - {dev_min_from_mean_1}')
+        print(f'Среднеквадратичная ошибка в процентах второго алгоритма - {dev_min_from_mean_2}')
+
     def output_time_to_console(self):
         print(f'Среднее время первого - {self.average_full_time_1}, второго - {self.average_full_time_2}')
         print(f'Среднее время на скрещивание - {self.average_time_to_crossing_1}, второго - {self.average_time_to_crossing_2 }')
@@ -152,3 +169,4 @@ class Comparison:
         print(f'Среднее время селекции - {self.average_time_to_selection_1}, второго - {self.average_time_to_selection_2 }')
         print(f'Среднее время калькулирование - {self.average_time_to_calculat_statistics_1}, второго - {self.average_time_to_calculat_statistics_2 }')
         print(f'Среднее время на создание первого поколения - {self.time_to_generate_first_pop_1}, второго - {self.time_to_generate_first_pop_2}')
+        print()
