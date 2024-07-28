@@ -83,6 +83,8 @@ class GeneticAlgorithm(Solution):
         ed = time.perf_counter()
         self.time_to_calculat_statistics += ed - st
 
+        correct_sol = True
+
         for i in range(self.number_of_generations):
             # бухнуть декоратор ? ???
 
@@ -105,6 +107,7 @@ class GeneticAlgorithm(Solution):
             start_time_to_calculat_statistics = time.perf_counter()
             self.meanFitnessValues.append(self.average_fitness_value(self.population))
             self.minFitnessValues.append(self.find_best(self.population)[1])
+            correct_sol = self.check_solution(self.population) and correct_sol
             end_time_to_calculat_statistics = time.perf_counter()
             self.time_to_calculat_statistics += end_time_to_calculat_statistics - start_time_to_calculat_statistics
 
@@ -117,8 +120,27 @@ class GeneticAlgorithm(Solution):
 
         end_full_time = time.perf_counter()
         self.full_time += end_full_time - start_full_time
+        print(correct_sol)
+        if not correct_sol:
+            string = """в решение присутствует ошибка
+                        класс 'SolutionByGeneticAlgoritm'"""
+            tkinter.messagebox.showerror("Ошибка", string)
 
         return self.find_best(self.population)
+
+    def check_solution(self, population):
+        all_v = [1]
+        for individual in population:
+            all_v = set([k for k in range(self.number_of_vertices)])
+            for j in individual:
+                if j in all_v:
+                    all_v.discard(j)
+                else:
+                    return False
+        if len(all_v) > 0:
+            return False
+
+        return True
 
     def find_best(self, population):
         #нужно переписать код
@@ -131,7 +153,7 @@ class GeneticAlgorithm(Solution):
         return best_solution, min_sol
 
     def fitness_function(self, individual):
-        # нужно переписать код
+        # у меня фитнесс функция в двух метах находиться здесь и в selection
         sum_vertexes = 0
         for i in range(self.number_of_vertices - 1):
             sum_vertexes += self.adjacency_matrix[individual[i]][individual[i + 1]]
