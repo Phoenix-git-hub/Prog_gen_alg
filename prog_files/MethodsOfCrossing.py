@@ -9,7 +9,7 @@ class MethodsOfCrossing:
         # нужно переименовать названия переменных two_point_crossing на crossover или посмотреть в словаре что коректне
         self.possible_names_of_crossing = ('crossing_pass', 'two_point_crossing', 'orderly_crossing_OX1',
                                            'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
-                                           'crossover_order_bb', 'crossover_order_ox5', 'crossover_order_OX_upgrade',
+                                           'crossover_order_bb', 'crossover_order_ox5', 'crossover_order_OX1_upgrade',
                                            'crossover_ordered_ox_s')
 
         self.name_of_crossing = dict.fromkeys(self.possible_names_of_crossing)
@@ -21,7 +21,7 @@ class MethodsOfCrossing:
         self.name_of_crossing['crossover_ordered_ss'] = self.crossover_ordered_ss
         self.name_of_crossing['cycle_crossover'] = self.cycle_crossover
         self.name_of_crossing['crossover_order_bb'] = self.crossover_order_bb
-        self.name_of_crossing['crossover_order_OX_upgrade'] = self.crossover_order_ox_upgrade
+        self.name_of_crossing['crossover_order_OX1_upgrade'] = self.crossover_order_ox1_upgrade
         self.name_of_crossing['crossover_ordered_ox_s'] = self.crossover_ordered_ox_s
         self.name_of_crossing['crossover_order_OX5'] = self.crossover_order_ox5
 
@@ -279,7 +279,7 @@ class MethodsOfCrossing:
                 self.new_population[index_2][ind_2] = parent_2[ind_ch + i]
                 ind_2 += 1
 
-    def crossover_order_ox_upgrade(self, index, index_2):
+    def crossover_order_ox1_upgrade(self, index, index_2):
         first_limit = random.randrange(0, self.number_of_vertices + 1)
         second_limit = random.randrange(0, self.number_of_vertices + 1)
 
