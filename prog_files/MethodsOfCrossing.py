@@ -9,7 +9,9 @@ class MethodsOfCrossing:
         # нужно переименовать названия переменных two_point_crossing на crossover или посмотреть в словаре что коректне
         self.possible_names_of_crossing = ('crossing_pass', 'two_point_crossing', 'orderly_crossing_OX1',
                                            'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
-                                           'crossover_order_bb', 'crossover_order_ox5', 'crossover_order_OX_upgrade')
+                                           'crossover_order_bb', 'crossover_order_ox5', 'crossover_order_OX_upgrade',
+                                           'crossover_ordered_ox_s')
+
         self.name_of_crossing = dict.fromkeys(self.possible_names_of_crossing)
 
         self.name_of_crossing['crossing_pass'] = self.crossing_pass
@@ -20,6 +22,7 @@ class MethodsOfCrossing:
         self.name_of_crossing['cycle_crossover'] = self.cycle_crossover
         self.name_of_crossing['crossover_order_bb'] = self.crossover_order_bb
         self.name_of_crossing['crossover_order_OX_upgrade'] = self.crossover_order_ox_upgrade
+        self.name_of_crossing['crossover_ordered_ox_s'] = self.crossover_ordered_ox_s
         self.name_of_crossing['crossover_order_OX5'] = self.crossover_order_ox5
 
         self.population = None
@@ -312,6 +315,33 @@ class MethodsOfCrossing:
             else:
                 self.new_population[index_2][raz_lim_2 + ind_2] = parent_2[ind_ch + i]
                 ind_2 += 1
+
+    def crossover_ordered_ox_s(self, index, index_2):
+        first_limit = random.randrange(0, self.number_of_vertices + 1)
+        second_limit = random.randrange(0, self.number_of_vertices + 1)
+
+        if second_limit < first_limit:
+            first_limit, second_limit = second_limit, first_limit
+
+        parent_1 = self.population[index].copy()
+        parent_2 = self.population[index_2].copy()
+
+        set_1 = set(parent_1[first_limit:second_limit])
+        set_2 = set(parent_2[first_limit:second_limit])
+
+        ind_1 = first_limit
+        ind_2 = first_limit
+        for i in range(self.number_of_vertices):
+
+            if parent_2[i] in set_1:
+                self.new_population[index][ind_1] = parent_2[i]
+                ind_1 += 1
+                set_1.discard(parent_2[i])
+            if parent_1[i] in set_2:
+                set_2.discard(parent_1[i])
+                self.new_population[index_2][ind_2] = parent_1[i]
+                ind_2 += 1
+
     def crossover_order_ox5(self, index, index_2):
 
         parent_2 = self.population[index].copy()
