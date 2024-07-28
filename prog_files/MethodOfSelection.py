@@ -1,5 +1,5 @@
 import random
-
+import numpy as np
 
 class MethodsOfSelection:
     def __init__(self):
@@ -65,9 +65,8 @@ class MethodsOfSelection:
 
     def roulette_selection(self, population, new_population):
 
-        # сделать с помощью choise numpy
-        value_fitness = dict()
-
+        # продолджить работу над рулеткой
+        value_fitness = np.array([0] * self.population_size * 2, dtype='float64')
         flag_min_val = True
         min_val = 0
         flag_max_val = True
@@ -85,6 +84,7 @@ class MethodsOfSelection:
                 flag_max_val = False
 
         for i in range(self.population_size):
+
             val = self.fitness_function(new_population[i])
             value_fitness[i + self.population_size] = val
 
@@ -97,30 +97,110 @@ class MethodsOfSelection:
         if min_val == max_val:
             min_val -= 0.000001
 
-        ratio_1 = 20 / (max_val - min_val)
-        ratio_2 = -1*(ratio_1 * min_val)
 
-        for key, item in value_fitness.items():
-            value_fitness[key] = item*ratio_1 + ratio_2
+        # этот коэфицент надо настраивать
+        ratio_1 = 1000 / (max_val - min_val)
+        ratio_2 = 1 - (ratio_1 * min_val)
 
-        for i in range(self.population_size):
-            ind = random.choices(list(value_fitness.keys()), weights=list(value_fitness.values()),  k=1)[0]
-            del value_fitness[ind]
+        sum_value = 0
+        print('до изменений')
+        print(value_fitness)
+        print()
+        for i in range(self.population_size * 2):
+            value_fitness[i] = value_fitness[i] * ratio_1 + ratio_2
+            sum_value += value_fitness[i]
+        print('val')
+        print(value_fitness)
+        print()
+        value_fitness /= value_fitness.sum()
 
-        pop = list(value_fitness.keys())
+        print(value_fitness)
+        print()
+        ind = np.random.choice([i for i in range(self.population_size * 2)], self.population_size,  replace=False,
+                               p=value_fitness)
 
-        for i in range(1, self.population_size):
-            for j in range(self.population_size - i):
-                if pop[j] > pop[j + 1]:
-                    a = pop[j]
-                    pop[j] = pop[j +1]
-                    pop[j+1] = a
-
-        for i in range(self.population_size):
-            if pop[i] < self.population_size:
-                population[i] = population[pop[i]].copy()
+        set_ind = set([i for i in range(self.population_size)])
+        replace_ind = []
+        for i in ind:
+            if i < self.population_size:
+                set_ind.discard(i)
             else:
-                population[i] = new_population[pop[i]-self.population_size].copy()
+                replace_ind.append(i)
+
+        for i in replace_ind:
+            index = set_ind.pop()
+            population[index] = new_population[i % self.population_size].copy()
+        #
+        # candidate_fitness = [[i, self.fitness_function(new_population[i])] for i in range(self.population_size)]
+        # population_fitness = [[i, self.fitness_function(population[i])] for i in range(self.population_size)]
+        #
+        # fitness = []
+
+
+
+
+
+
+
+
+
+
+
+        # value_fitness = dict()
+        #
+        # flag_min_val = True
+        # min_val = 0
+        # flag_max_val = True
+        # max_val = 0
+        #
+        # for i in range(self.population_size):
+        #     val = self.fitness_function(population[i])
+        #     value_fitness[i] = val
+        #
+        #     if flag_min_val or min_val > val:
+        #         flag_min_val = False
+        #         min_val = val
+        #     if flag_max_val or max_val < val:
+        #         max_val = val
+        #         flag_max_val = False
+        #
+        # for i in range(self.population_size):
+        #     val = self.fitness_function(new_population[i])
+        #     value_fitness[i + self.population_size] = val
+        #
+        #     if flag_min_val or min_val > val:
+        #         min_val = val
+        #         flag_min_val = False
+        #     if flag_max_val or max_val < val:
+        #         max_val = val
+        #         flag_max_val = False
+        # if min_val == max_val:
+        #     min_val -= 0.000001
+        #
+        # ratio_1 = 20 / (max_val - min_val)
+        # ratio_2 = -1*(ratio_1 * min_val)
+        #
+        # for key, item in value_fitness.items():
+        #     value_fitness[key] = item*ratio_1 + ratio_2
+        #
+        # for i in range(self.population_size):
+        #     ind = random.choices(list(value_fitness.keys()), weights=list(value_fitness.values()),  k=1)[0]
+        #     del value_fitness[ind]
+        #
+        # pop = list(value_fitness.keys())
+        #
+        # for i in range(1, self.population_size):
+        #     for j in range(self.population_size - i):
+        #         if pop[j] > pop[j + 1]:
+        #             a = pop[j]
+        #             pop[j] = pop[j +1]
+        #             pop[j+1] = a
+        #
+        # for i in range(self.population_size):
+        #     if pop[i] < self.population_size:
+        #         population[i] = population[pop[i]].copy()
+        #     else:
+        #         population[i] = new_population[pop[i]-self.population_size].copy()
 
 
 
