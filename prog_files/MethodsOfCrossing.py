@@ -8,7 +8,7 @@ class MethodsOfCrossing:
         # пожалуй нужно сделать файл config куда я положу общие данные для всего кода
         # нужно переименовать названия переменных two_point_crossing на crossover или посмотреть в словаре что коректне
         self.possible_names_of_crossing = ('crossing_pass', 'two_point_crossing', 'orderly_crossing_OX1',
-                                           'one_point_crossing_OX1', 'displayed_crossing', 'cycle_crossover',
+                                           'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
                                            'crossover_order_OX', 'crossover_order_ox5', 'crossover_order_OX_upgrade')
         self.name_of_crossing = dict.fromkeys(self.possible_names_of_crossing)
 
@@ -16,7 +16,7 @@ class MethodsOfCrossing:
         self.name_of_crossing['two_point_crossing'] = self.two_point_crossing
         self.name_of_crossing['orderly_crossing_OX1'] = self.orderly_crossing_ox1
         self.name_of_crossing['one_point_crossing_OX1'] = self.one_point_crossing_ox1
-        self.name_of_crossing['displayed_crossing'] = self.displayed_crossing
+        self.name_of_crossing['crossover_ordered_ss'] = self.crossover_ordered_ss
         self.name_of_crossing['cycle_crossover'] = self.cycle_crossover
         self.name_of_crossing['crossover_order_OX'] = self.crossover_order_ox
         self.name_of_crossing['crossover_order_OX_upgrade'] = self.crossover_order_ox_upgrade
@@ -168,7 +168,7 @@ class MethodsOfCrossing:
                 self.new_population[index_2][section_point + ind_2] = parent_1[i]
                 ind_2 += 1
 
-    def displayed_crossing(self, index, index_2):
+    def crossover_ordered_ss(self, index, index_2):
         # как двухточечное скрешивание OX1 но заполение начинается с начала, и смотреть начинает с начала
         first_limit = random.randrange(0, self.number_of_vertices + 1)
         second_limit = random.randrange(0, self.number_of_vertices + 1)

@@ -20,7 +20,7 @@ class AlgorithmWindow:
         self.method_of_generation_start_population = tkinter.StringVar(value='random_gen')
 
         self.crossing_methods = ('crossing_pass', 'two_point_crossing', 'orderly_crossing_OX1',
-                                 'one_point_crossing_OX1', 'displayed_crossing', 'cycle_crossover',
+                                 'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
                                  'crossover_order_OX', 'crossover_order_OX5', 'crossover_order_OX_upgrade')
         self.value_crossing_methods = tkinter.StringVar(value=self.crossing_methods[1])
 
