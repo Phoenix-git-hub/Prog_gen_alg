@@ -121,7 +121,6 @@ class GeneticAlgorithm(Solution):
 
         end_full_time = time.perf_counter()
         self.full_time += end_full_time - start_full_time
-        print(correct_sol)
         if not correct_sol:
             string = """в решение присутствует ошибка
                         класс 'SolutionByGeneticAlgoritm'"""
