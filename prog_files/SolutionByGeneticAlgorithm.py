@@ -51,6 +51,7 @@ class GeneticAlgorithm(Solution):
         self.selection_method.initialize_population_size(self.population_size)
         self.selection_method.initialize_method_of_selection(selection_method)
         self.selection_method.initialize_adjacency_matrix(self.adjacency_matrix)
+        self.selection_method.initialize_fitness_function(self.fitness_function)
 
     def initialization_status_of_searching_parent(self, searching_parent):
         self.crossing_method.initialize_status_of_searching_parent(searching_parent)
@@ -153,7 +154,6 @@ class GeneticAlgorithm(Solution):
         return best_solution, min_sol
 
     def fitness_function(self, individual):
-        # у меня фитнесс функция в двух метах находиться здесь и в selection
         sum_vertexes = 0
         for i in range(self.number_of_vertices - 1):
             sum_vertexes += self.adjacency_matrix[individual[i]][individual[i + 1]]

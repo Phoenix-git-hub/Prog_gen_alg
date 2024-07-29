@@ -26,6 +26,9 @@ class MethodsOfSelection:
 
         self.selection_method = self.name_of_selection[name_of_method]
 
+    def initialize_fitness_function(self, fitness_function):
+        self.fitness_function = fitness_function
+
     def initialize_number_of_vertices(self, number_of_vertices):
         self.number_of_vertices = number_of_vertices
 
@@ -259,11 +262,3 @@ class MethodsOfSelection:
             if population_fitness[i] > candidate_fitness[random_individual]:
                 population[i] = new_population[random_individual].copy()
 
-    def fitness_function(self, individual):
-        # нужно переписать код
-        sum_vertexes = 0
-        for i in range(self.number_of_vertices - 1):
-            sum_vertexes += self.adjacency_matrix[individual[i]][individual[i + 1]]
-
-        sum_vertexes += self.adjacency_matrix[individual[0]][individual[self.number_of_vertices - 1]]
-        return sum_vertexes
