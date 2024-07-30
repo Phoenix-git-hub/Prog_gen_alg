@@ -46,6 +46,9 @@ class Comparison:
         self.average_full_time_2 = 0
         self.time_to_generate_first_pop_2 = 0
 
+        self.sum_division_1 = 0
+        self.sum_division_2 = 0
+
         #все выделить в отдельные классы
         self.first_gen_alg = GeneticAlgorithm(self.population_size, self.number_of_generations,
                                               self.number_of_vertices, method_of_generation_start_population_first_alg)
@@ -64,9 +67,6 @@ class Comparison:
         self.second_gen_alg.initialization_mutation_method(self.settings_additional_alg['mutation_method'])
         self.second_gen_alg.initialization_status_of_searching_parent(
             self.settings_additional_alg['status_of_searching_parent'])
-
-
-
 
     def start_comparison(self):
 
@@ -87,8 +87,9 @@ class Comparison:
             self.average_time_to_mutation_1 += self.first_gen_alg.get_time_to_mutation()
             self.average_time_to_selection_1 += self.first_gen_alg.get_time_to_selection()
             self.average_time_to_calculat_statistics_1 += self.first_gen_alg.get_time_to_calculat_statistics()
-            self.average_full_time_1 +=self.first_gen_alg.get_full_time()
+            self.average_full_time_1 += self.first_gen_alg.get_full_time()
             self.time_to_generate_first_pop_1 += self.first_gen_alg.get_time_to_generate_first_pop()
+            self.sum_division_1 += self.first_gen_alg.get_deviation()
 
             self.average_time_to_crossing_2 += self.second_gen_alg.get_time_to_crossing()
             self.average_time_to_mutation_2 += self.second_gen_alg.get_time_to_mutation()
@@ -96,6 +97,7 @@ class Comparison:
             self.average_time_to_calculat_statistics_2 += self.second_gen_alg.get_time_to_calculat_statistics()
             self.average_full_time_2 += self.second_gen_alg.get_full_time()
             self.time_to_generate_first_pop_2 += self.second_gen_alg.get_time_to_generate_first_pop()
+            self.sum_division_2 += self.second_gen_alg.get_deviation()
 
             mean_fitness_values_1 = self.first_gen_alg.get_mean_fitness_values()
             min_fitness_values_1 = self.first_gen_alg.get_min_fitness_values()
@@ -146,26 +148,21 @@ class Comparison:
         plt.show()
 
     def output_deviation_to_console(self):
-        # MSPE
-        dev_min_from_mean_1 = 0
-        dev_min_from_mean_2 = 0
+        # MAPE
         dev_first_from_second = 0
 
         for i in range(self.number_of_generations):
-            dev_min_from_mean_1 += ((self.average_mean_val_1[i] - self.average_min_val_1[i]) / self.average_min_val_1[i]) ** 2
-            dev_min_from_mean_2 += ((self.average_mean_val_2[i] - self.average_min_val_2[i]) / self.average_min_val_1[i]) ** 2
-            dev_first_from_second += ((self.average_mean_val_2[i] - self.average_mean_val_1[i]) / ((self.average_mean_val_2[i] + self.average_mean_val_1[i]) / 2)) ** 2
-        dev_min_from_mean_1 /= self.number_of_generations
-        dev_min_from_mean_2 /= self.number_of_generations
-        dev_min_from_mean_1 *= 100
-        dev_min_from_mean_2 *= 100
-
+            dev_first_from_second += abs((self.average_mean_val_2[i] - self.average_mean_val_1[i]) / ((self.average_mean_val_2[i] + self.average_mean_val_1[i]) / 2))
         dev_first_from_second /= self.number_of_generations
         dev_first_from_second *= 100
 
-        print(f'Среднеквадратичная разница лучшего со средним решением в процентах первого алгоритма - {dev_min_from_mean_1}')
-        print(f'Среднеквадратичная разница лучшего со средним решением в процентах второго алгоритма - {dev_min_from_mean_2}')
-        print(f'Среднеквадратичная разница алгоритмов в процентах - {dev_first_from_second}')
+        print(f'Средняя абсолютная процентная ошибка лучшего решения со средним 1 алгоритма - {self.sum_division_1 /self.number_of_comparisons}')
+        print(f'Средняя абсолютная процентная ошибка лучшего решения со средним 2 алгоритма - {self.sum_division_2 /self.number_of_comparisons}')
+        print(f'Средняя абсолютная процентная ошибка двух алгоритмов - {dev_first_from_second}')
+
+
+
+
 
     def output_time_to_console(self):
         print(f'Среднее время первого - {self.average_full_time_1}, второго - {self.average_full_time_2}')

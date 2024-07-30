@@ -77,8 +77,9 @@ class Solution:
 
         self.sol_by_genetic_algorithm.display_sol()
         self.sol_by_genetic_algorithm.output_parameters_to_console()
+        print()
         self.sol_by_genetic_algorithm.visualization_progression()
-
+        self.sol_by_genetic_algorithm.output_deviation_to_console()
         self.sol_by_genetic_algorithm.output_all_time_to_console()
 
     def solve_by_dynamic_all_vertices(self):

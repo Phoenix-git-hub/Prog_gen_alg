@@ -64,6 +64,8 @@ class GeneticAlgorithm(Solution):
         #gjcnfdbnm ghjdthre yf yfkbxbt gthdjuj gjrjktybz
         # поставить проверку на первое поколение
         # print(self.population)
+        self.meanFitnessValues = []
+        self.minFitnessValues = []
 
         self.time_to_crossing = 0
         self.time_to_mutation = 0
@@ -125,7 +127,6 @@ class GeneticAlgorithm(Solution):
             string = """в решение присутствует ошибка
                         класс 'SolutionByGeneticAlgoritm'"""
             tkinter.messagebox.showerror("Ошибка", string)
-
         return self.find_best(self.population)
 
     def check_solution(self, population):
@@ -214,15 +215,33 @@ class GeneticAlgorithm(Solution):
     def get_time_to_generate_first_pop(self):
         return self.time_to_generate_first_pop
 
+    def get_deviation(self):
+
+        dev_min_from_mean = 0
+        for i in range(self.number_of_generations):
+            dev_min_from_mean += abs((self.meanFitnessValues[i] - self.minFitnessValues[i]) / self.minFitnessValues[i])
+        dev_min_from_mean /= self.number_of_generations
+        dev_min_from_mean *= 100
+
+        return dev_min_from_mean
+
+    def output_deviation_to_console(self):
+        # у меня операция по расчету выполняется в двух разных местах, это по хорошему убрать
+        dev_min_from_mean = 0
+        for i in range(self.number_of_generations):
+            dev_min_from_mean += abs((self.meanFitnessValues[i] - self.minFitnessValues[i]) / self.minFitnessValues[i])
+        dev_min_from_mean /= self.number_of_generations
+        dev_min_from_mean *= 100
+
+        print(f'Среднеквадратичная разница лучшего со средним решением в процентах ГА - {dev_min_from_mean}')
+
     def output_all_time_to_console(self):
         # переделать
-
         average_time_to_crossing = self.time_to_crossing / self.number_of_generations
         average_time_to_mutation = self.time_to_mutation / self.number_of_generations
         average_time_to_selection = self.time_to_selection / self.number_of_generations
         average_time_to_calculat_statistics = self.time_to_calculat_statistics / self.number_of_generations
 
-        print('\n')
         print(f'Все время на программу: {self.full_time}')
         print(f'Время на скрещивание: {self.time_to_crossing}, за итерацию: {average_time_to_crossing}')
         print(f'Время на мутации: {self.time_to_mutation}, за итерацию: {average_time_to_mutation}')
