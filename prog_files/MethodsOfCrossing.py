@@ -10,7 +10,8 @@ class MethodsOfCrossing:
         self.possible_names_of_crossing = ('crossing_pass', 'two_point_crossing', 'orderly_crossing_OX1',
                                            'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
                                            'crossover_order_bb', 'crossover_order_ox5', 'crossover_order_OX1_upgrade',
-                                           'crossover_ordered_ox_s', 'crossover_ordered_ox_b')
+                                           'crossover_ordered_ox_s', 'crossover_ordered_ox_b',
+                                           'partially_matched_crossover')
 
         self.name_of_crossing = dict.fromkeys(self.possible_names_of_crossing)
 
@@ -25,6 +26,7 @@ class MethodsOfCrossing:
         self.name_of_crossing['crossover_ordered_ox_s'] = self.crossover_ordered_ox_s
         self.name_of_crossing['crossover_ordered_ox_b'] = self.crossover_ordered_ox_b
         self.name_of_crossing['crossover_order_OX5'] = self.crossover_order_ox5
+        self.name_of_crossing['partially_matched_crossover'] = self.partially_matched_crossover
 
         self.population = None
         self.new_population = None
@@ -402,13 +404,29 @@ class MethodsOfCrossing:
         lim_4 = list_of_limits[3]
         print(lim_1, lim_2, lim_3, lim_4)
 
+    def partially_matched_crossover(self, index, index_2):
+        first_limit = random.randrange(0, self.number_of_vertices + 1)
+        second_limit = random.randrange(0, self.number_of_vertices + 1)
 
+        if second_limit < first_limit:
+            first_limit, second_limit = second_limit, first_limit
+
+        for i in range(first_limit, second_limit):
+
+            i_1, = np.where(self.new_population[index] == self.population[index_2][i])
+            i_2, = np.where(self.new_population[index_2] == self.population[index][i])
+
+            self.new_population[index][i_1] = self.new_population[index][i]
+            self.new_population[index_2][i_2] = self.new_population[index_2][i]
+
+            self.new_population[index][i] = self.population[index_2][i]
+            self.new_population[index_2][i] = self.population[index][i]
 
 # CS = MethodsOfCrossing()
-# CS.initialize_number_of_vertices(4)
+# CS.initialize_number_of_vertices(5)
 # CS.initialize_population_size(2)
-# CS.initialize_method_of_crossing('orderly_crossing_OX1')
+# CS.initialize_method_of_crossing('partially_matched_crossover')
 # CS.initialize_status_of_searching_parent('ordered_search')
-# pop = [[1, 2, 3, 4], [4, 3, 2, 1]]
+# pop = np.array([np.array([1, 2, 3, 4, 5]), np.array([4, 3, 5, 1, 2])])
 #
 # print(CS.do_crossing(pop))
