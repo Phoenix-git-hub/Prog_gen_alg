@@ -25,6 +25,7 @@ class Solution:
         self.sol_dynamic_all_vertices = None
         self.sol_by_genetic_algorithm = None
         self.sol_by_ant_algorithm = None
+        self.sol_by_annealing_method = None
 
         self.adjacency_matrix = self.work_with_vertices.initialization_adjacency_matrix()
         self.coordinates_of_vertices = self.work_with_vertices.get_coordinates_of_vertices()
@@ -43,6 +44,7 @@ class Solution:
         self.solve_by_dynamic_all_vertices()
         self.solve_by_dynamic()
         self.solve_by_ant_algorithm()
+        self.solve_by_annealing_method()
 
     def solve_by_brute_force_method(self):
         state_brute_force = self.general_settings['state_brute_force']
@@ -85,6 +87,7 @@ class Solution:
         self.sol_by_genetic_algorithm.output_all_time_to_console()
 
     def solve_by_dynamic_all_vertices(self):
+        # придумать общий декоратор или алгоритм действий для всех дополнительных алгоритмов
         state_dynamic_all_vertices = self.general_settings['state_dynamic_all_vertices']
         if state_dynamic_all_vertices:
             self.sol_dynamic_all_vertices = AdditionalSolutions.SolutionByDynamicProgWithAllVertices(self.adjacency_matrix,
@@ -117,6 +120,17 @@ class Solution:
             self.sol_by_ant_algorithm.start_solution()
             self.sol_by_ant_algorithm.display_sol()
             self.sol_by_ant_algorithm.output_parameters_to_console()
+
+    def solve_by_annealing_method(self):
+        state_ant_algorithm = self.general_settings['state_annealing_method']
+        if state_ant_algorithm:
+            self.sol_by_annealing_method = AdditionalSolutions.SolutionAnnealingMethod(self.adjacency_matrix,
+                                                                                      self.coordinates_of_vertices,
+                                                                                      self.number_of_vertices,
+                                                                                      self.places_on_screen["lower right"])
+            self.sol_by_annealing_method.start_solution()
+            self.sol_by_annealing_method.display_sol()
+            self.sol_by_annealing_method.output_parameters_to_console()
 
     @staticmethod
     def display():

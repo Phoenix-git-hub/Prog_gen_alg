@@ -11,10 +11,11 @@ class MainWindow:
         self.window = tkinter.Tk()
         self.star_alg = star_alg
 
-        self.state_dynamic = tkinter.BooleanVar(value=True)
+        self.state_dynamic = tkinter.BooleanVar(value=False)
         self.state_dynamic_all_vertices = tkinter.BooleanVar(value=True)
         self.state_brute_force = tkinter.BooleanVar(value=False)
-        self.state_ant_algorithm = tkinter.BooleanVar(value=False)
+        self.state_ant_algorithm = tkinter.BooleanVar(value=True)
+        self.state_annealing_method = tkinter.BooleanVar(value=True)
 
         self.comparison_status = tkinter.StringVar(value='solo_test')
         self.status_of_generation_adjacency_matrix = tkinter.StringVar(value='generation_by_vertices')
@@ -91,6 +92,7 @@ class MainWindow:
         self.checkbutton_dynamic_programming_with_all_vertices()
         self.checkbutton_brute_force()
         self.checkbutton_ant_algorithm()
+        self.checkbutton_annealing_method()
 
     def display_general_parameters(self):
         """The general parameters(number of vertices, generations and individuals in one generation)
@@ -108,7 +110,7 @@ class MainWindow:
     def display_start_btn(self):
         save_btn = tkinter.Button(self.window, text="Let's goo", bg='white', font=("Arial Bold", 20),
                                   command=self.star_alg)
-        save_btn.place(x=425, y=240, width=120, height=50)
+        save_btn.place(x=425, y=260, width=120, height=50)
 
     def number_of_vertices(self):
         lab_number_of_vertices = tkinter.Label(self.window, text='Количество городов-', font=("Arial Bold", 14))
@@ -174,6 +176,10 @@ class MainWindow:
                                                       variable=self.state_ant_algorithm)
         checkbutton_brute_force.place(x=456, y=200, width=215, height=23)
 
+    def checkbutton_annealing_method(self):
+        checkbutton_brute_force = tkinter.Checkbutton(self.window, text='имитация отжига', font=("Arial Bold", 14),
+                                                      variable=self.state_annealing_method)
+        checkbutton_brute_force.place(x=433, y=226, width=215, height=23)
     def safe_settings(self):
         numb_of_ver = self.value_ent_number_of_vertices.get()
         numb_of_gen = self.value_ent_number_of_generations.get()
@@ -189,6 +195,7 @@ class MainWindow:
                             ('state_dynamic_all_vertices', self.state_dynamic_all_vertices.get()),
                             ('state_brute_force', self.state_brute_force.get()),
                             ('state_ant_algorithm', self.state_ant_algorithm.get()),
+                            ('state_annealing_method', self.state_annealing_method.get()),
                             ('status_of_the_symmetry_adjacency_matrix', self.status_of_the_symmetry_adj_matrix.get()),
                             ('number_of_vertices', int(numb_of_ver)),
                             ('number_of_generations', int(numb_of_gen)),

@@ -244,3 +244,17 @@ class SolutionByAntAlgorithm(Solution):
     def solve_ant_algorithm(self):
         best_sol, distance = self.run()
         return best_sol, distance
+
+
+class SolutionAnnealingMethod(Solution):
+
+    def __init__(self, adjacency_matrix, coordinates_of_vertices, number_of_vertices, place_on_screen):
+        name_of_method = "Solution by annealing method"
+        super(SolutionAnnealingMethod, self).__init__(adjacency_matrix, coordinates_of_vertices, number_of_vertices,
+                                                      name_of_method, place_on_screen)
+
+    def solution(self):
+
+        permutation, distance = None, None
+        return np.array(permutation), distance
+
