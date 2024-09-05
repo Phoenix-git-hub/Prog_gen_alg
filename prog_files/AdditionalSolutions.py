@@ -3,6 +3,8 @@ import numpy as np
 import time
 from abc import ABC, abstractmethod
 import matplotlib.pyplot as plt
+from math import inf
+from random import random, shuffle
 
 
 class Solution(ABC):
@@ -141,3 +143,104 @@ class SolutionByBruteForceMethod(Solution):
     def solution(self):
         permutation, distance = solve_tsp_brute_force(self.adjacency_matrix)
         return np.array(permutation), distance
+
+
+class SolutionByAntAlgorithm(Solution):
+
+    def __init__(self, adjacency_matrix, coordinates_of_vertices, number_of_vertices, place_on_screen):
+        name_of_method = "Solution by ant algorithm"
+        super(SolutionByAntAlgorithm, self).__init__(adjacency_matrix, coordinates_of_vertices, number_of_vertices,
+                                                     name_of_method, place_on_screen)
+
+    def init_ant_algorithm_parameters(self, ants: int, iter: int, a: float, b: float, p: float, q: float) -> None:
+        """Initializes the hyperparameters for the algorithm."""
+
+        self.ants = ants
+        self.iter = iter
+        self.a = a
+        self.b = b
+        self.p = p
+        self.q = q
+
+    @staticmethod
+    def __select_i(selection: list[int]) -> int:
+        """Selects a random index of the next 2D point."""
+
+        sum_num = sum(selection)
+        if sum_num == 0:
+            return len(selection) - 1
+        tmp_num = random()
+        prob = 0
+        for i in range(len(selection)):
+            prob += selection[i] / sum_num
+            if prob >= tmp_num:
+                return i
+
+    def __create_indx(self, dm: list[list[float]], pm: list[list[float]]) -> list[int]:
+        """Creates a new ordering of 2D point indices based on the distance and pheromone."""
+
+        unvisited_indx = list(range(self.number_of_vertices))
+        shuffle(unvisited_indx)
+        visited_indx = [unvisited_indx.pop()]
+        for _ in range(self.number_of_vertices - 1):
+            i = visited_indx[-1]
+            selection = []
+            for j in unvisited_indx:
+                selection.append(
+                    (pm[i][j] ** self.a) * ((1 / max(self.adjacency_matrix[i][j], 10**-5)) ** self.b)
+                )
+            selected_i = SolutionByAntAlgorithm.__select_i(selection)
+            visited_indx.append(unvisited_indx.pop(selected_i))
+        visited_indx.append(visited_indx[0])
+        return visited_indx
+
+    def update_pm(self, pm: list[list[float]], tmp_indx: list[list[int]], tmp_leng: list[float]) -> None:
+        """Updates the pheromone matrix."""
+
+        # l = len(pm)
+        for i in range(self.number_of_vertices):
+            for j in range(i, self.number_of_vertices):
+                pm[i][j] *= 1 - self.p
+                pm[j][i] *= 1 - self.p
+        for i in range(self.ants):
+            delta = self.q / tmp_leng[i]
+            indx = tmp_indx[i]
+            for j in range(self.number_of_vertices):
+                pm[indx[j]][indx[j + 1]] += delta
+                pm[indx[j + 1]][indx[j]] += delta
+
+    def _calculate_dist(dm: list[list[float]], indx: list[int]) -> float:
+        """Calculates the path length based on the index list of the distance matrix."""
+
+        dist = 0
+        for i in range(len(indx) - 1):
+            dist += dm[indx[i]][indx[i + 1]]
+        return dist
+    def run(self):
+        """Runs the algorithm for the given 2D points."""
+        # l - количество размер
+        # dm - матрица смежности
+        pm = [[1 for _ in range(self.number_of_vertices)] for _ in range(self.number_of_vertices)]
+        res_indx = []
+        res_leng = inf
+        for _ in range(self.iter):
+            tmp_indx = []
+            tmp_leng = []
+            for _ in range(self.ants):
+                indx = self.__create_indx(self.adjacency_matrix, pm)
+                tmp_indx.append(indx)
+                tmp_leng.append(SolutionByAntAlgorithm._calculate_dist(self.adjacency_matrix, indx))
+            self.update_pm(pm, tmp_indx, tmp_leng)
+            best_leng = min(tmp_leng)
+            if best_leng < res_leng:
+                res_leng = best_leng
+                res_indx = tmp_indx[tmp_leng.index(best_leng)]
+        return res_indx, res_leng
+
+    def solution(self):
+        permutation, distance = self.solve_ant_algorithm()
+        return np.array(permutation), distance
+
+    def solve_ant_algorithm(self):
+        best_sol, distance = self.run()
+        return best_sol, distance

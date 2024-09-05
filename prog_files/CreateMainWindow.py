@@ -14,6 +14,7 @@ class MainWindow:
         self.state_dynamic = tkinter.BooleanVar(value=True)
         self.state_dynamic_all_vertices = tkinter.BooleanVar(value=True)
         self.state_brute_force = tkinter.BooleanVar(value=False)
+        self.state_ant_algorithm = tkinter.BooleanVar(value=False)
 
         self.comparison_status = tkinter.StringVar(value='solo_test')
         self.status_of_generation_adjacency_matrix = tkinter.StringVar(value='generation_by_vertices')
@@ -89,6 +90,7 @@ class MainWindow:
         self.checkbutton_dynamic_programming()
         self.checkbutton_dynamic_programming_with_all_vertices()
         self.checkbutton_brute_force()
+        self.checkbutton_ant_algorithm()
 
     def display_general_parameters(self):
         """The general parameters(number of vertices, generations and individuals in one generation)
@@ -167,6 +169,11 @@ class MainWindow:
                                                       variable=self.state_brute_force)
         checkbutton_brute_force.place(x=418, y=175, width=200, height=25)
 
+    def checkbutton_ant_algorithm(self):
+        checkbutton_brute_force = tkinter.Checkbutton(self.window, text='муравьиный алгоритм', font=("Arial Bold", 14),
+                                                      variable=self.state_ant_algorithm)
+        checkbutton_brute_force.place(x=456, y=200, width=215, height=23)
+
     def safe_settings(self):
         numb_of_ver = self.value_ent_number_of_vertices.get()
         numb_of_gen = self.value_ent_number_of_generations.get()
@@ -181,6 +188,7 @@ class MainWindow:
                             ('state_dynamic', self.state_dynamic.get()),
                             ('state_dynamic_all_vertices', self.state_dynamic_all_vertices.get()),
                             ('state_brute_force', self.state_brute_force.get()),
+                            ('state_ant_algorithm', self.state_ant_algorithm.get()),
                             ('status_of_the_symmetry_adjacency_matrix', self.status_of_the_symmetry_adj_matrix.get()),
                             ('number_of_vertices', int(numb_of_ver)),
                             ('number_of_generations', int(numb_of_gen)),

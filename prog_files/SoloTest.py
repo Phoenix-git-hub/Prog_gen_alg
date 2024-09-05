@@ -24,6 +24,7 @@ class Solution:
         self.sol_by_dynamic_prog = None
         self.sol_dynamic_all_vertices = None
         self.sol_by_genetic_algorithm = None
+        self.sol_by_ant_algorithm = None
 
         self.adjacency_matrix = self.work_with_vertices.initialization_adjacency_matrix()
         self.coordinates_of_vertices = self.work_with_vertices.get_coordinates_of_vertices()
@@ -41,6 +42,7 @@ class Solution:
         self.solve_by_genetic_algorithm()
         self.solve_by_dynamic_all_vertices()
         self.solve_by_dynamic()
+        self.solve_by_ant_algorithm()
 
     def solve_by_brute_force_method(self):
         state_brute_force = self.general_settings['state_brute_force']
@@ -103,6 +105,18 @@ class Solution:
             self.sol_by_dynamic_prog.start_solution()
             self.sol_by_dynamic_prog.display_sol()
             self.sol_by_dynamic_prog.output_parameters_to_console()
+
+    def solve_by_ant_algorithm(self):
+        state_ant_algorithm = self.general_settings['state_ant_algorithm']
+        if state_ant_algorithm:
+            self.sol_by_ant_algorithm = AdditionalSolutions.SolutionByAntAlgorithm(self.adjacency_matrix,
+                                                                                   self.coordinates_of_vertices,
+                                                                                   self.number_of_vertices,
+                                                                                   self.places_on_screen["lower right"])
+            self.sol_by_ant_algorithm.init_ant_algorithm_parameters(100, 20, 1.5, 1.2, 0.6, 10)
+            self.sol_by_ant_algorithm.start_solution()
+            self.sol_by_ant_algorithm.display_sol()
+            self.sol_by_ant_algorithm.output_parameters_to_console()
 
     @staticmethod
     def display():
