@@ -3,16 +3,28 @@ from prog_files import AdditionalSolutions
 import matplotlib.pyplot as plt
 from prog_files.WorkWithVertices import WorkWithVertices
 
-class Solution:
 
+class PositionOnScreen:
+    def __init__(self):
+        self.coordinates = {"upper left": (740, 0), "upper right": (1140, 0),
+                            "lower left": (740, 370), "lower right": (1140, 370)}
+        self.next_position = {"upper left": "lower left", "lower left": "upper right",
+                              "upper right": "lower right", "lower right": "upper left"}
+        self.now_position = "upper left"
+
+    def get(self):
+        coordinates = self.coordinates[self.now_position]
+        self.now_position = self.next_position[self.now_position]
+        return coordinates
+
+
+class Solution:
     def __init__(self, general_settings, settings_gen_alg):
 
         self.general_settings = general_settings
         self.settings_gen_alg = settings_gen_alg
-        self.places_on_screen = {"upper left": (740, 0), "upper right": (1140, 0),
-                                 "lower left": (740, 370), "lower right": (1140, 370)}
-        self.position_screen = ["upper right", "lower right", "lower left", "upper left",
-                                "upper right", "lower right", "lower left", "upper left"]
+
+        self.position_screen = PositionOnScreen()
 
         numb_of_ver = self.general_settings['number_of_vertices']
         status_of_gen_adj_mat = self.general_settings['status_of_generation_adjacency_matrix']
@@ -52,7 +64,7 @@ class Solution:
     def pattern_add_sol(self, state, name_sol):
         if state:
             self.sol_brute_force = name_sol(self.adjacency_matrix, self.coordinates_of_vertices,
-                                            self.number_of_vertices, self.places_on_screen[self.position_screen.pop()])
+                                            self.number_of_vertices, self.position_screen.get())
             self.sol_brute_force.start_solution()
             self.sol_brute_force.display_sol()
             self.sol_brute_force.output_parameters_to_console()
@@ -67,7 +79,7 @@ class Solution:
                                                                                     method_of_generation_start_pop,
                                                                                     self.adjacency_matrix,
                                                                                     self.coordinates_of_vertices,
-                                                                                    self.places_on_screen[self.position_screen.pop()])
+                                                                                    self.position_screen.get())
 
         self.sol_by_genetic_algorithm.initialization_selection_method(self.settings_gen_alg['selection_method'])
         self.sol_by_genetic_algorithm.initialization_crossing_method(self.settings_gen_alg['crossing_method'])
