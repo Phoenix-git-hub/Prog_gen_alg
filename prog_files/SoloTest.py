@@ -39,8 +39,8 @@ class Solution:
 
     def start_solving(self):
 
-        self.solve_by_brute_force_method()
         self.solve_by_genetic_algorithm()
+        self.solve_by_brute_force_method()
         self.solve_by_dynamic_all_vertices()
         self.solve_by_dynamic()
         self.solve_by_ant_algorithm()
@@ -116,7 +116,6 @@ class Solution:
                                                                                    self.coordinates_of_vertices,
                                                                                    self.number_of_vertices,
                                                                                    self.places_on_screen["lower right"])
-            self.sol_by_ant_algorithm.init_ant_algorithm_parameters(100, 20, 1.5, 1.2, 0.6, 10)
             self.sol_by_ant_algorithm.start_solution()
             self.sol_by_ant_algorithm.display_sol()
             self.sol_by_ant_algorithm.output_parameters_to_console()

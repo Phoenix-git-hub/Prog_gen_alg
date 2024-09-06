@@ -151,16 +151,16 @@ class SolutionByAntAlgorithm(Solution):
         name_of_method = "Solution by ant algorithm"
         super(SolutionByAntAlgorithm, self).__init__(adjacency_matrix, coordinates_of_vertices, number_of_vertices,
                                                      name_of_method, place_on_screen)
+        self.init_ant_algorithm_parameters()
 
-    def init_ant_algorithm_parameters(self, ants: int, iter: int, a: float, b: float, p: float, q: float) -> None:
+    def init_ant_algorithm_parameters(self) -> None:
         """Initializes the hyperparameters for the algorithm."""
-
-        self.ants = ants
-        self.iter = iter
-        self.a = a
-        self.b = b
-        self.p = p
-        self.q = q
+        self.ants = 100
+        self.iter = 20
+        self.a = 1.5
+        self.b = 1.2
+        self.p = 0.6
+        self.q = 10
 
     @staticmethod
     def __select_i(selection: list[int]) -> int:
