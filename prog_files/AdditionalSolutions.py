@@ -147,7 +147,7 @@ class SolutionByBruteForceMethod(Solution):
 
 class SolutionByAntAlgorithm(Solution):
 
-    def __init__(self, adjacency_matrix, coordinates_of_vertices, number_of_vertices, place_on_screen):
+    def __init__(self, adjacency_matrix, coordinates_of_vertices=0, number_of_vertices=0, place_on_screen=0):
         name_of_method = "Solution by ant algorithm"
         super(SolutionByAntAlgorithm, self).__init__(adjacency_matrix, coordinates_of_vertices, number_of_vertices,
                                                      name_of_method, place_on_screen)
@@ -239,7 +239,7 @@ class SolutionByAntAlgorithm(Solution):
 
     def solution(self):
         permutation, distance = self.solve_ant_algorithm()
-        return np.array(permutation), distance
+        return np.array(permutation[:-1]), distance
 
     def solve_ant_algorithm(self):
         best_sol, distance = self.run()

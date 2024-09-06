@@ -8,6 +8,7 @@ import time
 
 import tkinter.messagebox
 from AdditionalSolutions import SolutionByDynamicProgWithAllVertices
+from AdditionalSolutions import SolutionByAntAlgorithm
 
 class GeneticAlgorithm(Solution):
 
@@ -124,6 +125,7 @@ class GeneticAlgorithm(Solution):
         end_full_time = time.perf_counter()
         self.full_time += end_full_time - start_full_time
         if not correct_sol:
+            print(self.population)
             string = """в решение присутствует ошибка
                         класс 'SolutionByGeneticAlgoritm'"""
             tkinter.messagebox.showerror("Ошибка", string)
@@ -258,6 +260,7 @@ class GeneticAlgorithm(Solution):
         self.population = population
 
     def generation_start_population(self):
+        print(self.method_of_generation_start_population)
         del self.population
         # нужно создать тест на наличие матрици смежности
         if self.method_of_generation_start_population == 'random_gen':
@@ -272,6 +275,11 @@ class GeneticAlgorithm(Solution):
             sol_din_pr = SolutionByDynamicProgWithAllVertices(self.adjacency_matrix,
                                                               number_of_vertices=self.number_of_vertices)
             individual = sol_din_pr.solution()[0]
+            self.population = np.array([individual for _ in range(self.population_size)])
+
+        elif self.method_of_generation_start_population == 'ant_algorithm_gen':
+            sol_ant_algorithm = SolutionByAntAlgorithm(self.adjacency_matrix, number_of_vertices=self.number_of_vertices)
+            individual = sol_ant_algorithm.solution()[0]
             self.population = np.array([individual for _ in range(self.population_size)])
 
         else:

@@ -61,13 +61,17 @@ class AlgorithmWindow:
                                                    value='greedy_algorithm_gen',
                                                    variable=self.method_of_generation_start_population,
                                                    font=("Arial Bold", 15))
-        greedy_algorithm_gen.place(x=44, y=245, width=300, height=25)
+        greedy_algorithm_gen.place(x=44, y=240, width=300, height=25)
 
-
+        greedy_algorithm_gen = tkinter.Radiobutton(self.window, text='муравьиный алгоритм',
+                                                   value='ant_algorithm_gen',
+                                                   variable=self.method_of_generation_start_population,
+                                                   font=("Arial Bold", 15))
+        greedy_algorithm_gen.place(x=9, y=270, width=300, height=17)
 
     def display_status_of_searching_parent(self):
         lab = tkinter.Label(self.window, text='Статус поиска родителей:', font=("Arial Bold", 15))
-        lab.place(x=40, y=145, width=240, height=20)
+        lab.place(x=40, y=145, width=240, height=25)
 
         random_search = tkinter.Radiobutton(self.window, text='случайный', value='random_search',
                                             variable=self.status_of_searching_parent, font=("Arial Bold", 15))
