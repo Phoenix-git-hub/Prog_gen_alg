@@ -15,7 +15,7 @@ class MainWindow:
         self.state_dynamic_all_vertices = tkinter.BooleanVar(value=True)
         self.state_brute_force = tkinter.BooleanVar(value=False)
         self.state_ant_algorithm = tkinter.BooleanVar(value=True)
-        self.state_annealing_method = tkinter.BooleanVar(value=True)
+        self.state_annealing_method = tkinter.BooleanVar(value=False)
 
         self.comparison_status = tkinter.StringVar(value='solo_test')
         self.status_of_generation_adjacency_matrix = tkinter.StringVar(value='generation_by_vertices')
