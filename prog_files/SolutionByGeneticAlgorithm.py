@@ -260,7 +260,6 @@ class GeneticAlgorithm(Solution):
         self.population = population
 
     def generation_start_population(self):
-        print(self.method_of_generation_start_population)
         del self.population
         # нужно создать тест на наличие матрици смежности
         if self.method_of_generation_start_population == 'random_gen':
