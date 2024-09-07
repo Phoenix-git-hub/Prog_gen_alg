@@ -34,13 +34,6 @@ class Solution:
         self.work_with_vertices = WorkWithVertices(numb_of_ver, status_of_gen_adj_mat,
                                                    measure_of_disorder, status_of_the_symmetry_adjacency_matrix)
 
-        self.sol_brute_force = None
-        self.sol_by_dynamic_prog = None
-        self.sol_dynamic_all_vertices = None
-        self.sol_by_genetic_algorithm = None
-        self.sol_by_ant_algorithm = None
-        self.sol_by_annealing_method = None
-
         self.adjacency_matrix = self.work_with_vertices.initialization_adjacency_matrix()
         self.coordinates_of_vertices = self.work_with_vertices.get_coordinates_of_vertices()
         self.number_of_vertices = numb_of_ver
@@ -63,11 +56,11 @@ class Solution:
 
     def pattern_add_sol(self, state, name_sol):
         if state:
-            self.sol_brute_force = name_sol(self.adjacency_matrix, self.coordinates_of_vertices,
-                                            self.number_of_vertices, self.position_screen.get())
-            self.sol_brute_force.start_solution()
-            self.sol_brute_force.display_sol()
-            self.sol_brute_force.output_parameters_to_console()
+            sol = name_sol(self.adjacency_matrix, self.coordinates_of_vertices,
+                           self.number_of_vertices, self.position_screen.get())
+            sol.start_solution()
+            sol.display_sol()
+            sol.output_parameters_to_console()
 
     def solve_by_genetic_algorithm(self):
         number_of_generations = self.general_settings['number_of_generations']
