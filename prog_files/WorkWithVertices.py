@@ -56,33 +56,16 @@ class WorkWithVertices:
         return self.checking_for_symmetry(self.make_mess(adjacency_matrix.copy()))
     #переписать логику, нужно чтото сделать в следствии симметрии и не только
     #переименовать все self.measure_of_disorder = measure_of_disorder в mess
+
     def make_mess(self, adjacency_matrix):
         for i in range(self.number_of_vertices):
             for j in range(self.number_of_vertices):
-
-                rang = random.randrange(100)
-                if rang < self.measure_of_disorder:
-
-                    rang = random.randrange(5)
-                    if rang == 0:
-                        adjacency_matrix[i][j] = 0
-                    elif rang == 1:
-                        adjacency_matrix[i][j] = 2 * adjacency_matrix[i][j]
-                    elif rang == 2:
-                        adjacency_matrix[i][j] = 0.1 * adjacency_matrix[i][j]
-                    elif rang == 3:
-                        adjacency_matrix[i][j] = 0.5 * adjacency_matrix[i][j]
-                    elif rang == 4:
-                        adjacency_matrix[i][j] = 100 * adjacency_matrix[i][j]
-
-
-        for i in range(self.number_of_vertices):
-            rang = random.randrange(100)
-            if rang < self.measure_of_disorder:
-                for k in range(self.number_of_vertices - 1):
-                    j = random.randrange(self.number_of_vertices)
-                    adjacency_matrix[i][j] = 10000
-
+                k = random.random()
+                if k < 0.5:
+                    a = (2 * k)**(1/(self.measure_of_disorder + 1))
+                else:
+                    a = (1/(2 * (1 - k)))**(1/(self.measure_of_disorder + 1))
+                adjacency_matrix[i][j] = adjacency_matrix[i][j] * a
         return adjacency_matrix.copy()
 
     def checking_for_symmetry(self, adjacency_matrix):

@@ -190,7 +190,7 @@ class SolutionByAntAlgorithm(Solution):
                     (pm[i][j] ** self.a) * ((1 / max(self.adjacency_matrix[i][j], 10**-5)) ** self.b)
                 )
             selected_i = SolutionByAntAlgorithm.__select_i(selection)
-            visited_indx.append(unvisited_indx.pop(selected_i))
+            visited_indx.append(unvisited_indx.pop(selected_i)) # была какая-то ошибка
         visited_indx.append(visited_indx[0])
         return visited_indx
 

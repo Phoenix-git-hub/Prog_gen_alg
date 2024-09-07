@@ -187,7 +187,10 @@ class MainWindow:
         meas_of_dis = self.value_ent_measure_of_disorder.get()
 
         # есть желание в будущем сделать функцию проверки и задокументировать ее
-        if numb_of_ver.isdigit() and numb_of_gen.isdigit() and pop_size.isdigit() and meas_of_dis.isdigit():
+        if meas_of_dis.isdigit() and int(meas_of_dis) % 2 == 1:
+            tkinter.messagebox.showerror("Неправильный формат для ввода данных",
+                                         f'Параметр коэффициент хаоса(meas_of_dis должен быть четным')
+        if numb_of_ver.isdigit() and numb_of_gen.isdigit() and pop_size.isdigit():
             if int(numb_of_ver) <= 50:
                 settings = (('state_mode', self.comparison_status.get()),
                             ('status_of_generation_adjacency_matrix', self.status_of_generation_adjacency_matrix.get()),
