@@ -58,6 +58,8 @@ class WorkWithVertices:
     #переименовать все self.measure_of_disorder = measure_of_disorder в mess
 
     def make_mess(self, adjacency_matrix):
+        if self.measure_of_disorder == 0:
+            return adjacency_matrix.copy()
         for i in range(self.number_of_vertices):
             for j in range(self.number_of_vertices):
                 k = random.random()
