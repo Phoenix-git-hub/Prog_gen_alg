@@ -217,7 +217,7 @@ class GeneticAlgorithm(Solution):
     def get_time_to_generate_first_pop(self):
         return self.time_to_generate_first_pop
 
-    def get_deviation(self):
+    def get_deviation_numb(self):
 
         dev_min_from_mean = 0
         for i in range(self.number_of_generations):
@@ -236,6 +236,25 @@ class GeneticAlgorithm(Solution):
         dev_min_from_mean *= 100
 
         print(f'Среднеквадратичная разница лучшего со средним решением в процентах ГА - {dev_min_from_mean}')
+
+    def display_deviation(self):
+
+        deviation = [0] * self.number_of_generations
+        for i in range(self.number_of_generations):
+            deviation[i] = self.meanFitnessValues[i] - self.minFitnessValues[i]
+
+        plt.figure("Отклонение среднего от минимального").clear()
+        plt.figure("Отклонение среднего от минимального")
+        plt.plot(deviation, color='blue')
+        plt.xlabel('Поколение')
+        plt.ylabel('Разница')
+        plt.title("Отклонение среднего от минимального")
+
+    def get_deviation_arr(self):
+        deviation = [0] * self.number_of_generations
+        for i in range(self.number_of_generations):
+            deviation[i] = self.meanFitnessValues[i] - self.minFitnessValues[i]
+        return deviation
 
     def output_all_time_to_console(self):
         # переделать
@@ -262,6 +281,7 @@ class GeneticAlgorithm(Solution):
     def generation_start_population(self):
         del self.population
         # нужно создать тест на наличие матрици смежности
+        # адинаковый алгоритм, заменить его на один код и словарь
         if self.method_of_generation_start_population == 'random_gen':
             self.population = np.array([np.random.choice(self.number_of_vertices, self.number_of_vertices, replace=False)
                                    for _ in range(self.population_size)])

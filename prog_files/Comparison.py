@@ -31,6 +31,8 @@ class Comparison:
         self.average_min_val_1 = [0] * self.number_of_generations
         self.average_mean_val_2 = [0] * self.number_of_generations
         self.average_min_val_2 = [0] * self.number_of_generations
+        self.average_deviation_1 = [0] * self.number_of_generations
+        self.average_deviation_2 = [0] * self.number_of_generations
 
         self.average_time_to_crossing_1 = 0
         self.average_time_to_mutation_1 = 0
@@ -82,6 +84,7 @@ class Comparison:
             self.second_gen_alg.start_solution()
 
             # обернуть в какю-нибуть функцию срочно
+            # поставить таймер на сбор данных
 
             self.average_time_to_crossing_1 += self.first_gen_alg.get_time_to_crossing()
             self.average_time_to_mutation_1 += self.first_gen_alg.get_time_to_mutation()
@@ -89,7 +92,7 @@ class Comparison:
             self.average_time_to_calculat_statistics_1 += self.first_gen_alg.get_time_to_calculat_statistics()
             self.average_full_time_1 += self.first_gen_alg.get_full_time()
             self.time_to_generate_first_pop_1 += self.first_gen_alg.get_time_to_generate_first_pop()
-            self.sum_division_1 += self.first_gen_alg.get_deviation()
+            self.sum_division_1 += self.first_gen_alg.get_deviation_numb()
 
             self.average_time_to_crossing_2 += self.second_gen_alg.get_time_to_crossing()
             self.average_time_to_mutation_2 += self.second_gen_alg.get_time_to_mutation()
@@ -97,25 +100,33 @@ class Comparison:
             self.average_time_to_calculat_statistics_2 += self.second_gen_alg.get_time_to_calculat_statistics()
             self.average_full_time_2 += self.second_gen_alg.get_full_time()
             self.time_to_generate_first_pop_2 += self.second_gen_alg.get_time_to_generate_first_pop()
-            self.sum_division_2 += self.second_gen_alg.get_deviation()
+            self.sum_division_2 += self.second_gen_alg.get_deviation_numb()
 
             mean_fitness_values_1 = self.first_gen_alg.get_mean_fitness_values()
             min_fitness_values_1 = self.first_gen_alg.get_min_fitness_values()
+            deviation_values_1 =  self.first_gen_alg.get_deviation_arr()
 
             mean_fitness_values_2 = self.second_gen_alg.get_mean_fitness_values()
             min_fitness_values_2 = self.second_gen_alg.get_min_fitness_values()
+            deviation_values_2 = self.second_gen_alg.get_deviation_arr()
 
             for ind in range(self.number_of_generations):
                 self.average_mean_val_1[ind] += mean_fitness_values_1[ind]
                 self.average_min_val_1[ind] += min_fitness_values_1[ind]
                 self.average_mean_val_2[ind] += mean_fitness_values_2[ind]
                 self.average_min_val_2[ind] += min_fitness_values_2[ind]
-        # блять тут и комментировать не надо
+
+                self.average_deviation_1[ind] += deviation_values_1[ind]
+                self.average_deviation_2[ind] += deviation_values_2[ind]
+                # блять тут и комментировать не надо
         for ind in range(self.number_of_generations):
             self.average_mean_val_1[ind] /= self.number_of_comparisons
             self.average_min_val_1[ind] /= self.number_of_comparisons
             self.average_mean_val_2[ind] /= self.number_of_comparisons
             self.average_min_val_2[ind] /= self.number_of_comparisons
+
+            self.average_deviation_1[ind] /= self.number_of_comparisons
+            self.average_deviation_2[ind] /= self.number_of_comparisons
 
         # блять все в новые функции
         self.average_time_to_crossing_1 /= self.number_of_comparisons
@@ -136,6 +147,7 @@ class Comparison:
 
     def visualization_progression(self):
         plt.figure('Сравнение двух функций').clear()
+        plt.figure('Сравнение двух функций')
         plt.plot(self.average_mean_val_1, color='blue')
         plt.plot(self.average_min_val_1, '--', color='b')
         plt.plot(self.average_mean_val_2, color='red')
@@ -144,6 +156,16 @@ class Comparison:
         plt.xlabel('Поколение')
         plt.ylabel('средняя приспособленность')
         plt.title("blue - первый случай, red - второй \n штрих - лучшие значение, прямая - среднее")
+
+    def visualization_deviation(self):
+        plt.figure('Сравнение отклонение').clear()
+        plt.figure('Сравнение отклонение')
+        plt.plot(self.average_deviation_1, color='blue')
+        plt.plot(self.average_deviation_2, color='red')
+
+        plt.xlabel('Поколение')
+        plt.ylabel('среднее отклонение')
+        plt.title("blue - первый случай, red - второй")
 
         plt.show()
 
