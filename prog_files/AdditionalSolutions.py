@@ -4,7 +4,10 @@ import time
 from abc import ABC, abstractmethod
 import matplotlib.pyplot as plt
 from math import inf
-from random import random, shuffle
+from random import shuffle
+
+from numpy import exp
+from random import sample, random
 
 
 class Solution(ABC):
@@ -210,6 +213,7 @@ class SolutionByAntAlgorithm(Solution):
                 pm[indx[j + 1]][indx[j]] += delta
 
     def _calculate_dist(dm: list[list[float]], indx: list[int]) -> float:
+        # убрать этот метод у меня етсь отдельные для этот
         """Calculates the path length based on the index list of the distance matrix."""
 
         dist = 0
@@ -253,8 +257,64 @@ class SolutionAnnealingMethod(Solution):
         super(SolutionAnnealingMethod, self).__init__(adjacency_matrix, coordinates_of_vertices, number_of_vertices,
                                                       name_of_method, place_on_screen)
 
+        self.init_hyperparameters()
+
+    def init_hyperparameters(self):
+        self.iter = 200000
+        self.t = 10000
+        self.g = 0.95
+        # iter = 20000, t = 100, g = 0.6
+
+    def _calculate_dist(dm: list[list[float]], indx: list[int]) -> float:
+        # убрать этот метод у меня етсь отдельные для этот
+        """Calculates the path length based on the index list of the distance matrix."""
+
+        dist = 0
+        for i in range(len(indx) - 1):
+            dist += dm[indx[i]][indx[i + 1]]
+        return dist
+
     def solution(self):
 
-        permutation, distance = None, None
+        permutation, distance = self.run()
         return np.array(permutation), distance
+
+    def __is_acceptable(self, prb_leng: float, tmp_leng: float) -> bool:
+        """Checks if the state transition will execute."""
+
+        if self.t < 6.8e-2:
+            prob = 0
+            if prb_leng - tmp_leng < 0:
+                prob = 1
+        else:
+            # print(self.t, exp(-(prb_leng - tmp_leng) / self.t), -(prb_leng - tmp_leng) / self.t)
+            prob = min(1, exp(-(prb_leng - tmp_leng) / self.t))
+        if prob > random():
+            return True
+
+        return False
+
+    def run(self):
+        """Runs the algorithm for the given 2D points."""
+
+        # l - количество размер
+        # dm - матрица смежности
+
+        tmp_indx = [i for i in range(self.number_of_vertices)] + [0]
+        tmp_leng = SolutionAnnealingMethod._calculate_dist(self.adjacency_matrix, tmp_indx)
+        res_indx = tmp_indx.copy()
+        res_leng = tmp_leng
+        for _ in range(self.iter):
+            i, j = sample(range(1, self.number_of_vertices), 2)
+            prb_indx = tmp_indx.copy()
+            prb_indx[i], prb_indx[j] = prb_indx[j], prb_indx[i]
+            prb_leng = SolutionAnnealingMethod._calculate_dist(self.adjacency_matrix, prb_indx)
+            if self.__is_acceptable(prb_leng, tmp_leng):
+                tmp_indx = prb_indx
+                tmp_leng = prb_leng
+            if tmp_leng < res_leng:
+                res_indx = tmp_indx
+                res_leng = tmp_leng
+            self.t *= self.g
+        return res_indx, res_leng
 
