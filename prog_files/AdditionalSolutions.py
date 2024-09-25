@@ -179,7 +179,7 @@ class SolutionByAntAlgorithm(Solution):
             if prob >= tmp_num:
                 return i
 
-    def __create_indx(self, dm: list[list[float]], pm: list[list[float]]) -> list[int]:
+    def __create_indx(self, pm: list[list[float]]) -> list[int]:
         """Creates a new ordering of 2D point indices based on the distance and pheromone."""
 
         unvisited_indx = list(range(self.number_of_vertices))
@@ -212,14 +212,15 @@ class SolutionByAntAlgorithm(Solution):
                 pm[indx[j]][indx[j + 1]] += delta
                 pm[indx[j + 1]][indx[j]] += delta
 
-    def _calculate_dist(dm: list[list[float]], indx: list[int]) -> float:
+    def _calculate_dist(self, individual: list[int]) -> float:
         # убрать этот метод у меня етсь отдельные для этот
         """Calculates the path length based on the index list of the distance matrix."""
+        sum_vertexes = 0
+        for i in range(len(individual) - 1):
+            sum_vertexes += self.adjacency_matrix[individual[i]][individual[i + 1]]
 
-        dist = 0
-        for i in range(len(indx) - 1):
-            dist += dm[indx[i]][indx[i + 1]]
-        return dist
+        sum_vertexes += self.adjacency_matrix[individual[- 1]][individual[0]]
+        return sum_vertexes
     def run(self):
         """Runs the algorithm for the given 2D points."""
         # l - количество размер
@@ -231,9 +232,9 @@ class SolutionByAntAlgorithm(Solution):
             tmp_indx = []
             tmp_leng = []
             for _ in range(self.ants):
-                indx = self.__create_indx(self.adjacency_matrix, pm)
+                indx = self.__create_indx(pm)
                 tmp_indx.append(indx)
-                tmp_leng.append(SolutionByAntAlgorithm._calculate_dist(self.adjacency_matrix, indx))
+                tmp_leng.append(self._calculate_dist(indx))
             self.update_pm(pm, tmp_indx, tmp_leng)
             best_leng = min(tmp_leng)
             if best_leng < res_leng:
@@ -265,14 +266,15 @@ class SolutionAnnealingMethod(Solution):
         self.g = 0.95
         # iter = 20000, t = 100, g = 0.6
 
-    def _calculate_dist(dm: list[list[float]], indx: list[int]) -> float:
+    def _calculate_dist(self, individual: list[int]) -> float:
         # убрать этот метод у меня етсь отдельные для этот
         """Calculates the path length based on the index list of the distance matrix."""
+        sum_vertexes = 0
+        for i in range(len(individual) - 1):
+            sum_vertexes += self.adjacency_matrix[individual[i]][individual[i + 1]]
 
-        dist = 0
-        for i in range(len(indx) - 1):
-            dist += dm[indx[i]][indx[i + 1]]
-        return dist
+        sum_vertexes += self.adjacency_matrix[individual[- 1]][individual[0]]
+        return sum_vertexes
 
     def solution(self):
 
@@ -301,14 +303,14 @@ class SolutionAnnealingMethod(Solution):
         # dm - матрица смежности
 
         tmp_indx = [i for i in range(self.number_of_vertices)] + [0]
-        tmp_leng = SolutionAnnealingMethod._calculate_dist(self.adjacency_matrix, tmp_indx)
+        tmp_leng = self._calculate_dist(tmp_indx)
         res_indx = tmp_indx.copy()
         res_leng = tmp_leng
         for _ in range(self.iter):
             i, j = sample(range(1, self.number_of_vertices), 2)
             prb_indx = tmp_indx.copy()
             prb_indx[i], prb_indx[j] = prb_indx[j], prb_indx[i]
-            prb_leng = SolutionAnnealingMethod._calculate_dist(self.adjacency_matrix, prb_indx)
+            prb_leng = self._calculate_dist(prb_indx)
             if self.__is_acceptable(prb_leng, tmp_leng):
                 tmp_indx = prb_indx
                 tmp_leng = prb_leng
