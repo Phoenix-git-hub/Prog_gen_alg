@@ -11,7 +11,7 @@ class MethodsOfCrossing:
                                            'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
                                            'crossover_order_bb', 'crossover_order_ox5', 'crossover_order_OX1_upgrade',
                                            'crossover_ordered_ox_s', 'crossover_ordered_ox_b',
-                                           'partially_matched_crossover')
+                                           'partially_matched_crossover', 'one_point_crossing_bb')
 
         self.name_of_crossing = dict.fromkeys(self.possible_names_of_crossing)
 
@@ -27,6 +27,7 @@ class MethodsOfCrossing:
         self.name_of_crossing['crossover_ordered_ox_b'] = self.crossover_ordered_ox_b
         self.name_of_crossing['crossover_order_OX5'] = self.crossover_order_ox5
         self.name_of_crossing['partially_matched_crossover'] = self.partially_matched_crossover
+        self.name_of_crossing['one_point_crossing_bb'] = self.one_point_crossing_bb
 
         self.population = None
         self.new_population = None
@@ -421,6 +422,31 @@ class MethodsOfCrossing:
 
             self.new_population[index][i] = self.population[index_2][i]
             self.new_population[index_2][i] = self.population[index][i]
+
+    def one_point_crossing_bb(self, index, index_2):
+
+        section_point = random.randrange(0, self.number_of_vertices)
+        parent_1 = self.population[index].copy()
+        parent_2 = self.population[index_2].copy()
+        set_1 = set(parent_1[:section_point])
+        set_2 = set(parent_2[:section_point])
+        ind_1 = 0
+        ind_2 = 0
+        ind_ch = section_point
+        for i in range(self.number_of_vertices):
+            if ind_ch + i >= self.number_of_vertices:
+                ind_ch -= self.number_of_vertices
+            if parent_2[i + ind_ch] in set_1:
+                set_1.discard(parent_2[ind_ch + i])
+            else:
+                self.new_population[index][section_point + ind_1] = parent_2[i + ind_ch]
+                ind_1 += 1
+
+            if parent_1[ind_ch + i] in set_2:
+                set_2.discard(parent_1[ind_ch + i])
+            else:
+                self.new_population[index_2][section_point + ind_2] = parent_1[i + ind_ch]
+                ind_2 += 1
 
 # CS = MethodsOfCrossing()
 # CS.initialize_number_of_vertices(5)
