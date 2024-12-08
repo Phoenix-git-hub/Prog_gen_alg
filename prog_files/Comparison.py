@@ -1,6 +1,7 @@
 from SolutionByGeneticAlgorithm import GeneticAlgorithm
 from prog_files.WorkWithVertices import WorkWithVertices
 import matplotlib.pyplot as plt
+from prog_files import VisualizationProgression
 
 class Comparison:
     def __init__(self, general_settings, settings_mandatory_alg, settings_additional_alg, settings_comparison_alg):
@@ -26,6 +27,9 @@ class Comparison:
 
         self.work_with_vertices = WorkWithVertices(self.number_of_vertices, status_of_gen_adj_mat,
                                                    measure_of_disorder, status_of_the_symmetry_adjacency_matrix)
+
+        self.graph = VisualizationProgression.ProgressionGraph(2)
+        self.dev_graph = VisualizationProgression.DeviationGrash(2)
 
         self.average_mean_val_1 = [0] * self.number_of_generations
         self.average_min_val_1 = [0] * self.number_of_generations
@@ -146,28 +150,14 @@ class Comparison:
         print("Вычисления закончены")
 
     def visualization_progression(self):
-        plt.figure('Сравнение двух функций').clear()
-        plt.figure('Сравнение двух функций')
-        plt.plot(self.average_mean_val_1, color='blue')
-        plt.plot(self.average_min_val_1, '--', color='b')
-        plt.plot(self.average_mean_val_2, color='red')
-        plt.plot(self.average_min_val_2, '--', color='red')
 
-        plt.xlabel('Поколение')
-        plt.ylabel('средняя приспособленность')
-        plt.title("blue - первый случай, red - второй \n штрих - лучшие значение, прямая - среднее")
+        self.graph.set_min_mean_array([self.average_min_val_1, self.average_min_val_2], [self.average_mean_val_1, self.average_mean_val_2])
+        self.graph.display()
 
     def visualization_deviation(self):
-        plt.figure('Сравнение отклонение').clear()
-        plt.figure('Сравнение отклонение')
-        plt.plot(self.average_deviation_1, color='blue')
-        plt.plot(self.average_deviation_2, color='red')
 
-        plt.xlabel('Поколение')
-        plt.ylabel('среднее отклонение')
-        plt.title("blue - первый случай, red - второй")
-
-        plt.show()
+        self.dev_graph.set_deviation([self.average_deviation_1, self.average_deviation_2])
+        self.dev_graph.display()
 
     def output_deviation_to_console(self):
         # MAPE

@@ -84,6 +84,7 @@ class Solution:
         self.sol_by_genetic_algorithm.start_solution()
 
         self.sol_by_genetic_algorithm.display_sol()
+        self.sol_by_genetic_algorithm.display_deviation()
         self.sol_by_genetic_algorithm.output_parameters_to_console()
         print()
         self.sol_by_genetic_algorithm.visualization_progression()

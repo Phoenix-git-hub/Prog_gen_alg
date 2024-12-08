@@ -2,7 +2,7 @@ from prog_files.CreateMainWindow import MainWindow
 import tkinter.messagebox
 import SoloTest
 from prog_files.Comparison import Comparison
-
+import matplotlib.pyplot as plt
 
 class RunningAlgorithm:
 
@@ -33,6 +33,7 @@ class RunningAlgorithm:
 
         else:
             tkinter.messagebox.showerror("Ошибка", "Неизвестное значение 'settings['state_mode']' класса 'MainWindow'")
+        plt.show()
 
     def save_settings(self):
         self.settings_mandatory_alg = self.window.get_settings_mandatory_alg()

@@ -3,6 +3,7 @@ from prog_files.AdditionalSolutions import Solution
 from prog_files.MethodsOfCrossing import MethodsOfCrossing
 from prog_files.MethodsOfMutation import MethodsOfMutation
 from prog_files.MethodOfSelection import MethodsOfSelection
+from prog_files import VisualizationProgression
 import matplotlib.pyplot as plt
 import time
 
@@ -28,6 +29,8 @@ class GeneticAlgorithm(Solution):
         self.minFitnessValues = []
 
         self.population = None
+        self.graph = VisualizationProgression.ProgressionGraph(1)
+        self.dev_graph = VisualizationProgression.DeviationGrash(1)
 
         name_of_method = "solution by genetic algorithm"
         super(GeneticAlgorithm, self).__init__(adjacency_matrix, coordinates_of_vertices, number_of_vertices,
@@ -170,13 +173,19 @@ class GeneticAlgorithm(Solution):
         return sum_value // self.population_size
 
     def visualization_progression(self):
-        plt.figure("Приспособленность").clear()
-        plt.figure("Приспособленность")
-        plt.plot(self.minFitnessValues, color='red')
-        plt.plot(self.meanFitnessValues, color='green')
-        plt.xlabel('Поколение')
-        plt.ylabel('Макс/средняя приспособленность')
-        plt.title('Зависимость максимальной и средней приспособленности от поколения')
+
+        self.graph.set_min_mean_array([self.minFitnessValues], [self.meanFitnessValues])
+
+        self.graph.display()
+
+    def display_deviation(self):
+
+        deviation = [0] * self.number_of_generations
+        for i in range(self.number_of_generations):
+            deviation[i] = self.meanFitnessValues[i] - self.minFitnessValues[i]
+
+        self.dev_graph.set_deviation([deviation])
+        self.dev_graph.display()
 
     def get_mean_fitness_values(self):
         return self.meanFitnessValues
@@ -236,19 +245,6 @@ class GeneticAlgorithm(Solution):
         dev_min_from_mean *= 100
 
         print(f'Среднеквадратичная разница лучшего со средним решением в процентах ГА - {dev_min_from_mean}')
-
-    def display_deviation(self):
-
-        deviation = [0] * self.number_of_generations
-        for i in range(self.number_of_generations):
-            deviation[i] = self.meanFitnessValues[i] - self.minFitnessValues[i]
-
-        plt.figure("Отклонение среднего от минимального").clear()
-        plt.figure("Отклонение среднего от минимального")
-        plt.plot(deviation, color='blue')
-        plt.xlabel('Поколение')
-        plt.ylabel('Разница')
-        plt.title("Отклонение среднего от минимального")
 
     def get_deviation_arr(self):
         deviation = [0] * self.number_of_generations
