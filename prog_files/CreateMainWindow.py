@@ -25,6 +25,8 @@ class MainWindow:
         self.value_ent_number_of_generations = tkinter.StringVar(value='1000')
         self.value_ent_population_size = tkinter.StringVar(value='10')
         self.value_ent_measure_of_disorder = tkinter.StringVar(value='0')
+        # self.value_ent_assemblies_number = tkinter.StringVar(value='1')
+        # self.value_ent_assemblies_number.trace('w', self.on_assemblies_number_change)
 
         # вместо одного списка настроек нужно сделать несколько: solutions_settings, state_mode, gen_alg_settings
         settings = ('state_mode', 'status_of_generation_adjacency_matrix', 'state_dynamic',
@@ -39,7 +41,9 @@ class MainWindow:
         self.window_mandatory_alg = AlgorithmWindow('Настройки обязательного алгоритма', place_1)
         self.window_mandatory_alg.basic_parameters()
 
-        self.window_additional_alg = AlgorithmWindow('Настройки дополнительного алгоритма(для сравнения)', place_2)
+        self.array_of_algorithms = [self.window_mandatory_alg]
+
+        self.window_additional_alg = AlgorithmWindow('Настройки второго алгоритма(для сравнения)', place_2)
         self.window_additional_alg.basic_parameters()
         self.window_additional_alg.withdraw()
 
@@ -67,10 +71,16 @@ class MainWindow:
                                         font=("Arial Bold", 15), command=self.swap_mode)
         solo_test.place(x=10, y=0, width=280, height=60)
 
-        comparison = tkinter.Radiobutton(self.window, text='Сравнение двух сборок', value='comparison',
+        comparison = tkinter.Radiobutton(self.window, text='Сравнение сборок', value='comparison',
                                          variable=self.comparison_status,
                                          font=("Arial Bold", 15), command=self.swap_mode)
         comparison.place(x=310, y=0, width=280, height=60)
+
+        # lab_assemblies_number = tkinter.Label(self.window, text='Количество \nсборок-', font=("Arial Bold", 14))
+        # lab_assemblies_number.place(x=580, y=10, width=110, height=60)
+        # ent_assemblies_number = tkinter.Entry(self.window, width=10, textvariable=self.value_ent_assemblies_number)
+        #
+        # ent_assemblies_number.place(x=680, y=38, width=70, height=30)
 
     def display_status_of_generation_adjacency_matrix(self):
         generation_by_vertices = tkinter.Radiobutton(self.window, text='Генерация на основе вершин',
@@ -235,6 +245,30 @@ class MainWindow:
         if self.comparison_status.get() == 'comparison':
             self.window_additional_alg.deiconify()
             self.window_comparison.deiconify()
+            # self.value_ent_assemblies_number.set('2')
+
         if self.comparison_status.get() == 'solo_test':
             self.window_additional_alg.withdraw()
             self.window_comparison.withdraw()
+            # self.value_ent_assemblies_number.set('1')
+
+    # def create_new_algorithm(self):
+    #     window_additional_alg = AlgorithmWindow(f'Алгоритм номер {len(self.array_of_algorithms) + 1}', place="+500+380")
+    #     window_additional_alg.basic_parameters()
+    #     return window_additional_alg
+    # def on_assemblies_number_change(self, *args):
+    #     print(self.value_ent_assemblies_number.get())
+    #
+    #     if len(self.array_of_algorithms) < int(self.value_ent_assemblies_number.get()):
+    #
+    #         while len(self.array_of_algorithms) != int(self.value_ent_assemblies_number.get()):
+    #             self.array_of_algorithms.append(self.create_new_algorithm())
+    #
+    #     if len(self.array_of_algorithms) > int(self.value_ent_assemblies_number.get()):
+    #         while len(self.array_of_algorithms) != int(self.value_ent_assemblies_number.get()):
+    #             self.array_of_algorithms.pop()
+    #
+    #     print(self.array_of_algorithms)
+
+
+

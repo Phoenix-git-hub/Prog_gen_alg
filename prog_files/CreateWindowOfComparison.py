@@ -9,7 +9,7 @@ class WindowComparison:
         self.name_window = "Окно сравнения(дополнительное)"
 
         self.window = tkinter.Toplevel()
-        self.window.geometry('330x60+800+0')
+        self.window.geometry('330x90+800+0')
         self.window.title(self.name_window)
         self.window.resizable(width=False, height=False)
 

@@ -3,11 +3,16 @@ from prog_files.WorkWithVertices import WorkWithVertices
 import matplotlib.pyplot as plt
 from prog_files import VisualizationProgression
 
+
+class AlgorithmInformation:
+    def __init__(self, number_of_generations):
+        pass
 class Comparison:
     def __init__(self, general_settings, settings_mandatory_alg, settings_additional_alg, settings_comparison_alg):
         self.general_settings = general_settings
         self.settings_mandatory_alg = settings_mandatory_alg
         self.settings_additional_alg = settings_additional_alg
+
         self.settings_comparison_alg = settings_comparison_alg
 
         method_of_generation_start_population_first_alg = self.settings_mandatory_alg[
@@ -108,7 +113,7 @@ class Comparison:
 
             mean_fitness_values_1 = self.first_gen_alg.get_mean_fitness_values()
             min_fitness_values_1 = self.first_gen_alg.get_min_fitness_values()
-            deviation_values_1 =  self.first_gen_alg.get_deviation_arr()
+            deviation_values_1 = self.first_gen_alg.get_deviation_arr()
 
             mean_fitness_values_2 = self.second_gen_alg.get_mean_fitness_values()
             min_fitness_values_2 = self.second_gen_alg.get_min_fitness_values()
@@ -171,9 +176,6 @@ class Comparison:
         print(f'Средняя абсолютная процентная ошибка лучшего решения со средним 1 алгоритма - {self.sum_division_1 /self.number_of_comparisons}')
         print(f'Средняя абсолютная процентная ошибка лучшего решения со средним 2 алгоритма - {self.sum_division_2 /self.number_of_comparisons}')
         print(f'Средняя абсолютная процентная ошибка двух алгоритмов - {dev_first_from_second}')
-
-
-
 
 
     def output_time_to_console(self):
