@@ -320,3 +320,57 @@ class SolutionAnnealingMethod(Solution):
             self.t *= self.g
         return res_indx, res_leng
 
+
+class SolutionByBranchAndBound(Solution):
+    def __init__(self, adjacency_matrix, coordinates_of_vertices, number_of_vertices, place_on_screen):
+        name_of_method = "Solution by branch and bound"
+        super(SolutionByBranchAndBound, self).__init__(adjacency_matrix, coordinates_of_vertices,
+                                                         number_of_vertices, name_of_method, place_on_screen)
+
+    def solution(self):
+        permutation, distance = self.solve_by_branch_and_bound()
+        return np.array(permutation), distance
+
+    def calculate_lower_bound(self, distance_matrix, tour):
+        bound = 0
+        remaining_cities = [i for i in range(len(distance_matrix)) if i not in tour]
+        # Add edges already in the tour
+        for i in range(1, len(tour)):
+            bound += distance_matrix[tour[i - 1]][tour[i]]
+        # Estimate the cost to complete the tour
+        if remaining_cities:
+            bound += min(distance_matrix[tour[-1]][city] for city in remaining_cities)
+            for city in remaining_cities:
+                if len(remaining_cities) > 1:
+                    bound += min(distance_matrix[city][i] for i in remaining_cities if i != city)
+                else:
+                    bound += distance_matrix[city][tour[0]]  # Include return to start city
+        return bound
+    def solve_by_branch_and_bound(self):
+        # Initialize best_tour as None
+        best_tour = None
+        # Initialize best_cost as infinity
+        best_cost = float('inf')
+        # Initialize stack with root node (0,) and cost 0
+        stack = [((0,), 0)]
+
+        while stack:
+            tour, cost = stack.pop()
+
+            if len(tour) == len(self.adjacency_matrix):
+                cost += self.adjacency_matrix[tour[-1]][tour[0]]  # Complete the tour
+                if cost < best_cost:
+                    best_cost = cost
+                    best_tour = tour
+            else:
+                remaining_cities = [i for i in range(len(self.adjacency_matrix)) if i not in tour]
+                for city in remaining_cities:
+                    new_tour = tour + (city,)
+                    new_cost = cost + self.adjacency_matrix[tour[-1]][city]
+                    lower_bound = self.calculate_lower_bound(self.adjacency_matrix, new_tour)
+
+                    if lower_bound < best_cost:
+                        stack.append((new_tour, new_cost))
+
+        return best_tour, best_cost
+

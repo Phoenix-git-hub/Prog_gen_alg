@@ -54,6 +54,10 @@ class Solution:
         self.pattern_add_sol(self.general_settings['state_ant_algorithm'], AdditionalSolutions.SolutionByAntAlgorithm)
         self.pattern_add_sol(self.general_settings['state_annealing_method'], AdditionalSolutions.SolutionAnnealingMethod)
 
+        self.pattern_add_sol(self.general_settings['state_branch_and_bound'],
+                             AdditionalSolutions.SolutionByBranchAndBound)
+
+
     def pattern_add_sol(self, state, name_sol):
         if state:
             sol = name_sol(self.adjacency_matrix, self.coordinates_of_vertices,
