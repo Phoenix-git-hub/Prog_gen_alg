@@ -67,6 +67,14 @@ class Solution(ABC):
     def solution(self):
         pass
 
+    def fitness_function(self, individual):
+        sum_vertexes = 0
+        for i in range(self.number_of_vertices - 1):
+            sum_vertexes += self.adjacency_matrix[individual[i]][individual[i + 1]]
+
+        sum_vertexes += self.adjacency_matrix[individual[- 1]][individual[0]]
+        return sum_vertexes
+
 
 class SolDynamicProgramming(Solution):
     # нудно переписать код
@@ -106,6 +114,9 @@ class SolutionByDynamicProgramming(SolDynamicProgramming):
 
     def solution(self):
         permutation, distance = self.find_best_solution_by_dynamic_programming()
+        if distance != self.fitness_function(permutation):
+            raise 'дистанция не совпадает с показанием'
+
         return np.array(permutation), distance
 
 
@@ -123,6 +134,8 @@ class SolutionByDynamicProgWithAllVertices(SolDynamicProgramming):
 
     def solution(self):
         permutation, distance = self.find_best_solution_by_dynamic_programming_al_v()
+        if distance != self.fitness_function(permutation):
+            raise 'дистанция не совпадает с показанием'
         return np.array(permutation), distance
 
     def find_best_solution_by_dynamic_programming_al_v(self):
@@ -145,6 +158,8 @@ class SolutionByBruteForceMethod(Solution):
 
     def solution(self):
         permutation, distance = solve_tsp_brute_force(self.adjacency_matrix)
+        if distance != self.fitness_function(permutation):
+            raise 'дистанция не совпадает с показанием'
         return np.array(permutation), distance
 
 
@@ -244,7 +259,10 @@ class SolutionByAntAlgorithm(Solution):
 
     def solution(self):
         permutation, distance = self.solve_ant_algorithm()
-        return np.array(permutation[:-1]), distance
+        per = np.array(permutation[:-1])
+        if distance != self.fitness_function(per):
+            raise 'дистанция не совпадает с показанием'
+        return per, distance
 
     def solve_ant_algorithm(self):
         best_sol, distance = self.run()
@@ -279,6 +297,8 @@ class SolutionAnnealingMethod(Solution):
     def solution(self):
 
         permutation, distance = self.run()
+        if distance != self.fitness_function(permutation):
+            raise 'дистанция не совпадает с показанием'
         return np.array(permutation), distance
 
     def __is_acceptable(self, prb_leng: float, tmp_leng: float) -> bool:
@@ -329,6 +349,8 @@ class SolutionByBranchAndBound(Solution):
 
     def solution(self):
         permutation, distance = self.solve_by_branch_and_bound()
+        if distance != self.fitness_function(permutation):
+            raise 'дистанция не совпадает с показанием'
         return np.array(permutation), distance
 
     def calculate_lower_bound(self, distance_matrix, tour):
