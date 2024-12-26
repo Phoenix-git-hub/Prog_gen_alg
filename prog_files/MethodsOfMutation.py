@@ -1,18 +1,19 @@
 import random
-
+import math
 
 class MethodsOfMutation:
 
     def __init__(self):
         # пожалуй нужно сделать файл config куда я положу общие данные для всего кода
         self.possible_names_of_mutation = ('mutation_pass', 'mutation_turning_180_g', 'mutation_by_exchange',
-                                           'mutation_by_shuffling')
+                                           'mutation_by_shuffling', 'mutations_with_probability')
         self.name_of_mutation = dict.fromkeys(self.possible_names_of_mutation)
 
         self.name_of_mutation['mutation_pass'] = self.mutation_pass
         self.name_of_mutation['mutation_turning_180_g'] = self.mutation_turning_180_g
         self.name_of_mutation['mutation_by_exchange'] = self.mutation_by_exchange
         self.name_of_mutation['mutation_by_shuffling'] = self.mutation_by_shuffling
+        self.name_of_mutation['mutations_with_probability'] = self.mutations_with_probability
 
         self.number_of_vertices = None
         self.mutation_method = None
@@ -88,3 +89,20 @@ class MethodsOfMutation:
                     individual[index - 1] = val_last_el
 
                     val_last_el = val_this_el
+
+    def mutations_with_probability(self, population):
+        probability1 = [math.sin(i * (1/(self.number_of_vertices - 1)) * math.pi)
+                        for i in range(self.number_of_vertices)]
+        probability2 = [abs(math.cos(i * (1/(self.number_of_vertices - 1)) * math.pi))
+                        for i in range(self.number_of_vertices)]
+
+        index = [i for i in range(self.number_of_vertices)]
+
+        for individual in population:
+
+            first_el = random.choices(index, weights=probability1)
+            second_el = random.choices(index, weights=probability2)
+
+            individual[first_el], individual[second_el] =\
+                individual[second_el], individual[first_el]
+

@@ -27,7 +27,7 @@ class AlgorithmWindow:
         self.value_crossing_methods = tkinter.StringVar(value=self.crossing_methods[1])
 
         self.mutation_methods = ('mutation_pass', 'mutation_turning_180_g', 'mutation_by_exchange',
-                                 'mutation_by_shuffling')
+                                 'mutation_by_shuffling', 'mutations_with_probability')
         self.value_mutation_methods = tkinter.StringVar(value=self.mutation_methods[0])
 
         self.selection_methods = ('selection_of_the_best', 'roulette_selection', 'tournament_with_parent',
