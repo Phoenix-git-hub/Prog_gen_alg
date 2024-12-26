@@ -297,9 +297,11 @@ class SolutionAnnealingMethod(Solution):
     def solution(self):
 
         permutation, distance = self.run()
-        if distance != self.fitness_function(permutation):
+
+        per = permutation[:-1]
+        if distance != self.fitness_function(per):
             raise 'дистанция не совпадает с показанием'
-        return np.array(permutation), distance
+        return np.array(per), distance
 
     def __is_acceptable(self, prb_leng: float, tmp_leng: float) -> bool:
         """Checks if the state transition will execute."""
