@@ -4,7 +4,6 @@ from prog_files.MethodsOfCrossing import MethodsOfCrossing
 from prog_files.MethodsOfMutation import MethodsOfMutation
 from prog_files.MethodOfSelection import MethodsOfSelection
 from prog_files import VisualizationProgression
-import matplotlib.pyplot as plt
 import time
 
 import tkinter.messagebox
@@ -24,7 +23,7 @@ class GeneticAlgorithm(Solution):
 
         self.number_of_generations = number_of_generations
         self.population_size = population_size
-        self.method_of_generation_start_population = method_of_generation_start_population.get()
+        self.method_of_generation_start_population = method_of_generation_start_population
         #переименовать переменные
         self.meanFitnessValues = []
         self.minFitnessValues = []

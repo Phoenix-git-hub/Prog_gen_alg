@@ -122,7 +122,7 @@ class AlgorithmWindow:
         self.parameters['mutation_method'] = self.value_mutation_methods.get()
         self.parameters['selection_method'] = self.value_selection_methods.get()
         self.parameters['status_of_searching_parent'] = self.status_of_searching_parent.get()
-        self.parameters['method_of_generation_start_population'] = self.method_of_generation_start_population
+        self.parameters['method_of_generation_start_population'] = self.method_of_generation_start_population.get()
         self.parameters['state_surfing'] = self.state_surfing.get()
         return self.parameters
 
