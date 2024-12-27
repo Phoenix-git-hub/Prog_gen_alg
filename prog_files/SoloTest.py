@@ -70,6 +70,7 @@ class Solution:
         number_of_generations = self.general_settings['number_of_generations']
         population_size = self.general_settings['population_size']
         method_of_generation_start_pop = self.settings_gen_alg['method_of_generation_start_population']
+
         self.sol_by_genetic_algorithm = SolutionByGeneticAlgorithm.GeneticAlgorithm(population_size,
                                                                                     number_of_generations,
                                                                                     self.number_of_vertices,
@@ -78,6 +79,7 @@ class Solution:
                                                                                     self.coordinates_of_vertices,
                                                                                     self.position_screen.get())
 
+        self.sol_by_genetic_algorithm.initialization_state_surfing(self.settings_gen_alg['state_surfing'])
         self.sol_by_genetic_algorithm.initialization_selection_method(self.settings_gen_alg['selection_method'])
         self.sol_by_genetic_algorithm.initialization_crossing_method(self.settings_gen_alg['crossing_method'])
         self.sol_by_genetic_algorithm.initialization_mutation_method(self.settings_gen_alg['mutation_method'])

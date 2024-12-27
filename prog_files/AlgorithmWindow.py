@@ -12,12 +12,13 @@ class AlgorithmWindow:
         self.window.resizable(width=False, height=False)
 
         settings = ('crossing_method', 'mutation_method', 'selection_method', 'status_of_searching_parent',
-                    'method_of_generation_start_population')
+                    'method_of_generation_start_population', 'state_surfing')
         self.parameters = dict.fromkeys(settings)
 
         self.status_of_searching_parent = tkinter.StringVar(value='random_search')
 
         self.method_of_generation_start_population = tkinter.StringVar(value='random_gen')
+        self.state_surfing = tkinter.BooleanVar(value=False)
 
         self.crossing_methods = ('crossing_pass', 'two_point_crossing', 'orderly_crossing_OX1',
                                  'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
@@ -42,9 +43,15 @@ class AlgorithmWindow:
         self.display_crossing_methods()
         self.display_mutation_methods()
         self.display_selection_methods()
+        self.gene_surfing_status()
         self.display_status_of_searching_parent()
 
         self.display_method_of_generation_start_population()
+
+    def gene_surfing_status(self):
+        checkbutton = tkinter.Checkbutton(self.window, text='сёрфинг ген', font=("Arial Bold", 14),
+                                          variable=self.state_surfing)
+        checkbutton.place(x=300, y=10, width=150, height=25)
 
     def display_method_of_generation_start_population(self):
         lab = tkinter.Label(self.window, text='Метод генерации первого поколения:', font=("Arial Bold", 15))
@@ -116,7 +123,7 @@ class AlgorithmWindow:
         self.parameters['selection_method'] = self.value_selection_methods.get()
         self.parameters['status_of_searching_parent'] = self.status_of_searching_parent.get()
         self.parameters['method_of_generation_start_population'] = self.method_of_generation_start_population
-
+        self.parameters['state_surfing'] = self.state_surfing.get()
         return self.parameters
 
     def deiconify(self):

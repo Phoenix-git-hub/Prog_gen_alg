@@ -20,6 +20,7 @@ class GeneticAlgorithm(Solution):
         self.crossing_method = None
         self.mutation_method = None
         self.selection_method = None
+        self.state_surfing = None
 
         self.number_of_generations = number_of_generations
         self.population_size = population_size
@@ -35,6 +36,8 @@ class GeneticAlgorithm(Solution):
         name_of_method = "solution by genetic algorithm"
         super(GeneticAlgorithm, self).__init__(adjacency_matrix, coordinates_of_vertices, number_of_vertices,
                                                name_of_method, place_on_screen)
+    def initialization_state_surfing(self, state):
+        self.state_surfing = state
 
     def initialization_crossing_method(self, crossing_method):
         self.crossing_method = MethodsOfCrossing()
@@ -77,6 +80,7 @@ class GeneticAlgorithm(Solution):
         self.time_to_calculat_statistics = 0
         self.full_time = 0
         self.time_to_generate_first_pop = 0
+        self.time_to_surf_gen =  0
 
         start_full_time = time.perf_counter()
         start_gen_first_pop = time.perf_counter()
@@ -117,6 +121,18 @@ class GeneticAlgorithm(Solution):
             correct_sol = self.check_solution(self.population) and correct_sol
             end_time_to_calculat_statistics = time.perf_counter()
             self.time_to_calculat_statistics += end_time_to_calculat_statistics - start_time_to_calculat_statistics
+
+            start_surf_gen = time.perf_counter()
+            if self.state_surfing == None:
+                string = """неопределен параметр self.state_surfing'"""
+                tkinter.messagebox.showerror("Ошибка", string)
+            elif self.state_surfing:
+                for ind in range(self.population_size):
+                    # print(self.population[ind], end='')
+                    self.population[ind] = np.roll(self.population[ind], 1).copy()
+                    # print(self.population[ind])
+            end_surf_gen = time.perf_counter()
+            self.time_to_surf_gen += end_surf_gen - start_surf_gen
 
             # with open('.txt', 'a') as f:
             #     f.write('0000000000' + str(i) + '\n')
@@ -258,6 +274,7 @@ class GeneticAlgorithm(Solution):
         average_time_to_mutation = self.time_to_mutation / self.number_of_generations
         average_time_to_selection = self.time_to_selection / self.number_of_generations
         average_time_to_calculat_statistics = self.time_to_calculat_statistics / self.number_of_generations
+        average_time_surf_gen = self.time_to_surf_gen / self.number_of_generations
 
         print(f'Все время на программу: {self.full_time}')
         print(f'Время на скрещивание: {self.time_to_crossing}, за итерацию: {average_time_to_crossing}')
@@ -265,6 +282,7 @@ class GeneticAlgorithm(Solution):
         print(f'Время на отбор: {self.time_to_selection}, за итерацию: {average_time_to_selection}')
         print(f'Время на сбор статистики: {self.time_to_calculat_statistics}, за итерацию: {average_time_to_calculat_statistics}')
         print(f'Время на генерацию первого поколения: {self.time_to_generate_first_pop}')
+        print(f'Время на серф ген: {self.time_to_surf_gen}, за итерацию: {average_time_surf_gen}')
         print('\n')
 
     def set_adjacency_matrix(self, adjacency_matrix):
