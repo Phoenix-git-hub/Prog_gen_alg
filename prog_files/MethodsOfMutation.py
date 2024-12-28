@@ -7,7 +7,7 @@ class MethodsOfMutation:
         # пожалуй нужно сделать файл config куда я положу общие данные для всего кода
         self.possible_names_of_mutation = ('mutation_pass', 'mutation_turning_180_g', 'mutation_by_exchange',
                                            'mutation_by_shuffling', 'mutations_with_probability',
-                                           'module_based_mutation')
+                                           'module_based_mutation', 'm2_based_mutation')
         self.name_of_mutation = dict.fromkeys(self.possible_names_of_mutation)
 
         self.name_of_mutation['mutation_pass'] = self.mutation_pass
@@ -16,7 +16,7 @@ class MethodsOfMutation:
         self.name_of_mutation['mutation_by_shuffling'] = self.mutation_by_shuffling
         self.name_of_mutation['mutations_with_probability'] = self.mutations_with_probability
         self.name_of_mutation['module_based_mutation'] = self.module_based_mutation
-
+        self.name_of_mutation['m2_based_mutation'] = self.m2_based_mutation
         self.number_of_vertices = None
         self.mutation_method = None
         self.population_size = None
@@ -112,6 +112,22 @@ class MethodsOfMutation:
         probability1 = [abs(i /(self.number_of_vertices - 1) - 0.5)
                         for i in range(self.number_of_vertices)]
         probability2 = [-abs(i /(self.number_of_vertices - 1) - 0.5) + 1
+                        for i in range(self.number_of_vertices)]
+
+        index = [i for i in range(self.number_of_vertices)]
+
+        for individual in population:
+
+            first_el = random.choices(index, weights=probability1)
+            second_el = random.choices(index, weights=probability2)
+
+            individual[first_el], individual[second_el] =\
+                individual[second_el], individual[first_el]
+
+    def m2_based_mutation(self, population):
+        probability1 = [2 * abs(i / (self.number_of_vertices - 1) - 0.5)
+                        for i in range(self.number_of_vertices)]
+        probability2 = [-2 * abs(i / (self.number_of_vertices - 1) - 0.5) + 1
                         for i in range(self.number_of_vertices)]
 
         index = [i for i in range(self.number_of_vertices)]
