@@ -11,7 +11,7 @@ class MethodsOfCrossing:
                                            'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
                                            'crossover_order_bb', 'crossover_order_ox5', 'crossover_order_OX1_upgrade',
                                            'crossover_ordered_ox_s', 'crossover_ordered_ox_b',
-                                           'partially_matched_crossover', 'one_point_crossing_bb')
+                                           'partially_matched_crossover', 'one_point_crossing_bb', 'greedy_crossover')
 
         self.name_of_crossing = dict.fromkeys(self.possible_names_of_crossing)
 
@@ -28,6 +28,7 @@ class MethodsOfCrossing:
         self.name_of_crossing['crossover_order_OX5'] = self.crossover_order_ox5
         self.name_of_crossing['partially_matched_crossover'] = self.partially_matched_crossover
         self.name_of_crossing['one_point_crossing_bb'] = self.one_point_crossing_bb
+        self.name_of_crossing['greedy_crossover'] = self.greedy_crossover
 
         self.population = None
         self.new_population = None
@@ -36,6 +37,7 @@ class MethodsOfCrossing:
         self.crossing_method = None
         self.population_size = None
         self.searching_parent = None
+        self.adjacency_matrix = None
 
     def random_search(self):
 
@@ -78,6 +80,9 @@ class MethodsOfCrossing:
 
     def initialize_population_size(self, population_size):
         self.population_size = population_size
+
+    def initialize_adjacency_matrix(self, adjacency_matrix):
+        self.adjacency_matrix = adjacency_matrix
 
     def do_crossing(self, population):
         self.population = population
@@ -447,6 +452,114 @@ class MethodsOfCrossing:
             else:
                 self.new_population[index_2][section_point + ind_2] = parent_1[i + ind_ch]
                 ind_2 += 1
+
+    def greedy_crossover(self, index, index_2):
+        if self.adjacency_matrix is None:
+            print(self.population[index], self.population[index_2])
+            raise 'параметр self.adjacency_matrix не был инициализирован'
+
+        first_section_point = random.randrange(0, self.number_of_vertices)
+        second_selection_point = random.randrange(0, self.number_of_vertices)
+
+        i = 0
+        last_el = first_section_point
+        self.new_population[index][i] = self.population[index][last_el]
+        i += 1
+        set_into_the_solution_1 = set()
+        set_into_the_solution_1.add(self.population[index][last_el])
+
+        while i != self.number_of_vertices:
+
+            z1 = (last_el + 1) % self.number_of_vertices
+            z2 = (np.where(self.population[index_2] == self.population[index][last_el])[0][0] + 1) % self.number_of_vertices
+            if self.population[index_2][z2] in set_into_the_solution_1 and self.population[index][z1] in set_into_the_solution_1:
+                if self.population[index_2][z2] != self.population[index][z1]:
+                    for j in range(self.number_of_vertices):
+                        if self.population[index][j] not in set_into_the_solution_1:
+
+                            self.new_population[index][i] = self.population[index][j]
+                            set_into_the_solution_1.add(self.population[index][j])
+                            last_el = j
+                            i += 1
+                            break
+                else:
+                    last_el = z1
+                    # print(first_section_point)
+                    # print(self.population[index], self.population[index_2])
+                    # print(self.new_population[index])
+                    # print(self.population[index])
+
+
+                continue
+            elif self.population[index_2][z2] in set_into_the_solution_1:
+                self.new_population[index][i] = self.population[index][z1]
+                set_into_the_solution_1.add(self.population[index][z1])
+                last_el = z1
+            elif self.population[index][z1] in set_into_the_solution_1:
+                self.new_population[index][i] = self.population[index_2][z2]
+                set_into_the_solution_1.add(self.population[index_2][z2])
+                last_el = np.where(self.population[index] == self.population[index_2][z2])[0][0]
+            else:
+                if self.adjacency_matrix[self.population[index][last_el]][self.population[index][z1]] \
+                        > self.adjacency_matrix[self.population[index][last_el]][self.population[index_2][z2]]:
+                    self.new_population[index][i] = self.population[index_2][z2]
+                    set_into_the_solution_1.add(self.population[index_2][z2])
+                    last_el = np.where(self.population[index] == self.population[index_2][z2])[0][0]
+                else:
+                    self.new_population[index][i] = self.population[index][z1]
+                    set_into_the_solution_1.add(self.population[index][z1])
+                    last_el = z1
+            i += 1
+
+
+        i = 0
+        last_el = second_selection_point
+        self.new_population[index_2][i] = self.population[index_2][last_el]
+        i += 1
+        set_into_the_solution_2 = set()
+        set_into_the_solution_2.add(self.population[index_2][last_el])
+
+        while i != self.number_of_vertices:
+
+            z1 = (last_el + 1) % self.number_of_vertices
+            z2 = (np.where(self.population[index] == self.population[index_2][last_el])[0][0] + 1) % self.number_of_vertices
+
+            if self.population[index][z2] in set_into_the_solution_2 and self.population[index_2][z1] in set_into_the_solution_2:
+                if self.population[index][z2] != self.population[index_2][z1]:
+                    for j in range(self.number_of_vertices):
+                        if self.population[index_2][j] not in set_into_the_solution_2:
+                            last_el = j
+                            self.new_population[index_2][i] = self.population[index_2][j]
+                            set_into_the_solution_2.add(self.population[index_2][j])
+                            i += 1
+                            break
+
+                else:
+                    last_el = z1
+                continue
+            elif self.population[index][z2] in set_into_the_solution_2:
+                self.new_population[index_2][i] = self.population[index_2][z1]
+                set_into_the_solution_2.add(self.population[index_2][z1])
+
+                last_el = z1
+            elif self.population[index_2][z1] in set_into_the_solution_2:
+                self.new_population[index_2][i] = self.population[index][z2]
+                set_into_the_solution_2.add(self.population[index][z2])
+
+                last_el = np.where(self.population[index_2] == self.population[index][z2])[0][0]
+
+            else:
+                if self.adjacency_matrix[self.population[index_2][last_el]][self.population[index_2][z1]] \
+                        > self.adjacency_matrix[self.population[index_2][last_el]][self.population[index][z2]]:
+                    self.new_population[index_2][i] = self.population[index][z2]
+                    set_into_the_solution_2.add(self.population[index][z2])
+                    last_el = np.where(self.population[index_2] == self.population[index][z2])[0][0]
+                else:
+                    self.new_population[index_2][i] = self.population[index_2][z1]
+                    set_into_the_solution_2.add(self.population[index_2][z1])
+                    last_el = z1
+            i += 1
+
 
 # CS = MethodsOfCrossing()
 # CS.initialize_number_of_vertices(5)

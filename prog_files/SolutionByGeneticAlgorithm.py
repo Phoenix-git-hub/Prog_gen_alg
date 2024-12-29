@@ -44,6 +44,9 @@ class GeneticAlgorithm(Solution):
         self.crossing_method.initialize_population_size(self.population_size)
         self.crossing_method.initialize_method_of_crossing(crossing_method)
 
+        if self.adjacency_matrix is not None:
+            self.crossing_method.initialize_adjacency_matrix(self.adjacency_matrix)
+
     def initialization_mutation_method(self, mutation_method):
         self.mutation_method = MethodsOfMutation()
         self.mutation_method.initialize_number_of_vertices(self.number_of_vertices)
@@ -287,6 +290,7 @@ class GeneticAlgorithm(Solution):
     def set_adjacency_matrix(self, adjacency_matrix):
         self.adjacency_matrix = adjacency_matrix
         self.selection_method.initialize_adjacency_matrix(self.adjacency_matrix)
+        self.crossing_method.initialize_adjacency_matrix(self.adjacency_matrix)
 
     def set_population(self, population):
         self.population = population
