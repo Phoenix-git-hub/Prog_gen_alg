@@ -20,6 +20,7 @@ class GeneticAlgorithm(Solution):
         self.mutation_method = None
         self.selection_method = None
         self.state_surfing = None
+        self.state_family_resemblance_analysis = None
 
         self.number_of_generations = number_of_generations
         self.population_size = population_size
@@ -37,6 +38,9 @@ class GeneticAlgorithm(Solution):
                                                name_of_method, place_on_screen)
     def initialization_state_surfing(self, state):
         self.state_surfing = state
+
+    def initialization_state_family_resemblance_analysis(self, state):
+        self.state_family_resemblance_analysis = state
 
     def initialization_crossing_method(self, crossing_method):
         self.crossing_method = MethodsOfCrossing()
@@ -70,6 +74,7 @@ class GeneticAlgorithm(Solution):
         return np.array(permutation), distance
 
     def solution_gen_alg(self):
+
         #gjcnfdbnm ghjdthre yf yfkbxbt gthdjuj gjrjktybz
         # поставить проверку на первое поколение
         # print(self.population)
@@ -98,18 +103,88 @@ class GeneticAlgorithm(Solution):
 
         correct_sol = True
 
+        avg_similarity_to_the_primary_parent = 0
+        avg_similarity_to_the_second_parent = 0
+        avg_similarities_to_both_parents = 0
+
         for i in range(self.number_of_generations):
             # бухнуть декоратор ? ???
-
+            #print(self.population)
             start_time_to_crossing = time.perf_counter()
             new_population = self.crossing_method.do_crossing(self.population)
             end_time_to_crossing = time.perf_counter()
             self.time_to_crossing += end_time_to_crossing - start_time_to_crossing
 
+            parent_index = self.crossing_method.get_parent_index()
+
             start_time_to_mutation = time.perf_counter()
             self.mutation_method.do_mutation(new_population)
             end_time_to_mutation = time.perf_counter()
             self.time_to_mutation += end_time_to_mutation - start_time_to_mutation
+
+
+
+            if self.state_family_resemblance_analysis:
+                start_time_to_calculat_statistics = time.perf_counter()
+
+                if self.population_size != len(parent_index):
+                    raise 'self.population_size != len(parent_index) такого не должно быть'
+
+                for ind in range(1, self.population_size, 2):
+                    set1 = set()
+                    set2 = set()
+                    for j in range(self.number_of_vertices):
+                        set1.add((self.population[parent_index[ind]][j-1], self.population[parent_index[ind]][j]))
+                        set2.add((self.population[parent_index[ind - 1]][j-1], self.population[parent_index[ind-1]][j]))
+
+                    similarity_to_the_primary_parent = 0
+                    similarity_to_the_second_parent = 0
+                    similarities_to_both_parents = 0
+
+                    for j in range(self.number_of_vertices):
+                        if (new_population[parent_index[ind]][j-1], new_population[parent_index[ind]][j]) in set1 and (new_population[parent_index[ind]][j-1], new_population[parent_index[ind]][j]) in set2:
+                            similarities_to_both_parents += 1
+                        elif (new_population[parent_index[ind]][j-1], new_population[parent_index[ind]][j]) in set1:
+                            similarity_to_the_primary_parent += 1
+                        elif (new_population[parent_index[ind]][j-1], new_population[parent_index[ind]][j]) in set2:
+                            similarity_to_the_second_parent += 1
+
+                        if (new_population[parent_index[ind-1]][j-1], new_population[parent_index[ind-1]][j]) in set1 and (new_population[parent_index[ind-1]][j-1], new_population[parent_index[ind-1]][j]) in set2:
+                            similarities_to_both_parents += 1
+                        elif (new_population[parent_index[ind-1]][j-1], new_population[parent_index[ind-1]][j]) in set1:
+                            similarity_to_the_second_parent += 1
+                        elif (new_population[parent_index[ind-1]][j-1], new_population[parent_index[ind-1]][j]) in set2:
+                            similarity_to_the_primary_parent += 1
+
+                    similarity_to_the_primary_parent /= self.number_of_vertices
+                    similarity_to_the_second_parent /= self.number_of_vertices
+                    similarities_to_both_parents /= self.number_of_vertices
+
+                    # print(similarity_to_the_primary_parent, similarity_to_the_second_parent)
+
+                    avg_similarity_to_the_primary_parent += similarity_to_the_primary_parent
+                    avg_similarity_to_the_second_parent += similarity_to_the_second_parent
+                    avg_similarities_to_both_parents += similarities_to_both_parents
+
+                if self.population_size % 2 == 1:
+                    ind = self.population_size - 1
+                    set1 = set()
+                    for j in range(self.number_of_vertices):
+                        set1.add((self.population[parent_index[ind]][j-1], self.population[parent_index[ind]][j]))
+                    similarity_to_the_primary_parent = 0
+                    for j in range(self.number_of_vertices):
+                        if (new_population[parent_index[ind]][j-1], new_population[parent_index[ind]][j]) in set1:
+                            similarity_to_the_primary_parent += 1
+                    similarity_to_the_primary_parent /= self.number_of_vertices
+                    avg_similarity_to_the_primary_parent += similarity_to_the_primary_parent
+
+                end_time_to_calculat_statistics = time.perf_counter()
+                self.time_to_calculat_statistics += end_time_to_calculat_statistics - start_time_to_calculat_statistics
+            # #
+            # print(self.population)
+            # print()
+            # print(new_population)
+            # print()
 
             # мы вичисляем фитнес значение два раза, когда происходит отбор и когда считаем среднее значение
             start_time_to_selection = time.perf_counter()
@@ -142,6 +217,19 @@ class GeneticAlgorithm(Solution):
             #         f.write(str(item) + '\n')
             #     f.write('\n')
             # del new_population
+
+        avg_similarity_to_the_primary_parent /= self.population_size
+        avg_similarity_to_the_second_parent /= self.population_size
+        avg_similarities_to_both_parents /= self.population_size
+
+        #
+        avg_similarity_to_the_primary_parent /= self.number_of_generations
+        avg_similarity_to_the_second_parent /= self.number_of_generations
+        avg_similarities_to_both_parents /= self.number_of_generations
+
+        if self.state_family_resemblance_analysis:
+            print(avg_similarity_to_the_primary_parent, avg_similarity_to_the_second_parent,
+                  avg_similarities_to_both_parents)
 
         end_full_time = time.perf_counter()
         self.full_time += end_full_time - start_full_time

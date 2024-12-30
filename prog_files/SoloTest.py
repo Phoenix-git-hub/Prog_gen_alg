@@ -83,6 +83,8 @@ class Solution:
         self.sol_by_genetic_algorithm.initialization_selection_method(self.settings_gen_alg['selection_method'])
         self.sol_by_genetic_algorithm.initialization_crossing_method(self.settings_gen_alg['crossing_method'])
         self.sol_by_genetic_algorithm.initialization_mutation_method(self.settings_gen_alg['mutation_method'])
+        self.sol_by_genetic_algorithm.initialization_state_family_resemblance_analysis(
+            self.settings_gen_alg['state_family_resemblance_analysis'])
 
         self.sol_by_genetic_algorithm.initialization_status_of_searching_parent(
             self.settings_gen_alg['status_of_searching_parent'])

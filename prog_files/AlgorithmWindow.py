@@ -7,18 +7,19 @@ class AlgorithmWindow:
 
     def __init__(self, name_window, place):
         self.window = tkinter.Toplevel()
-        self.window.geometry('500x300' + place)
+        self.window.geometry('500x350' + place)
         self.window.title(name_window)
         self.window.resizable(width=False, height=False)
 
         settings = ('crossing_method', 'mutation_method', 'selection_method', 'status_of_searching_parent',
-                    'method_of_generation_start_population', 'state_surfing')
+                    'method_of_generation_start_population', 'state_surfing', 'state_family_resemblance_analysis')
         self.parameters = dict.fromkeys(settings)
 
         self.status_of_searching_parent = tkinter.StringVar(value='random_search')
 
         self.method_of_generation_start_population = tkinter.StringVar(value='random_gen')
         self.state_surfing = tkinter.BooleanVar(value=False)
+        self.state_family_resemblance_analysis = tkinter.BooleanVar(value=False)
 
         self.crossing_methods = ('crossing_pass', 'two_point_crossing', 'orderly_crossing_OX1',
                                  'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
@@ -45,8 +46,14 @@ class AlgorithmWindow:
         self.display_selection_methods()
         self.gene_surfing_status()
         self.display_status_of_searching_parent()
+        self.display_family_resemblance_analysis()
 
         self.display_method_of_generation_start_population()
+
+    def display_family_resemblance_analysis(self):
+        checkbutton = tkinter.Checkbutton(self.window, text='аналитика семейного сходства', font=("Arial Bold", 14),
+                                          variable=self.state_family_resemblance_analysis)
+        checkbutton.place(x=20, y=300, width=300, height=25)
 
     def gene_surfing_status(self):
         checkbutton = tkinter.Checkbutton(self.window, text='сёрфинг ген', font=("Arial Bold", 14),
@@ -124,6 +131,8 @@ class AlgorithmWindow:
         self.parameters['status_of_searching_parent'] = self.status_of_searching_parent.get()
         self.parameters['method_of_generation_start_population'] = self.method_of_generation_start_population.get()
         self.parameters['state_surfing'] = self.state_surfing.get()
+        self.parameters['state_family_resemblance_analysis'] = self.state_family_resemblance_analysis.get()
+
         return self.parameters
 
     def deiconify(self):

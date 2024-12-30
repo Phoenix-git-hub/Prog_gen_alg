@@ -63,7 +63,8 @@ class Comparison:
         #все выделить в отдельные классы
         self.first_gen_alg = GeneticAlgorithm(self.population_size, self.number_of_generations,
                                               self.number_of_vertices, method_of_generation_start_population_first_alg)
-
+        self.first_gen_alg.initialization_state_family_resemblance_analysis(
+            self.settings_mandatory_alg['state_family_resemblance_analysis'])
         self.first_gen_alg.initialization_state_surfing(self.settings_mandatory_alg['state_surfing'])
         self.first_gen_alg.initialization_selection_method(self.settings_mandatory_alg['selection_method'])
         self.first_gen_alg.initialization_crossing_method(self.settings_mandatory_alg['crossing_method'])
@@ -74,6 +75,8 @@ class Comparison:
         self.second_gen_alg = GeneticAlgorithm(self.population_size, self.number_of_generations,
                                                self.number_of_vertices, method_of_generation_start_population_second_alg)
 
+        self.second_gen_alg.initialization_state_family_resemblance_analysis(
+            self.settings_additional_alg['state_family_resemblance_analysis'])
         self.second_gen_alg.initialization_state_surfing(self.settings_additional_alg['state_surfing'])
         self.second_gen_alg.initialization_selection_method(self.settings_additional_alg['selection_method'])
         self.second_gen_alg.initialization_crossing_method(self.settings_additional_alg['crossing_method'])

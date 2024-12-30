@@ -30,6 +30,8 @@ class MethodsOfCrossing:
         self.name_of_crossing['one_point_crossing_bb'] = self.one_point_crossing_bb
         self.name_of_crossing['greedy_crossover'] = self.greedy_crossover
 
+        self.parent_index = None
+
         self.population = None
         self.new_population = None
 
@@ -40,7 +42,7 @@ class MethodsOfCrossing:
         self.adjacency_matrix = None
 
     def random_search(self):
-
+        self.parent_index = []
         indexes = [i for i in range(self.population_size)]
 
         while len(indexes) > 1:
@@ -53,10 +55,25 @@ class MethodsOfCrossing:
 
             self.crossing_method(index_1, index_2)
 
-    def ordered_search(self):
+            self.parent_index.append(index_1)
+            self.parent_index.append(index_2)
+        if len(indexes) == 1:
+            self.parent_index.append(indexes[0])
 
+
+    def ordered_search(self):
+        # можно написать генератор для self.parent_index. ЭЭто глобально не на что не повлияет,
+        # но я думаю так код работает быстрее
+        self.parent_index = []
         for index in range(1, self.population_size, 2):
             self.crossing_method(index, index - 1)
+            self.parent_index.append(index)
+            self.parent_index.append(index - 1)
+        if self.population_size % 2 == 1:
+            self.parent_index.append(self.population_size - 1)
+
+    def get_parent_index(self):
+        return self.parent_index
 
     def initialize_status_of_searching_parent(self, searching_parent):
         if searching_parent == 'random_search':
