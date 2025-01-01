@@ -25,7 +25,7 @@ class AlgorithmWindow:
                                  'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
                                  'crossover_order_bb', 'crossover_order_OX5', 'crossover_order_OX1_upgrade',
                                  'crossover_ordered_ox_s', 'crossover_ordered_ox_b', 'partially_matched_crossover',
-                                 'one_point_crossing_bb', 'greedy_crossover')
+                                 'one_point_crossing_bb', 'greedy_crossover', 'crossover_order_OX5_upgrade')
         self.value_crossing_methods = tkinter.StringVar(value=self.crossing_methods[1])
 
         self.mutation_methods = ('mutation_pass', 'mutation_turning_180_g', 'mutation_by_exchange',

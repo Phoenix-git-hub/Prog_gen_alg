@@ -9,9 +9,10 @@ class MethodsOfCrossing:
         # нужно переименовать названия переменных two_point_crossing на crossover или посмотреть в словаре что коректне
         self.possible_names_of_crossing = ('crossing_pass', 'two_point_crossing', 'orderly_crossing_OX1',
                                            'one_point_crossing_OX1', 'crossover_ordered_ss', 'cycle_crossover',
-                                           'crossover_order_bb', 'crossover_order_ox5', 'crossover_order_OX1_upgrade',
+                                           'crossover_order_bb', 'crossover_order_OX5', 'crossover_order_OX1_upgrade',
                                            'crossover_ordered_ox_s', 'crossover_ordered_ox_b',
-                                           'partially_matched_crossover', 'one_point_crossing_bb', 'greedy_crossover')
+                                           'partially_matched_crossover', 'one_point_crossing_bb', 'greedy_crossover',
+                                           'crossover_order_OX5_upgrade')
 
         self.name_of_crossing = dict.fromkeys(self.possible_names_of_crossing)
 
@@ -29,7 +30,7 @@ class MethodsOfCrossing:
         self.name_of_crossing['partially_matched_crossover'] = self.partially_matched_crossover
         self.name_of_crossing['one_point_crossing_bb'] = self.one_point_crossing_bb
         self.name_of_crossing['greedy_crossover'] = self.greedy_crossover
-
+        self.name_of_crossing['crossover_order_OX5_upgrade'] = self.crossover_order_ox5_upgrade
         self.parent_index = None
 
         self.population = None
@@ -401,7 +402,6 @@ class MethodsOfCrossing:
                 ind_2 += 1
 
     def crossover_order_ox5(self, index, index_2):
-
         parent_2 = self.population[index].copy()
         parent_1 = self.population[index_2].copy()
 
@@ -420,7 +420,48 @@ class MethodsOfCrossing:
         lim_2 = list_of_limits[1]
         lim_3 = list_of_limits[2]
         lim_4 = list_of_limits[3]
-        print(lim_1, lim_2, lim_3, lim_4)
+
+        # lim_1 = 1
+        # lim_2 = 3
+        # lim_3 = 5
+        # lim_4 = 8
+
+        # print(lim_1, lim_2, lim_3, lim_4)
+
+        set_2 = set(np.concatenate((parent_2[lim_1:lim_2], parent_2[lim_3:lim_4])))
+        set_1 = set(np.concatenate((parent_1[lim_1:lim_2], parent_1[lim_3:lim_4])))
+
+
+        ind_1 = lim_4
+        ind_2 = lim_4
+        ind_ch = lim_4
+        for i in range(self.number_of_vertices):
+            if ind_ch + i >= self.number_of_vertices:
+                ind_ch -= self.number_of_vertices
+
+            if ind_1 >= self.number_of_vertices:
+                ind_1 = 0
+
+            if ind_1 == lim_1:
+                ind_1 += lim_2 - lim_1
+
+            if parent_1[ind_ch + i] in set_2:
+                set_2.discard(parent_1[ind_ch + i])
+            else:
+                self.new_population[index][ind_1] = parent_1[ind_ch + i]
+                ind_1 += 1
+
+            if ind_2 >= self.number_of_vertices:
+                ind_2 = 0
+
+            if ind_2 == lim_1:
+                ind_2 += lim_2 - lim_1
+
+            if parent_2[ind_ch + i] in set_1:
+                set_1.discard(parent_2[ind_ch + i])
+            else:
+                self.new_population[index_2][ind_2] = parent_2[ind_ch + i]
+                ind_2 += 1
 
     def partially_matched_crossover(self, index, index_2):
         first_limit = random.randrange(0, self.number_of_vertices + 1)
@@ -571,6 +612,72 @@ class MethodsOfCrossing:
                     set_into_the_solution_2.add(self.population[index_2][z1])
                     last_el = z1
             i += 1
+    def crossover_order_ox5_upgrade(self, index, index_2):
+
+        parent_2 = self.population[index].copy()
+        parent_1 = self.population[index_2].copy()
+
+        set_of_limits = set()
+
+        while len(set_of_limits) != 4:
+            limit = random.randrange(0, self.number_of_vertices + 1)
+            if limit not in set_of_limits:
+                set_of_limits.add(limit)
+
+        list_of_limits = list(set_of_limits)
+
+        list_of_limits.sort()
+
+        lim_1 = list_of_limits[0]
+        lim_2 = list_of_limits[1]
+        lim_3 = list_of_limits[2]
+        lim_4 = list_of_limits[3]
+        #
+        # lim_1 = 1
+        # lim_2 = 3
+        # lim_3 = 5
+        # lim_4 = 8
+
+        # print(lim_1, lim_2, lim_3, lim_4)
+
+        set_2 = set(np.concatenate((parent_2[lim_1:lim_2], parent_2[lim_3:lim_4])))
+        set_1 = set(np.concatenate((parent_1[lim_1:lim_2], parent_1[lim_3:lim_4])))
+
+
+        ind_1 = 0
+        ind_2 = 0
+        ind_ch = lim_4
+        for i in range(self.number_of_vertices):
+            if ind_ch + i >= self.number_of_vertices:
+                ind_ch -= self.number_of_vertices
+
+            if ind_1 >= self.number_of_vertices:
+                ind_1 = 0
+
+            if ind_1 == lim_1:
+                ind_1 += lim_2 - lim_1
+            if ind_1 == lim_3:
+                ind_1 += lim_4 - lim_3
+
+            if parent_1[ind_ch + i] in set_2:
+                set_2.discard(parent_1[ind_ch + i])
+            else:
+                self.new_population[index][ind_1] = parent_1[ind_ch + i]
+                ind_1 += 1
+
+            if ind_2 >= self.number_of_vertices:
+                ind_2 = 0
+
+            if ind_2 == lim_1:
+                ind_2 += lim_2 - lim_1
+            if ind_2 == lim_3:
+                ind_2 += lim_4 - lim_3
+
+            if parent_2[ind_ch + i] in set_1:
+                set_1.discard(parent_2[ind_ch + i])
+            else:
+                self.new_population[index_2][ind_2] = parent_2[ind_ch + i]
+                ind_2 += 1
 
 
 # CS = MethodsOfCrossing()
