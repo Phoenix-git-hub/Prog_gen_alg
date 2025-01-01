@@ -21,6 +21,7 @@ class GeneticAlgorithm(Solution):
         self.selection_method = None
         self.state_surfing = None
         self.state_family_resemblance_analysis = None
+        self.status_of_the_symmetry_adjacency_matrix = None
 
         self.number_of_generations = number_of_generations
         self.population_size = population_size
@@ -41,6 +42,9 @@ class GeneticAlgorithm(Solution):
 
     def initialization_state_family_resemblance_analysis(self, state):
         self.state_family_resemblance_analysis = state
+
+    def initialization_status_of_the_symmetry_adjacency_matrix(self, state):
+        self.status_of_the_symmetry_adjacency_matrix = state
 
     def initialization_crossing_method(self, crossing_method):
         self.crossing_method = MethodsOfCrossing()
@@ -70,11 +74,14 @@ class GeneticAlgorithm(Solution):
         self.crossing_method.initialize_status_of_searching_parent(searching_parent)
 
     def solution(self):
+        # тут должны быть все проверки
+        if self.status_of_the_symmetry_adjacency_matrix is None:
+            raise 'параметр self.status_of_the_symmetry_adjacency_matrix класса SolutionByGeneticAlgorithm не был инициализирован'
+
         permutation, distance = self.solution_gen_alg()
         return np.array(permutation), distance
 
     def solution_gen_alg(self):
-
         #gjcnfdbnm ghjdthre yf yfkbxbt gthdjuj gjrjktybz
         # поставить проверку на первое поколение
         # print(self.population)
@@ -144,17 +151,39 @@ class GeneticAlgorithm(Solution):
                     for j in range(self.number_of_vertices):
                         if (new_population[parent_index[ind]][j-1], new_population[parent_index[ind]][j]) in set1 and (new_population[parent_index[ind]][j-1], new_population[parent_index[ind]][j]) in set2:
                             similarities_to_both_parents += 1
+                        elif self.status_of_the_symmetry_adjacency_matrix == 'symmetric_adjacency_matrix' and (new_population[parent_index[ind]][j], new_population[parent_index[ind]][j - 1]) in set1 and (new_population[parent_index[ind]][j - 1], new_population[parent_index[ind]][j]) in set2:
+                            similarities_to_both_parents += 1
+                        elif self.status_of_the_symmetry_adjacency_matrix == 'symmetric_adjacency_matrix' and (new_population[parent_index[ind]][j - 1], new_population[parent_index[ind]][j]) in set1 and (new_population[parent_index[ind]][j], new_population[parent_index[ind]][j - 1]) in set2:
+                            similarities_to_both_parents += 1
+                        elif self.status_of_the_symmetry_adjacency_matrix == 'symmetric_adjacency_matrix' and (new_population[parent_index[ind]][j], new_population[parent_index[ind]][j - 1]) in set1 and (new_population[parent_index[ind]][j], new_population[parent_index[ind]][j - 1]) in set2:
+                            similarities_to_both_parents += 1
                         elif (new_population[parent_index[ind]][j-1], new_population[parent_index[ind]][j]) in set1:
                             similarity_to_the_primary_parent += 1
                         elif (new_population[parent_index[ind]][j-1], new_population[parent_index[ind]][j]) in set2:
                             similarity_to_the_second_parent += 1
+                        elif self.status_of_the_symmetry_adjacency_matrix == 'symmetric_adjacency_matrix':
+                            if (new_population[parent_index[ind]][j], new_population[parent_index[ind]][j-1]) in set1:
+                                similarity_to_the_primary_parent += 1
+                            elif (new_population[parent_index[ind]][j], new_population[parent_index[ind]][j-1]) in set2:
+                                similarity_to_the_second_parent += 1
 
                         if (new_population[parent_index[ind-1]][j-1], new_population[parent_index[ind-1]][j]) in set1 and (new_population[parent_index[ind-1]][j-1], new_population[parent_index[ind-1]][j]) in set2:
+                            similarities_to_both_parents += 1
+                        elif self.status_of_the_symmetry_adjacency_matrix == 'symmetric_adjacency_matrix' and (new_population[parent_index[ind - 1]][j], new_population[parent_index[ind - 1]][j - 1]) in set1 and (new_population[parent_index[ind - 1]][j - 1], new_population[parent_index[ind - 1]][j]) in set2:
+                            similarities_to_both_parents += 1
+                        elif self.status_of_the_symmetry_adjacency_matrix == 'symmetric_adjacency_matrix' and (new_population[parent_index[ind - 1]][j - 1], new_population[parent_index[ind - 1]][j]) in set1 and (new_population[parent_index[ind - 1]][j], new_population[parent_index[ind - 1]][j - 1]) in set2:
+                            similarities_to_both_parents += 1
+                        elif self.status_of_the_symmetry_adjacency_matrix == 'symmetric_adjacency_matrix' and (new_population[parent_index[ind - 1]][j], new_population[parent_index[ind - 1]][j - 1]) in set1 and (new_population[parent_index[ind - 1]][j], new_population[parent_index[ind - 1]][j - 1]) in set2:
                             similarities_to_both_parents += 1
                         elif (new_population[parent_index[ind-1]][j-1], new_population[parent_index[ind-1]][j]) in set1:
                             similarity_to_the_second_parent += 1
                         elif (new_population[parent_index[ind-1]][j-1], new_population[parent_index[ind-1]][j]) in set2:
                             similarity_to_the_primary_parent += 1
+                        elif self.status_of_the_symmetry_adjacency_matrix == 'symmetric_adjacency_matrix':
+                            if (new_population[parent_index[ind-1]][j], new_population[parent_index[ind-1]][j-1]) in set1:
+                                similarity_to_the_second_parent += 1
+                            elif (new_population[parent_index[ind-1]][j], new_population[parent_index[ind-1]][j-1]) in set2:
+                                similarity_to_the_primary_parent += 1
 
                     similarity_to_the_primary_parent /= self.number_of_vertices
                     similarity_to_the_second_parent /= self.number_of_vertices
@@ -200,6 +229,7 @@ class GeneticAlgorithm(Solution):
             self.time_to_calculat_statistics += end_time_to_calculat_statistics - start_time_to_calculat_statistics
 
             start_surf_gen = time.perf_counter()
+
             if self.state_surfing == None:
                 string = """неопределен параметр self.state_surfing'"""
                 tkinter.messagebox.showerror("Ошибка", string)

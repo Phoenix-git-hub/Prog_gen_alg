@@ -71,6 +71,7 @@ class Comparison:
         self.first_gen_alg.initialization_mutation_method(self.settings_mandatory_alg['mutation_method'])
         self.first_gen_alg.initialization_status_of_searching_parent(
             self.settings_mandatory_alg['status_of_searching_parent'])
+        self.first_gen_alg.initialization_status_of_the_symmetry_adjacency_matrix(status_of_the_symmetry_adjacency_matrix)
 
         self.second_gen_alg = GeneticAlgorithm(self.population_size, self.number_of_generations,
                                                self.number_of_vertices, method_of_generation_start_population_second_alg)
@@ -83,6 +84,7 @@ class Comparison:
         self.second_gen_alg.initialization_mutation_method(self.settings_additional_alg['mutation_method'])
         self.second_gen_alg.initialization_status_of_searching_parent(
             self.settings_additional_alg['status_of_searching_parent'])
+        self.second_gen_alg.initialization_status_of_the_symmetry_adjacency_matrix(status_of_the_symmetry_adjacency_matrix)
 
     def start_comparison(self):
 

@@ -414,12 +414,7 @@ class MethodsOfCrossing:
 
         list_of_limits = list(set_of_limits)
 
-        for i in range(1, 4):
-            for j in range(4 - i):
-                if list_of_limits[j] > list_of_limits[j + 1]:
-                    a = list_of_limits[j]
-                    list_of_limits[j] = list_of_limits[j + 1]
-                    list_of_limits[j + 1] = a
+        list_of_limits.sort()
 
         lim_1 = list_of_limits[0]
         lim_2 = list_of_limits[1]
