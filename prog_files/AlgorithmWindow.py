@@ -18,7 +18,7 @@ class AlgorithmWindow:
         self.status_of_searching_parent = tkinter.StringVar(value='random_search')
 
         self.method_of_generation_start_population = tkinter.StringVar(value='random_gen')
-        self.state_surfing = tkinter.BooleanVar(value=False)
+        self.state_surfing = tkinter.StringVar(value='none_surf')
         self.state_family_resemblance_analysis = tkinter.BooleanVar(value=False)
 
         self.crossing_methods = ('crossing_pass', 'two_point_crossing', 'orderly_crossing_OX1',
@@ -51,14 +51,37 @@ class AlgorithmWindow:
         self.display_method_of_generation_start_population()
 
     def display_family_resemblance_analysis(self):
-        checkbutton = tkinter.Checkbutton(self.window, text='аналитика семейного сходства', font=("Arial Bold", 14),
+        checkbutton = tkinter.Checkbutton(self.window, text='аналитика семейного\n сходства', font=("Arial Bold", 13),
                                           variable=self.state_family_resemblance_analysis)
-        checkbutton.place(x=20, y=300, width=300, height=25)
+        checkbutton.place(x=260, y=7, width=215, height=35)
 
     def gene_surfing_status(self):
-        checkbutton = tkinter.Checkbutton(self.window, text='сёрфинг ген', font=("Arial Bold", 14),
-                                          variable=self.state_surfing)
-        checkbutton.place(x=300, y=10, width=150, height=25)
+        # checkbutton = tkinter.Checkbutton(self.window, text='сёрфинг ген', font=("Arial Bold", 14),
+        #                                   variable=self.state_surfing)
+        # checkbutton.place(x=10, y=300, width=150, height=25)
+
+        lab = tkinter.Label(self.window, text='Параметры серфинга:', font=("Arial Bold", 14))
+        lab.place(x=10, y=290, width=200, height=25)
+
+        none_surf = tkinter.Radiobutton(self.window, text='нету', value='none_surf',
+                                        variable=self.state_surfing, font=("Arial Bold", 14))
+        none_surf.place(x=215, y=295, width=60, height=18)
+
+        none_surf = tkinter.Radiobutton(self.window, text='сёрф всей популяции', value='surf_all_pop',
+                                        variable=self.state_surfing, font=("Arial Bold", 14))
+        none_surf.place(x=275, y=295, width=230, height=18)
+
+        none_surf = tkinter.Radiobutton(self.window, text='случайный', value='random_surf',
+                                        variable=self.state_surfing, font=("Arial Bold", 14))
+        none_surf.place(x=30, y=315, width=116, height=18)
+
+        none_surf = tkinter.Radiobutton(self.window, text='случайный_2', value='random_surf_on_random_val',
+                                        variable=self.state_surfing, font=("Arial Bold", 14))
+        none_surf.place(x=170, y=315, width=145, height=21)
+
+
+
+
 
     def display_method_of_generation_start_population(self):
         lab = tkinter.Label(self.window, text='Метод генерации первого поколения:', font=("Arial Bold", 15))

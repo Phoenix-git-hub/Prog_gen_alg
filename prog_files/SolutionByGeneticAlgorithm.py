@@ -5,6 +5,7 @@ from prog_files.MethodsOfMutation import MethodsOfMutation
 from prog_files.MethodOfSelection import MethodsOfSelection
 from prog_files import VisualizationProgression
 import time
+import random
 
 import tkinter.messagebox
 from AdditionalSolutions import SolutionByDynamicProgWithAllVertices
@@ -30,6 +31,8 @@ class GeneticAlgorithm(Solution):
         self.meanFitnessValues = []
         self.minFitnessValues = []
 
+        self.acceptable_surfing_names = {'none_surf', 'surf_all_pop', 'random_surf', 'random_surf_on_random_val'}
+
         self.population = None
         self.graph = VisualizationProgression.ProgressionGraph(1)
         self.dev_graph = VisualizationProgression.DeviationGrash(1)
@@ -37,7 +40,12 @@ class GeneticAlgorithm(Solution):
         name_of_method = "solution by genetic algorithm"
         super(GeneticAlgorithm, self).__init__(adjacency_matrix, coordinates_of_vertices, number_of_vertices,
                                                name_of_method, place_on_screen)
+
     def initialization_state_surfing(self, state):
+        if state not in self.acceptable_surfing_names:
+            string = """недопустимое значение парамерта state_surfing'"""
+            tkinter.messagebox.showerror("Ошибка", string)
+
         self.state_surfing = state
 
     def initialization_state_family_resemblance_analysis(self, state):
@@ -221,25 +229,14 @@ class GeneticAlgorithm(Solution):
             end_time_to_selection = time.perf_counter()
             self.time_to_selection += end_time_to_selection - start_time_to_selection
 
+            self.population_surf()
+
             start_time_to_calculat_statistics = time.perf_counter()
             self.meanFitnessValues.append(self.average_fitness_value(self.population))
             self.minFitnessValues.append(self.find_best(self.population)[1])
             correct_sol = self.check_solution(self.population) and correct_sol
             end_time_to_calculat_statistics = time.perf_counter()
             self.time_to_calculat_statistics += end_time_to_calculat_statistics - start_time_to_calculat_statistics
-
-            start_surf_gen = time.perf_counter()
-
-            if self.state_surfing == None:
-                string = """неопределен параметр self.state_surfing'"""
-                tkinter.messagebox.showerror("Ошибка", string)
-            elif self.state_surfing:
-                for ind in range(self.population_size):
-                    # print(self.population[ind], end='')
-                    self.population[ind] = np.roll(self.population[ind], 1).copy()
-                    # print(self.population[ind])
-            end_surf_gen = time.perf_counter()
-            self.time_to_surf_gen += end_surf_gen - start_surf_gen
 
             # with open('.txt', 'a') as f:
             #     f.write('0000000000' + str(i) + '\n')
@@ -270,6 +267,38 @@ class GeneticAlgorithm(Solution):
             tkinter.messagebox.showerror("Ошибка", string)
         return self.find_best(self.population)
 
+    def population_surf(self):
+        start_surf_gen = time.perf_counter()
+        if self.state_surfing == None:
+            string = """неопределен параметр self.state_surfing'"""
+            tkinter.messagebox.showerror("Ошибка", string)
+        elif self.state_surfing == 'surf_all_pop':
+            for ind in range(self.population_size):
+                # print(self.population[ind], end='')
+                self.population[ind] = np.roll(self.population[ind], 1).copy()
+                # print(self.population[ind])
+        elif self.state_surfing == 'random_surf':
+            for ind in range(self.population_size):
+                if random.random() > 0.5:
+                    # print(self.population[ind], end='')
+                    self.population[ind] = np.roll(self.population[ind], 1).copy()
+                    # print(self.population[ind])
+                else:
+                    # print(self.population[ind], end='')
+                    self.population[ind] = np.roll(self.population[ind], -1).copy()
+                    # print(self.population[ind])
+
+        elif self.state_surfing == 'random_surf_on_random_val':
+            for ind in range(self.population_size):
+
+                surf_ind = int(random.random() * 10 + 1)
+                # print(surf_ind)
+                # print(self.population[ind], end='')
+                self.population[ind] = np.roll(self.population[ind], surf_ind).copy()
+                # print(self.population[ind])
+
+        end_surf_gen = time.perf_counter()
+        self.time_to_surf_gen += end_surf_gen - start_surf_gen
     def check_solution(self, population):
         all_v = [1]
         for individual in population:
