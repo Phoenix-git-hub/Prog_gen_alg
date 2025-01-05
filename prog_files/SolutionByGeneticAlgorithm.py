@@ -31,7 +31,8 @@ class GeneticAlgorithm(Solution):
         self.meanFitnessValues = []
         self.minFitnessValues = []
 
-        self.acceptable_surfing_names = {'none_surf', 'surf_all_pop', 'random_surf', 'random_surf_on_random_val'}
+        self.acceptable_surfing_names = {'none_surf', 'surf_all_pop', 'random_surf', 'random_surf_on_random_val',
+                                         'even_surf'}
 
         self.population = None
         self.graph = VisualizationProgression.ProgressionGraph(1)
@@ -295,6 +296,15 @@ class GeneticAlgorithm(Solution):
                 # print(surf_ind)
                 # print(self.population[ind], end='')
                 self.population[ind] = np.roll(self.population[ind], surf_ind).copy()
+                # print(self.population[ind])
+        elif self.state_surfing == 'even_surf':
+
+            for ind in range(self.population_size):
+                # print(self.population[ind], end='')
+                if ind % 2 == 0:
+                    self.population[ind] = np.roll(self.population[ind], 1).copy()
+                else:
+                    self.population[ind] = np.roll(self.population[ind], -1).copy()
                 # print(self.population[ind])
 
         end_surf_gen = time.perf_counter()

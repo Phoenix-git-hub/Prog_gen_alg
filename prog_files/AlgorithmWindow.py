@@ -79,9 +79,9 @@ class AlgorithmWindow:
                                         variable=self.state_surfing, font=("Arial Bold", 14))
         none_surf.place(x=170, y=315, width=145, height=21)
 
-
-
-
+        none_surf = tkinter.Radiobutton(self.window, text='по четности', value='even_surf',
+                                        variable=self.state_surfing, font=("Arial Bold", 14))
+        none_surf.place(x=320, y=315, width=130, height=21)
 
     def display_method_of_generation_start_population(self):
         lab = tkinter.Label(self.window, text='Метод генерации первого поколения:', font=("Arial Bold", 15))
