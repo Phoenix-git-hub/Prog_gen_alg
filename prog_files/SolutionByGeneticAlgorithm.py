@@ -119,9 +119,9 @@ class GeneticAlgorithm(Solution):
 
         correct_sol = True
 
-        avg_similarity_to_the_primary_parent = 0
-        avg_similarity_to_the_second_parent = 0
-        avg_similarities_to_both_parents = 0
+        self.avg_similarity_to_the_primary_parent = 0
+        self.avg_similarity_to_the_second_parent = 0
+        self.avg_similarities_to_both_parents = 0
 
         for i in range(self.number_of_generations):
             # бухнуть декоратор ? ???
@@ -200,9 +200,9 @@ class GeneticAlgorithm(Solution):
 
                     # print(similarity_to_the_primary_parent, similarity_to_the_second_parent)
 
-                    avg_similarity_to_the_primary_parent += similarity_to_the_primary_parent
-                    avg_similarity_to_the_second_parent += similarity_to_the_second_parent
-                    avg_similarities_to_both_parents += similarities_to_both_parents
+                    self.avg_similarity_to_the_primary_parent += similarity_to_the_primary_parent
+                    self.avg_similarity_to_the_second_parent += similarity_to_the_second_parent
+                    self.avg_similarities_to_both_parents += similarities_to_both_parents
 
                 if self.population_size % 2 == 1:
                     ind = self.population_size - 1
@@ -214,7 +214,7 @@ class GeneticAlgorithm(Solution):
                         if (new_population[parent_index[ind]][j-1], new_population[parent_index[ind]][j]) in set1:
                             similarity_to_the_primary_parent += 1
                     similarity_to_the_primary_parent /= self.number_of_vertices
-                    avg_similarity_to_the_primary_parent += similarity_to_the_primary_parent
+                    self.avg_similarity_to_the_primary_parent += similarity_to_the_primary_parent
 
                 end_time_to_calculat_statistics = time.perf_counter()
                 self.time_to_calculat_statistics += end_time_to_calculat_statistics - start_time_to_calculat_statistics
@@ -246,18 +246,18 @@ class GeneticAlgorithm(Solution):
             #     f.write('\n')
             # del new_population
 
-        avg_similarity_to_the_primary_parent /= self.population_size
-        avg_similarity_to_the_second_parent /= self.population_size
-        avg_similarities_to_both_parents /= self.population_size
+        self.avg_similarity_to_the_primary_parent /= self.population_size
+        self.avg_similarity_to_the_second_parent /= self.population_size
+        self.avg_similarities_to_both_parents /= self.population_size
 
         #
-        avg_similarity_to_the_primary_parent /= self.number_of_generations
-        avg_similarity_to_the_second_parent /= self.number_of_generations
-        avg_similarities_to_both_parents /= self.number_of_generations
+        self.avg_similarity_to_the_primary_parent /= self.number_of_generations
+        self.avg_similarity_to_the_second_parent /= self.number_of_generations
+        self.avg_similarities_to_both_parents /= self.number_of_generations
 
-        if self.state_family_resemblance_analysis:
-            print(avg_similarity_to_the_primary_parent, avg_similarity_to_the_second_parent,
-                  avg_similarities_to_both_parents)
+        # if self.state_family_resemblance_analysis:
+        #     print(self.avg_similarity_to_the_primary_parent, self.avg_similarity_to_the_second_parent,
+        #           self.avg_similarities_to_both_parents)
 
         end_full_time = time.perf_counter()
         self.full_time += end_full_time - start_full_time
@@ -362,6 +362,8 @@ class GeneticAlgorithm(Solution):
         self.dev_graph.set_deviation([deviation])
         self.dev_graph.display()
 
+    def get_similarity_to_parent(self):
+        return self.avg_similarity_to_the_primary_parent, self.avg_similarity_to_the_second_parent, self.avg_similarities_to_both_parents
     def get_mean_fitness_values(self):
         return self.meanFitnessValues
 
@@ -442,6 +444,10 @@ class GeneticAlgorithm(Solution):
         print(f'Время на сбор статистики: {self.time_to_calculat_statistics}, за итерацию: {average_time_to_calculat_statistics}')
         print(f'Время на генерацию первого поколения: {self.time_to_generate_first_pop}')
         print(f'Время на серф ген: {self.time_to_surf_gen}, за итерацию: {average_time_surf_gen}')
+        print()
+        if self.state_family_resemblance_analysis:
+            print(self.avg_similarity_to_the_primary_parent, self.avg_similarity_to_the_second_parent,
+                  self.avg_similarities_to_both_parents)
         print('\n')
 
     def set_adjacency_matrix(self, adjacency_matrix):
