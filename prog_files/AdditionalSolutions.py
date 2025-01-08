@@ -42,8 +42,8 @@ class Solution(ABC):
 
             plt.get_current_fig_manager().window.wm_geometry(self.coordinates)
             plt.title(self.name_of_method)
-            plt.ylim([0, 101])
-            plt.xlim([0, 101])
+            plt.ylim([0, 201])
+            plt.xlim([0, 201])
             for i in self.coordinates_of_vertices:
                 plt.scatter(i[0], i[1], color='red')
             for i in range(len(self.permutation) - 1):

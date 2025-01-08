@@ -209,7 +209,7 @@ class MainWindow:
             tkinter.messagebox.showerror("Неправильный формат для ввода данных",
                                          f'Параметр коэффициент хаоса(meas_of_dis должен быть четным')
         if numb_of_ver.isdigit() and numb_of_gen.isdigit() and pop_size.isdigit():
-            if int(numb_of_ver) <= 50:
+            if int(numb_of_ver) <= 100:
                 settings = (('state_mode', self.comparison_status.get()),
                             ('status_of_generation_adjacency_matrix', self.status_of_generation_adjacency_matrix.get()),
                             ('state_dynamic', self.state_dynamic.get()),
@@ -224,7 +224,7 @@ class MainWindow:
                             ('population_size', int(pop_size)), ('measure_of_disorder', int(meas_of_dis)))
                 self.algorithm_parameters.update(settings)
             else:
-                tkinter.messagebox.showerror("Ошибка", "Количество городов не может быть больше 50")
+                tkinter.messagebox.showerror("Ошибка", "Количество городов не может быть больше 100")
         else:
             tkinter.messagebox.showerror("Ошибка", "Неправильный формат для ввода данных")
 

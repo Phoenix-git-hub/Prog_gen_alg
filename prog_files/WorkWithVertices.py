@@ -16,7 +16,7 @@ class WorkWithVertices:
         self.coordinates_of_vertices = None
 
     def initialization_coordinates_of_vertices(self):
-        self.coordinates_of_vertices = np.random.choice(101, size=[self.number_of_vertices, 2], replace=False)
+        self.coordinates_of_vertices = np.random.choice(201, size=[self.number_of_vertices, 2], replace=False)
 
     def get_coordinates_of_vertices(self):
         return self.coordinates_of_vertices
