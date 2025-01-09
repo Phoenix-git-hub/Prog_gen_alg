@@ -370,6 +370,7 @@ class SolutionByBranchAndBound(Solution):
                 else:
                     bound += distance_matrix[city][tour[0]]  # Include return to start city
         return bound
+    
     def solve_by_branch_and_bound(self):
         # Initialize best_tour as None
         best_tour = None

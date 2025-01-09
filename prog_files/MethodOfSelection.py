@@ -17,6 +17,7 @@ class MethodsOfSelection:
         self.selection_method = None
         self.population_size = None
         self.adjacency_matrix = None
+        self.parent_index = None
 
     def initialize_method_of_selection(self, name_of_method):
 
@@ -38,7 +39,9 @@ class MethodsOfSelection:
     def initialize_adjacency_matrix(self, adjacency_matrix):
         self.adjacency_matrix = adjacency_matrix
 
-    def do_selection(self, population, new_population):
+    def do_selection(self, population, new_population, parent_index = None):
+
+        self.parent_index = parent_index
         return self.selection_method(population, new_population)
 
     def selection_of_the_best(self, population, new_population):
@@ -244,6 +247,10 @@ class MethodsOfSelection:
         #             break
 
     def tournament_with_parent(self, population, new_population):
+
+        if self.parent_index is None:
+            raise 'Неопределен параметр self.parent_index в турнирном отборе с родителем'
+
         candidate_fitness = [self.fitness_function(candidate) for candidate in new_population]
         population_fitness = [self.fitness_function(candidate) for candidate in population]
         for i in range(self.population_size):

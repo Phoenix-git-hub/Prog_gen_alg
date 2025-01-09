@@ -226,7 +226,7 @@ class GeneticAlgorithm(Solution):
 
             # мы вичисляем фитнес значение два раза, когда происходит отбор и когда считаем среднее значение
             start_time_to_selection = time.perf_counter()
-            self.selection_method.do_selection(self.population, new_population)
+            self.selection_method.do_selection(self.population, new_population, parent_index)
             end_time_to_selection = time.perf_counter()
             self.time_to_selection += end_time_to_selection - start_time_to_selection
 
