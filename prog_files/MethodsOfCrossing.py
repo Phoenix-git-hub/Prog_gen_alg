@@ -12,7 +12,7 @@ class MethodsOfCrossing:
                                            'crossover_order_bb', 'crossover_order_OX5', 'crossover_order_OX1_upgrade',
                                            'crossover_ordered_ox_s', 'crossover_ordered_ox_b',
                                            'partially_matched_crossover', 'one_point_crossing_bb', 'greedy_crossover',
-                                           'crossover_order_OX5_upgrade')
+                                           'crossover_order_OX5_upgrade', 'crossover_ox3')
 
         self.name_of_crossing = dict.fromkeys(self.possible_names_of_crossing)
 
@@ -31,6 +31,7 @@ class MethodsOfCrossing:
         self.name_of_crossing['one_point_crossing_bb'] = self.one_point_crossing_bb
         self.name_of_crossing['greedy_crossover'] = self.greedy_crossover
         self.name_of_crossing['crossover_order_OX5_upgrade'] = self.crossover_order_ox5_upgrade
+        self.name_of_crossing['crossover_ox3'] = self.crossover_ox3
         self.parent_index = None
 
         self.population = None
@@ -679,6 +680,41 @@ class MethodsOfCrossing:
                 self.new_population[index_2][ind_2] = parent_2[ind_ch + i]
                 ind_2 += 1
 
+    def crossover_ox3(self, index, index_2):
+        lim1_first_par = random.randrange(0, self.number_of_vertices + 1)
+        lim2_first_par = random.randrange(0, self.number_of_vertices + 1)
+
+        lim1_second_par = random.randrange(0, self.number_of_vertices + 1)
+        lim2_second_par = random.randrange(0, self.number_of_vertices + 1)
+
+        if lim2_first_par < lim1_first_par:
+            lim1_first_par, lim2_first_par = lim2_first_par, lim1_first_par
+
+        parent_1 = self.population[index].copy()
+        parent_2 = self.population[index_2].copy()
+
+        set_1 = set(parent_1[lim1_first_par:lim2_first_par])
+        set_2 = set(parent_2[lim1_second_par:lim2_second_par])
+
+        ind_1 = lim2_first_par
+        ind_2 = lim2_second_par
+
+        for i in range(self.number_of_vertices):
+            if ind_1 >= self.number_of_vertices:
+                ind_1 = 0
+            if parent_2[i] in set_1:
+                set_1.discard(parent_2[i])
+            else:
+                self.new_population[index][ind_1] = parent_2[i]
+                ind_1 += 1
+
+            if ind_2 >= self.number_of_vertices:
+                ind_2 = 0
+            if parent_1[i] in set_2:
+                set_2.discard(parent_1[i])
+            else:
+                self.new_population[index_2][ind_2] = parent_1[i]
+                ind_2 += 1
 
 # CS = MethodsOfCrossing()
 # CS.initialize_number_of_vertices(5)
