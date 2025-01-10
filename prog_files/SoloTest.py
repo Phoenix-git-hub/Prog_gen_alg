@@ -30,7 +30,6 @@ class Solution:
         status_of_gen_adj_mat = self.general_settings['status_of_generation_adjacency_matrix']
         measure_of_disorder = self.general_settings['measure_of_disorder']
         self.status_of_the_symmetry_adjacency_matrix = self.general_settings['status_of_the_symmetry_adjacency_matrix']
-
         self.work_with_vertices = WorkWithVertices(numb_of_ver, status_of_gen_adj_mat,
                                                    measure_of_disorder, self.status_of_the_symmetry_adjacency_matrix)
 
@@ -89,6 +88,8 @@ class Solution:
             self.status_of_the_symmetry_adjacency_matrix)
         self.sol_by_genetic_algorithm.initialization_status_of_searching_parent(
             self.settings_gen_alg['status_of_searching_parent'])
+        self.sol_by_genetic_algorithm.initialization_state_generation_similarity_analysis(
+            self.settings_gen_alg['state_generation_similarity_analysis'])
 
         self.sol_by_genetic_algorithm.start_solution()
 

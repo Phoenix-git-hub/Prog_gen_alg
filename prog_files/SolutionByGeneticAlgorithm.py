@@ -23,6 +23,7 @@ class GeneticAlgorithm(Solution):
         self.state_surfing = None
         self.state_family_resemblance_analysis = None
         self.status_of_the_symmetry_adjacency_matrix = None
+        self.state_generation_similarity_analysis = None
 
         self.number_of_generations = number_of_generations
         self.population_size = population_size
@@ -54,6 +55,10 @@ class GeneticAlgorithm(Solution):
 
     def initialization_status_of_the_symmetry_adjacency_matrix(self, state):
         self.status_of_the_symmetry_adjacency_matrix = state
+
+    def initialization_state_generation_similarity_analysis(self, state):
+        self.state_generation_similarity_analysis = state
+
 
     def initialization_crossing_method(self, crossing_method):
         self.crossing_method = MethodsOfCrossing()
@@ -112,6 +117,7 @@ class GeneticAlgorithm(Solution):
         self.time_to_generate_first_pop += end_gen_first_pop - start_gen_first_pop
 
         st = time.perf_counter()
+        self.generation_similarity_analytics(0)
         self.meanFitnessValues.append(self.average_fitness_value(self.population))
         self.minFitnessValues.append(self.find_best(self.population)[1])
         ed = time.perf_counter()
@@ -137,8 +143,6 @@ class GeneticAlgorithm(Solution):
             self.mutation_method.do_mutation(new_population)
             end_time_to_mutation = time.perf_counter()
             self.time_to_mutation += end_time_to_mutation - start_time_to_mutation
-
-
 
             if self.state_family_resemblance_analysis:
                 start_time_to_calculat_statistics = time.perf_counter()
@@ -229,6 +233,12 @@ class GeneticAlgorithm(Solution):
             self.selection_method.do_selection(self.population, new_population, parent_index)
             end_time_to_selection = time.perf_counter()
             self.time_to_selection += end_time_to_selection - start_time_to_selection
+
+            st = time.perf_counter()
+            self.generation_similarity_analytics(i + 1)
+            ed = time.perf_counter()
+            self.time_to_calculat_statistics += ed - st
+
 
             self.population_surf()
 
@@ -485,3 +495,54 @@ class GeneticAlgorithm(Solution):
             string = """Неизвестное значение self.settings_comparison_alg['generation_of_the_starting_population']
             класса 'SolutionByGeneticAlgoritm'"""
             tkinter.messagebox.showerror("Ошибка", string)
+
+    def generation_similarity_analytics(self, ind_gen):
+        # работа с популяцией
+        if self.state_generation_similarity_analysis == None:
+            raise 'self.state_generation_similarity_analysis не инициализирован'
+
+
+        verification_generation = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 100]
+        if ind_gen in verification_generation:
+            if self.state_generation_similarity_analysis.get():
+                if self.status_of_the_symmetry_adjacency_matrix:
+                   print(self.generation_similarity_analytics_for_symmetry_adjacency_matrix())
+                else:
+                    self.generation_similarity_analytics_for_not_symmetry_adjacency_matrix()
+
+    def generation_similarity_analytics_for_symmetry_adjacency_matrix(self):
+        numb_connections = (self.number_of_vertices * (self.number_of_vertices - 1)) // 2
+
+        city_connections = {}
+
+        for individ in self.population:
+            for ind in range(self.number_of_vertices):
+
+                connection = f'{individ[ind-1]}-{individ[ind]}'
+                connection_2 = f'{individ[ind]}-{individ[ind - 1]}'
+                if connection in city_connections:
+                    city_connections[connection] += 1
+                elif connection_2 in city_connections:
+                    city_connections[connection_2] += 1
+                else:
+                    city_connections[connection] = 1
+
+        return len(city_connections) / numb_connections
+
+    def generation_similarity_analytics_for_not_symmetry_adjacency_matrix(self):
+
+        numb_connections = self.number_of_vertices * (self.number_of_vertices - 1)
+
+        city_connections = {}
+
+        for individ in self.population:
+            for ind in range(self.number_of_vertices):
+
+                connection = f'{individ[ind-1]}-{individ[ind]}'
+                if connection in city_connections:
+                    city_connections[connection] += 1
+                else:
+                    city_connections[connection] = 1
+
+        return len(city_connections) / numb_connections
+

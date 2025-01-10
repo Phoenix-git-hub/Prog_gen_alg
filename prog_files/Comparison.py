@@ -74,6 +74,8 @@ class Comparison:
         self.first_gen_alg.initialization_status_of_searching_parent(
             self.settings_mandatory_alg['status_of_searching_parent'])
         self.first_gen_alg.initialization_status_of_the_symmetry_adjacency_matrix(status_of_the_symmetry_adjacency_matrix)
+        self.first_gen_alg.initialization_state_generation_similarity_analysis(self.settings_mandatory_alg['state_generation_similarity_analysis'])
+
 
         self.second_gen_alg = GeneticAlgorithm(self.population_size, self.number_of_generations,
                                                self.number_of_vertices, method_of_generation_start_population_second_alg)
@@ -87,7 +89,7 @@ class Comparison:
         self.second_gen_alg.initialization_status_of_searching_parent(
             self.settings_additional_alg['status_of_searching_parent'])
         self.second_gen_alg.initialization_status_of_the_symmetry_adjacency_matrix(status_of_the_symmetry_adjacency_matrix)
-
+        self.second_gen_alg.initialization_state_generation_similarity_analysis(self.settings_additional_alg['state_generation_similarity_analysis'])
     def start_comparison(self):
 
         for i in range(self.number_of_comparisons):
