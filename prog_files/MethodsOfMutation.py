@@ -45,14 +45,23 @@ class MethodsOfMutation:
     def mutation_turning_180_g(self, population):
         # все очевидно, я посмотрел должно рпавильно работать
         # ++++++++
+        # print(population)
+
         for individual in population:
+            # print(individual)
             first_limit = random.randrange(0, self.number_of_vertices)
             second_limit = random.randrange(0, self.number_of_vertices)
+
             if second_limit < first_limit:
                 a = first_limit
                 first_limit = second_limit
                 second_limit = a
+            # print(first_limit, second_limit)
             individual[first_limit:second_limit + 1] = individual[first_limit:second_limit + 1][::-1].copy()
+            # print(individual)
+        # print('после мутаций')
+        # print(population)
+        # print()
 
     def mutation_by_exchange(self, population):
         for i in range(self.population_size):

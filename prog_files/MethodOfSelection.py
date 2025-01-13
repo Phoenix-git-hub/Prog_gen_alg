@@ -103,28 +103,32 @@ class MethodsOfSelection:
         if min_val == max_val:
             min_val -= 0.000001
 
+        elit = np.argsort(value_fitness)[:int(self.population_size / 5)]
+
+        value_fitness = np.delete(value_fitness, elit)
 
         # этот коэфицент надо настраивать
-        ratio_1 = 1000 / (max_val - min_val)
-        ratio_2 = 1 - (ratio_1 * min_val)
+        ratio_1 = 1000 / (-max_val + min_val)
+        ratio_2 = 1 - (ratio_1 * max_val)
 
         sum_value = 0
-        print('до изменений')
-        print(value_fitness)
-        print()
-        for i in range(self.population_size * 2):
+        # print('до изменений')
+        # print(value_fitness)
+        # print()
+        for i in range(self.population_size * 2 - len(elit)):
             value_fitness[i] = value_fitness[i] * ratio_1 + ratio_2
             sum_value += value_fitness[i]
-        print('val')
-        print(value_fitness)
-        print()
+        # print('val')
+        # print(value_fitness)
+        # print()
         value_fitness /= value_fitness.sum()
 
-        print(value_fitness)
-        print()
-        ind = np.random.choice([i for i in range(self.population_size * 2)], self.population_size,  replace=False,
+        # print(value_fitness)
+        # print()
+        ind = np.random.choice([i for i in range(self.population_size * 2) if i not in elit],
+                               self.population_size - len(elit),  replace=False,
                                p=value_fitness)
-
+        ind = np.concatenate((elit, ind))
         set_ind = set([i for i in range(self.population_size)])
         replace_ind = []
         for i in ind:
@@ -136,115 +140,36 @@ class MethodsOfSelection:
         for i in replace_ind:
             index = set_ind.pop()
             population[index] = new_population[i % self.population_size].copy()
-        #
-        # candidate_fitness = [[i, self.fitness_function(new_population[i])] for i in range(self.population_size)]
-        # population_fitness = [[i, self.fitness_function(population[i])] for i in range(self.population_size)]
-        #
-        # fitness = []
 
 
 
 
-
-
-
-
-
-
-
-        # value_fitness = dict()
+        # value_fitness = np.array([self.fitness_function(population[ind]) if ind < self.population_size
+        #                     else self.fitness_function(new_population[ind % self.population_size])
+        #                     for ind in range(self.population_size * 2)])
         #
-        # flag_min_val = True
-        # min_val = 0
-        # flag_max_val = True
-        # max_val = 0
+        # summ = value_fitness.sum()
+        # value_fitness = value_fitness / summ
         #
-        # for i in range(self.population_size):
-        #     val = self.fitness_function(population[i])
-        #     value_fitness[i] = val
+        # elit = np.argsort(value_fitness)[:int(self.population_size/5)]
+        # ind = np.random.choice([i for i in range(self.population_size * 2)], self.population_size - len(elit), replace = False,
+        #                        p=value_fitness)
         #
-        #     if flag_min_val or min_val > val:
-        #         flag_min_val = False
-        #         min_val = val
-        #     if flag_max_val or max_val < val:
-        #         max_val = val
-        #         flag_max_val = False
+        # ind = np.concatenate((elit, ind))
         #
-        # for i in range(self.population_size):
-        #     val = self.fitness_function(new_population[i])
-        #     value_fitness[i + self.population_size] = val
-        #
-        #     if flag_min_val or min_val > val:
-        #         min_val = val
-        #         flag_min_val = False
-        #     if flag_max_val or max_val < val:
-        #         max_val = val
-        #         flag_max_val = False
-        # if min_val == max_val:
-        #     min_val -= 0.000001
-        #
-        # ratio_1 = 20 / (max_val - min_val)
-        # ratio_2 = -1*(ratio_1 * min_val)
-        #
-        # for key, item in value_fitness.items():
-        #     value_fitness[key] = item*ratio_1 + ratio_2
-        #
-        # for i in range(self.population_size):
-        #     ind = random.choices(list(value_fitness.keys()), weights=list(value_fitness.values()),  k=1)[0]
-        #     del value_fitness[ind]
-        #
-        # pop = list(value_fitness.keys())
-        #
-        # for i in range(1, self.population_size):
-        #     for j in range(self.population_size - i):
-        #         if pop[j] > pop[j + 1]:
-        #             a = pop[j]
-        #             pop[j] = pop[j +1]
-        #             pop[j+1] = a
-        #
-        # for i in range(self.population_size):
-        #     if pop[i] < self.population_size:
-        #         population[i] = population[pop[i]].copy()
+        # set_ind = set([i for i in range(self.population_size)])
+        # replace_ind = []
+        # for i in ind:
+        #     if i < self.population_size:
+        #         set_ind.discard(i)
         #     else:
-        #         population[i] = new_population[pop[i]-self.population_size].copy()
+        #         replace_ind.append(i)
+        #
+        # for i in replace_ind:
+        #     index = set_ind.pop()
+        #     population[index] = new_population[i % self.population_size].copy()
 
 
-
-        # candidate_fitness_1 = [self.fitness_function(candidate) for candidate in new_population]
-        # population_fitness_1 = [self.fitness_function(candidate) for candidate in population]
-        #
-        # sum_can = sum(candidate_fitness_1)
-        # sum_pop = sum(population_fitness_1)
-        #
-        # candidate_fitness = [(sum_can / fit) * 100 - 400 for fit in candidate_fitness_1]
-        # population_fitness = [(sum_pop / fit) * 100 - 400 for fit in population_fitness_1]
-        #
-        # sum_can = sum(candidate_fitness)
-        # sum_pop = sum(population_fitness)
-        #
-        # candidate_fitness = [fit / sum_can for fit in candidate_fitness]
-        # population_fitness = [fit / sum_pop for fit in population_fitness]
-        #
-        # free = [1] * self.number_of_vertices
-        #
-        # for i in range(1, self.number_of_vertices, 2):
-        #     free[i] = population[np.random.choice(self.number_of_vertices, p=population_fitness)].copy()
-        #     free[i - 1] = new_population[np.random.choice(self.number_of_vertices, p=candidate_fitness)].copy()
-        #
-        # if self.number_of_vertices % 2 == 1:
-        #     free[-1] = population[np.random.choice(self.number_of_vertices, p=population_fitness)].copy()
-        #
-        # j = 0
-        # for i in free:
-        #     population[j] = i.copy()
-        #     j += 1
-        #
-        # size = len(new_population)
-        # for candidate in range(size):
-        #     for ind_population in range(size):
-        #         if candidate_fitness[candidate] < population_fitness[ind_population]:
-        #             population[ind_population] = new_population[candidate].copy()
-        #             break
 
     def tournament_with_parent(self, population, new_population):
 

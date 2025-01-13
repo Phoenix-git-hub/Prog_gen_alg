@@ -280,7 +280,7 @@ class SolutionAnnealingMethod(Solution):
 
     def init_hyperparameters(self):
         self.iter = 200000
-        self.t = 10000
+        self.t = 1000
         self.g = 0.95
         # iter = 20000, t = 100, g = 0.6
 

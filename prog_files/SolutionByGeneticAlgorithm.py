@@ -131,7 +131,9 @@ class GeneticAlgorithm(Solution):
 
         for i in range(self.number_of_generations):
             # бухнуть декоратор ? ???
-            #print(self.population)
+            # print('поколение ')
+            # print(self.population)
+            # print()
             start_time_to_crossing = time.perf_counter()
             new_population = self.crossing_method.do_crossing(self.population)
             end_time_to_crossing = time.perf_counter()
@@ -142,6 +144,7 @@ class GeneticAlgorithm(Solution):
             start_time_to_mutation = time.perf_counter()
             self.mutation_method.do_mutation(new_population)
             end_time_to_mutation = time.perf_counter()
+
             self.time_to_mutation += end_time_to_mutation - start_time_to_mutation
 
             if self.state_family_resemblance_analysis:
