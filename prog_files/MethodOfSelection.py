@@ -1,6 +1,7 @@
 import random
 import numpy as np
 
+
 class MethodsOfSelection:
     def __init__(self):
         # пожалуй нужно сделать файл config куда я положу общие данные для всего кода

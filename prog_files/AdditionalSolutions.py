@@ -234,7 +234,7 @@ class SolutionByAntAlgorithm(Solution):
         for i in range(len(individual) - 1):
             sum_vertexes += self.adjacency_matrix[individual[i]][individual[i + 1]]
 
-        sum_vertexes += self.adjacency_matrix[individual[- 1]][individual[0]]
+        # sum_vertexes += self.adjacency_matrix[individual[- 1]][individual[0]]
         return sum_vertexes
     def run(self):
         """Runs the algorithm for the given 2D points."""
@@ -255,11 +255,14 @@ class SolutionByAntAlgorithm(Solution):
             if best_leng < res_leng:
                 res_leng = best_leng
                 res_indx = tmp_indx[tmp_leng.index(best_leng)]
+                # print(res_indx, res_leng, self._calculate_dist(res_indx), self.fitness_function(res_indx[:-1]))
         return res_indx, res_leng
 
     def solution(self):
         permutation, distance = self.solve_ant_algorithm()
         per = np.array(permutation[:-1])
+        # print(per)
+        # print(distance, self.fitness_function(per), self._calculate_dist(per))
         if distance != self.fitness_function(per):
             raise 'дистанция не совпадает с показанием'
         return per, distance

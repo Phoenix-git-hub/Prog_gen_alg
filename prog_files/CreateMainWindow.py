@@ -26,6 +26,7 @@ class MainWindow:
         self.value_ent_number_of_generations = tkinter.StringVar(value='1000')
         self.value_ent_population_size = tkinter.StringVar(value='10')
         self.value_ent_measure_of_disorder = tkinter.StringVar(value='0')
+        self.name_file = tkinter.StringVar(value='')
         # self.value_ent_assemblies_number = tkinter.StringVar(value='1')
         # self.value_ent_assemblies_number.trace('w', self.on_assemblies_number_change)
 
@@ -33,7 +34,7 @@ class MainWindow:
         settings = ('state_mode', 'status_of_generation_adjacency_matrix', 'state_dynamic',
                     'state_dynamic_all_vertices', 'state_brute_force', 'number_of_vertices',
                     'number_of_generations', 'population_size', 'measure_of_disorder',
-                    'status_of_the_symmetry_adjacency_matrix')
+                    'status_of_the_symmetry_adjacency_matrix', 'name_file')
         self.algorithm_parameters = dict.fromkeys(settings)
 
         place_1 = "+0+380"
@@ -75,7 +76,7 @@ class MainWindow:
         comparison = tkinter.Radiobutton(self.window, text='Сравнение сборок', value='comparison',
                                          variable=self.comparison_status,
                                          font=("Arial Bold", 15), command=self.swap_mode)
-        comparison.place(x=310, y=0, width=280, height=60)
+        comparison.place(x=280, y=0, width=280, height=60)
 
         # lab_assemblies_number = tkinter.Label(self.window, text='Количество \nсборок-', font=("Arial Bold", 14))
         # lab_assemblies_number.place(x=580, y=10, width=110, height=60)
@@ -94,6 +95,18 @@ class MainWindow:
                                                 variable=self.status_of_generation_adjacency_matrix,
                                                 font=("Arial Bold", 15))
         random_generation.place(x=320, y=40, width=240, height=40)
+
+        random_generation = tkinter.Radiobutton(self.window, text='Скачать из файлы', value='download_from_a_file',
+                                                variable=self.status_of_generation_adjacency_matrix,
+                                                font=("Arial Bold", 15))
+        random_generation.place(x=570, y=40, width=190, height=40)
+
+        lab_name_file = tkinter.Label(self.window, text='Название файла -', font=("Arial Bold", 14))
+        lab_name_file.place(x=530, y=20, width=160, height=20)
+
+        ent_name_file = tkinter.Entry(self.window, width=10, textvariable=self.name_file)
+        ent_name_file.place(x=690, y=20, width=100, height=20)
+
 
     def display_additional_solutions(self):
         title = tkinter.Label(self.window, text='Дополнительные решения:', font=("Arial Bold", 15))
@@ -209,7 +222,7 @@ class MainWindow:
             tkinter.messagebox.showerror("Неправильный формат для ввода данных",
                                          f'Параметр коэффициент хаоса(meas_of_dis должен быть четным')
         if numb_of_ver.isdigit() and numb_of_gen.isdigit() and pop_size.isdigit():
-            if int(numb_of_ver) <= 100:
+            if int(numb_of_ver) <= 100 or self.status_of_generation_adjacency_matrix.get() == 'download_from_a_file':
                 settings = (('state_mode', self.comparison_status.get()),
                             ('status_of_generation_adjacency_matrix', self.status_of_generation_adjacency_matrix.get()),
                             ('state_dynamic', self.state_dynamic.get()),
@@ -221,7 +234,9 @@ class MainWindow:
                             ('status_of_the_symmetry_adjacency_matrix', self.status_of_the_symmetry_adj_matrix.get()),
                             ('number_of_vertices', int(numb_of_ver)),
                             ('number_of_generations', int(numb_of_gen)),
-                            ('population_size', int(pop_size)), ('measure_of_disorder', int(meas_of_dis)))
+                            ('population_size', int(pop_size)), ('measure_of_disorder', int(meas_of_dis)),
+                            ('name_file', self.name_file.get())
+                            )
                 self.algorithm_parameters.update(settings)
             else:
                 tkinter.messagebox.showerror("Ошибка", "Количество городов не может быть больше 100")

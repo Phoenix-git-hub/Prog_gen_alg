@@ -2,7 +2,7 @@ import SolutionByGeneticAlgorithm
 from prog_files import AdditionalSolutions
 import matplotlib.pyplot as plt
 from prog_files.WorkWithVertices import WorkWithVertices
-
+import numpy as np
 
 class PositionOnScreen:
     def __init__(self):
@@ -30,14 +30,14 @@ class Solution:
         status_of_gen_adj_mat = self.general_settings['status_of_generation_adjacency_matrix']
         measure_of_disorder = self.general_settings['measure_of_disorder']
         self.status_of_the_symmetry_adjacency_matrix = self.general_settings['status_of_the_symmetry_adjacency_matrix']
-        self.work_with_vertices = WorkWithVertices(numb_of_ver, status_of_gen_adj_mat,
-                                                   measure_of_disorder, self.status_of_the_symmetry_adjacency_matrix)
+        name_file = self.general_settings['name_file']
+        self.work_with_vertices = WorkWithVertices(numb_of_ver, status_of_gen_adj_mat, measure_of_disorder,
+                                                   self.status_of_the_symmetry_adjacency_matrix, name_file)
 
         self.adjacency_matrix = self.work_with_vertices.initialization_adjacency_matrix()
         self.coordinates_of_vertices = self.work_with_vertices.get_coordinates_of_vertices()
         self.number_of_vertices = numb_of_ver
 
-        import numpy as np
         np.set_printoptions(threshold=np.inf)
 
         print(self.coordinates_of_vertices)

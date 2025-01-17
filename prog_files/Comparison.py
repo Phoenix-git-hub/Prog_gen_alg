@@ -29,9 +29,10 @@ class Comparison:
         self.population_size = general_settings['population_size']
         self.number_of_vertices = general_settings['number_of_vertices']
         self.number_of_generations = general_settings['number_of_generations']
+        name_file = self.general_settings['name_file']
 
         self.work_with_vertices = WorkWithVertices(self.number_of_vertices, status_of_gen_adj_mat,
-                                                   measure_of_disorder, status_of_the_symmetry_adjacency_matrix)
+                                                   measure_of_disorder, status_of_the_symmetry_adjacency_matrix, name_file)
 
         self.graph = VisualizationProgression.ProgressionGraph(2)
         self.dev_graph = VisualizationProgression.DeviationGrash(2)
