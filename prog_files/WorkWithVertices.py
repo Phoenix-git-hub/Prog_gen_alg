@@ -89,9 +89,26 @@ class WorkWithVertices:
         if self.name_file is None:
             raise 'имя файла не определено'
 
+        set_asymmetric_tsp_hard = ['rbg323.atsp', 'rbg358.atsp', 'rbg403.atsp', 'rbg443.atsp']
+        set_asymmetric_tsp_med = ['br17.atsp', 'ft53.atsp', 'ft70.atsp', 'ftv33.atsp', 'ftv35.atsp', 'ftv38.atsp',
+                                  'ftv44.atsp', 'ftv47.atsp', 'ftv55.atsp', 'ftv64.atsp', 'ftv70.atsp', 'ftv170.atsp',
+                                  'kro124p.atsp', 'p43.atsp', 'ry48p.atsp']
+        set_symmetric_tsp_hard = ['pa561.tsp', 'si535.tsp', 'si1032.tsp']
+        set_symmetric_tsp_med = ['brazil58.tsp', 'brg180.tsp', 'dantzig42.tsp', 'fri26.tsp', 'gr17.tsp', 'gr21.tsp',
+                                 'gr24.tsp', 'gr48.tsp', 'gr120.tsp', 'hk48.tsp', 'si175.tsp', 'swiss42.tsp']
+
+        dir_file = ''
+        if self.name_file in set_asymmetric_tsp_hard:
+            dir_file = 'Asymmetric_tsp_hard/'
+        elif self.name_file in set_asymmetric_tsp_med:
+            dir_file = 'Asymmetric_tsp_med/'
+        elif self.name_file in set_symmetric_tsp_hard:
+            dir_file = 'Symmetric_tsp_hard/'
+        elif self.name_file in set_symmetric_tsp_med:
+            dir_file = 'Symmetric_tsp_med/'
 
         # file = open('tests/' + str(self.name_file), 'r')
-        file = open('../tests/' + str(self.name_file), 'r')
+        file = open('../tsp_lib_tasks/' + dir_file + str(self.name_file), 'r')
 
         name_edge_weight_format = None
         while 'EDGE_WEIGHT_SECTION' not in (f := file.readline()):
