@@ -111,7 +111,7 @@ class SolDynamicProgramming(Solution):
 
 
 class SolutionByDynamicProgramming(SolDynamicProgramming):
-    def __init__(self, adjacency_matrix, coordinates_of_vertices, number_of_vertices, place_on_screen):
+    def __init__(self, adjacency_matrix, coordinates_of_vertices=0, number_of_vertices=0, place_on_screen=0):
         name_of_method = "greedy with one ver"
         super(SolutionByDynamicProgramming, self).__init__(adjacency_matrix, coordinates_of_vertices,
                                                            number_of_vertices, name_of_method, place_on_screen)
@@ -276,7 +276,7 @@ class SolutionByAntAlgorithm(Solution):
 
 class SolutionAnnealingMethod(Solution):
 
-    def __init__(self, adjacency_matrix, coordinates_of_vertices, number_of_vertices, place_on_screen):
+    def __init__(self, adjacency_matrix, coordinates_of_vertices=0, number_of_vertices=0, place_on_screen=0):
         name_of_method = "Solution by annealing method"
         super(SolutionAnnealingMethod, self).__init__(adjacency_matrix, coordinates_of_vertices, number_of_vertices,
                                                       name_of_method, place_on_screen)
@@ -302,7 +302,6 @@ class SolutionAnnealingMethod(Solution):
     def solution(self):
 
         permutation, distance = self.run()
-
         if distance != self.fitness_function(permutation):
             raise 'дистанция не совпадает с показанием'
         return np.array(permutation), distance

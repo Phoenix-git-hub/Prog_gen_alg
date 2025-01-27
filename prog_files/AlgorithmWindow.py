@@ -98,25 +98,38 @@ class AlgorithmWindow:
         lab.place(x=40, y=195, width=350, height=20)
 
         random_gen = tkinter.Radiobutton(self.window, text='случайно', value='random_gen',
-                                         variable=self.method_of_generation_start_population, font=("Arial Bold", 15))
-        random_gen.place(x=40, y=217, width=120, height=20)
+                                         variable=self.method_of_generation_start_population, font=("Arial Bold", 14))
+        random_gen.place(x=20, y=217, width=120, height=20)
 
         ordered_gen = tkinter.Radiobutton(self.window, text='последовательно', value='ordered_gen',
                                           variable=self.method_of_generation_start_population,
-                                          font=("Arial Bold", 15))
-        ordered_gen.place(x=170, y=217, width=190, height=25)
+                                          font=("Arial Bold", 14))
+        ordered_gen.place(x=134, y=217, width=190, height=25)
 
         greedy_algorithm_gen = tkinter.Radiobutton(self.window, text='на основе жадного алгоритма',
                                                    value='greedy_algorithm_gen',
                                                    variable=self.method_of_generation_start_population,
-                                                   font=("Arial Bold", 15))
-        greedy_algorithm_gen.place(x=44, y=240, width=300, height=25)
+                                                   font=("Arial Bold", 14))
+        greedy_algorithm_gen.place(x=10, y=240, width=300, height=25)
 
         greedy_algorithm_gen = tkinter.Radiobutton(self.window, text='муравьиный алгоритм',
                                                    value='ant_algorithm_gen',
                                                    variable=self.method_of_generation_start_population,
-                                                   font=("Arial Bold", 15))
-        greedy_algorithm_gen.place(x=9, y=270, width=300, height=17)
+                                                   font=("Arial Bold", 14))
+        greedy_algorithm_gen.place(x=0, y=270, width=260, height=17)
+
+        greedy_algorithm_gen = tkinter.Radiobutton(self.window, text='имитация отжига',
+                                                   value='simulated annealing',
+                                                   variable=self.method_of_generation_start_population,
+                                                   font=("Arial Bold", 14))
+        greedy_algorithm_gen.place(x=316, y=220, width=180, height=17)
+
+        greedy_algorithm_gen = tkinter.Radiobutton(self.window, text='жадник со случ-\nайной вершиной',
+                                                   value='the_greedy_algorithm_with_one_vertex',
+                                                   variable=self.method_of_generation_start_population,
+                                                   font=("Arial Bold", 14))
+        greedy_algorithm_gen.place(x=290, y=240, width=180, height=46)
+
 
     def display_status_of_searching_parent(self):
         lab = tkinter.Label(self.window, text='Статус поиска родителей:', font=("Arial Bold", 15))

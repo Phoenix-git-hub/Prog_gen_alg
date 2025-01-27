@@ -10,6 +10,9 @@ import random
 import tkinter.messagebox
 from AdditionalSolutions import SolutionByDynamicProgWithAllVertices
 from AdditionalSolutions import SolutionByAntAlgorithm
+from AdditionalSolutions import SolutionAnnealingMethod
+from AdditionalSolutions import SolutionByDynamicProgramming
+
 
 class GeneticAlgorithm(Solution):
 
@@ -498,6 +501,16 @@ class GeneticAlgorithm(Solution):
             individual = sol_ant_algorithm.solution()[0]
             self.population = np.array([individual for _ in range(self.population_size)])
 
+        elif self.method_of_generation_start_population == 'the_greedy_algorithm_with_one_vertex' :
+
+            sol_dynamic_programming = SolutionByDynamicProgramming(self.adjacency_matrix, number_of_vertices=self.number_of_vertices)
+            individual = sol_dynamic_programming.solution()[0]
+            self.population = np.array([individual for _ in range(self.population_size)])
+
+        elif self.method_of_generation_start_population == 'simulated annealing':
+            sol_annealing_method = SolutionAnnealingMethod(self.adjacency_matrix, number_of_vertices=self.number_of_vertices)
+            individual = sol_annealing_method.solution()[0]
+            self.population = np.array([individual for _ in range(self.population_size)])
         else:
             string = """Неизвестное значение self.settings_comparison_alg['generation_of_the_starting_population']
             класса 'SolutionByGeneticAlgoritm'"""

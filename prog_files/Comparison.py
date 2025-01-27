@@ -153,7 +153,7 @@ class Comparison:
 
             self.average_deviation_1[ind] /= self.number_of_comparisons
             self.average_deviation_2[ind] /= self.number_of_comparisons
-        print(self.average_mean_val_1, self.average_mean_val_2)
+        # print(self.average_mean_val_1, self.average_mean_val_2)
 
         self.average_time_to_crossing_1 /= self.number_of_comparisons
         self.average_time_to_mutation_1 /= self.number_of_comparisons
