@@ -11,11 +11,11 @@ class MainWindow:
         self.window = tkinter.Tk()
         self.star_alg = star_alg
 
-        self.state_dynamic = tkinter.BooleanVar(value=False)
+        self.state_dynamic = tkinter.BooleanVar(value=True)
         self.state_dynamic_all_vertices = tkinter.BooleanVar(value=True)
         self.state_brute_force = tkinter.BooleanVar(value=False)
         self.state_ant_algorithm = tkinter.BooleanVar(value=True)
-        self.state_annealing_method = tkinter.BooleanVar(value=False)
+        self.state_annealing_method = tkinter.BooleanVar(value=True)
         self.state_branch_and_bound = tkinter.BooleanVar(value=False)
 
         self.comparison_status = tkinter.StringVar(value='solo_test')
@@ -23,7 +23,7 @@ class MainWindow:
         self.status_of_the_symmetry_adj_matrix = tkinter.StringVar(value='symmetric_adjacency_matrix')
 
         self.value_ent_number_of_vertices = tkinter.StringVar(value='10')
-        self.value_ent_number_of_generations = tkinter.StringVar(value='1000')
+        self.value_ent_number_of_generations = tkinter.StringVar(value='1')
         self.value_ent_population_size = tkinter.StringVar(value='10')
         self.value_ent_measure_of_disorder = tkinter.StringVar(value='0')
         self.name_file = tkinter.StringVar(value='')
