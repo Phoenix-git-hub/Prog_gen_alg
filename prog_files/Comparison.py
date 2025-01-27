@@ -132,7 +132,6 @@ class Comparison:
             mean_fitness_values_1 = self.first_gen_alg.get_mean_fitness_values()
             min_fitness_values_1 = self.first_gen_alg.get_min_fitness_values()
             deviation_values_1 = self.first_gen_alg.get_deviation_arr()
-
             mean_fitness_values_2 = self.second_gen_alg.get_mean_fitness_values()
             min_fitness_values_2 = self.second_gen_alg.get_min_fitness_values()
             deviation_values_2 = self.second_gen_alg.get_deviation_arr()
@@ -145,7 +144,7 @@ class Comparison:
 
                 self.average_deviation_1[ind] += deviation_values_1[ind]
                 self.average_deviation_2[ind] += deviation_values_2[ind]
-                # блять тут и комментировать не надо
+
         for ind in range(self.number_of_generations):
             self.average_mean_val_1[ind] /= self.number_of_comparisons
             self.average_min_val_1[ind] /= self.number_of_comparisons
@@ -154,8 +153,8 @@ class Comparison:
 
             self.average_deviation_1[ind] /= self.number_of_comparisons
             self.average_deviation_2[ind] /= self.number_of_comparisons
+        print(self.average_mean_val_1, self.average_mean_val_2)
 
-        # блять все в новые функции
         self.average_time_to_crossing_1 /= self.number_of_comparisons
         self.average_time_to_mutation_1 /= self.number_of_comparisons
         self.average_time_to_selection_1 /= self.number_of_comparisons
@@ -177,7 +176,7 @@ class Comparison:
         print("Вычисления закончены")
 
     def visualization_progression(self):
-
+        # print(self.average_min_val_2)
         self.graph.set_min_mean_array([self.average_min_val_1, self.average_min_val_2], [self.average_mean_val_1, self.average_mean_val_2])
         self.graph.display()
 
@@ -192,7 +191,8 @@ class Comparison:
 
         for i in range(self.number_of_generations):
             dev_first_from_second += abs((self.average_mean_val_2[i] - self.average_mean_val_1[i]) / ((self.average_mean_val_2[i] + self.average_mean_val_1[i]) / 2))
-        dev_first_from_second /= self.number_of_generations
+        if self.number_of_generations != 0:
+            dev_first_from_second /= self.number_of_generations
         dev_first_from_second *= 100
 
         print(f'Средняя абсолютная процентная ошибка лучшего решения со средним 1 алгоритма - {self.sum_division_1 /self.number_of_comparisons}')

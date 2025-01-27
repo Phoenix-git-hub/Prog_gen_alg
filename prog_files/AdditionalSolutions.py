@@ -112,7 +112,7 @@ class SolDynamicProgramming(Solution):
 
 class SolutionByDynamicProgramming(SolDynamicProgramming):
     def __init__(self, adjacency_matrix, coordinates_of_vertices, number_of_vertices, place_on_screen):
-        name_of_method = "Solution by dynamic programming"
+        name_of_method = "greedy with one ver"
         super(SolutionByDynamicProgramming, self).__init__(adjacency_matrix, coordinates_of_vertices,
                                                            number_of_vertices, name_of_method, place_on_screen)
 

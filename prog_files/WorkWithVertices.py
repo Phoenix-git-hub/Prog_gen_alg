@@ -19,7 +19,12 @@ class WorkWithVertices:
     def initialization_coordinates_of_vertices(self):
         if self.status_of_generation_adjacency_matrix != 'download_from_a_file':
             self.coordinates_of_vertices = np.random.choice(201, size=[self.number_of_vertices, 2], replace=False)
+            # arr = [[ 56, 192], [157,  86], [ 88, 152], [ 87,  47], [101, 124], [104,  69], [ 96,  83], [ 76, 103]]
+
+            # self.coordinates_of_vertices = np.array([np.array(i) for i in arr])
+
         else:
+
             self.coordinates_of_vertices = np.random.choice(201, size=[self.number_of_vertices, 2], replace=True)
 
     def get_coordinates_of_vertices(self):

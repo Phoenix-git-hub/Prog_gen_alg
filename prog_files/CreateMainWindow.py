@@ -16,13 +16,13 @@ class MainWindow:
         self.state_brute_force = tkinter.BooleanVar(value=False)
         self.state_ant_algorithm = tkinter.BooleanVar(value=True)
         self.state_annealing_method = tkinter.BooleanVar(value=True)
-        self.state_branch_and_bound = tkinter.BooleanVar(value=False)
+        self.state_branch_and_bound = tkinter.BooleanVar(value=True)
 
         self.comparison_status = tkinter.StringVar(value='solo_test')
         self.status_of_generation_adjacency_matrix = tkinter.StringVar(value='generation_by_vertices')
         self.status_of_the_symmetry_adj_matrix = tkinter.StringVar(value='symmetric_adjacency_matrix')
 
-        self.value_ent_number_of_vertices = tkinter.StringVar(value='10')
+        self.value_ent_number_of_vertices = tkinter.StringVar(value='8')
         self.value_ent_number_of_generations = tkinter.StringVar(value='1')
         self.value_ent_population_size = tkinter.StringVar(value='10')
         self.value_ent_measure_of_disorder = tkinter.StringVar(value='0')
@@ -179,17 +179,17 @@ class MainWindow:
         comparison.place(x=23, y=300, width=250, height=25)
 
     def checkbutton_dynamic_programming(self):
-        checkbutton_dynamic_programming = tkinter.Checkbutton(self.window, text='динамикой',
+        checkbutton_dynamic_programming = tkinter.Checkbutton(self.window, text='жадный с одной вершиной',
                                                               font=("Arial Bold", 14),
                                                               variable=self.state_dynamic)
-        checkbutton_dynamic_programming.place(x=395, y=113, width=240, height=25)
+        checkbutton_dynamic_programming.place(x=451, y=113, width=270, height=25)
 
     def checkbutton_dynamic_programming_with_all_vertices(self):
         checkbutton_dynamic_prog_with_all_vertices = tkinter.Checkbutton(self.window,
-                                                                         text='динамикой со всеми вершинами',
+                                                                         text='жадный со всеми вершинами',
                                                                          font=("Arial Bold", 14),
                                                                          variable=self.state_dynamic_all_vertices)
-        checkbutton_dynamic_prog_with_all_vertices.place(x=450, y=140, width=320, height=35)
+        checkbutton_dynamic_prog_with_all_vertices.place(x=438, y=140, width=320, height=35)
 
     def checkbutton_brute_force(self):
         checkbutton_brute_force = tkinter.Checkbutton(self.window, text='перебором', font=("Arial Bold", 14),

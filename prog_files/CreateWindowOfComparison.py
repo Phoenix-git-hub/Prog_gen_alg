@@ -17,7 +17,7 @@ class WindowComparison:
 
         self.parameters = dict.fromkeys(settings)
 
-        self.val_ent_number_of_comparisons = tkinter.StringVar(value='20')
+        self.val_ent_number_of_comparisons = tkinter.StringVar(value='5')
 
     def basic_parameters(self):
         self.number_of_comparisons()

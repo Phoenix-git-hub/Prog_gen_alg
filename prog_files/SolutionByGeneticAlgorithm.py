@@ -118,6 +118,7 @@ class GeneticAlgorithm(Solution):
 
         st = time.perf_counter()
         self.generation_similarity_analytics(0)
+
         self.meanFitnessValues.append(self.average_fitness_value(self.population))
         self.minFitnessValues.append(self.find_best(self.population)[1])
         ed = time.perf_counter()
@@ -129,7 +130,7 @@ class GeneticAlgorithm(Solution):
         self.avg_similarity_to_the_second_parent = 0
         self.avg_similarities_to_both_parents = 0
 
-        for i in range(self.number_of_generations):
+        for i in range(self.number_of_generations - 1):
             # бухнуть декоратор ? ???
             # print('поколение ')
             # print(self.population)
@@ -264,9 +265,11 @@ class GeneticAlgorithm(Solution):
         self.avg_similarities_to_both_parents /= self.population_size
 
         #
-        self.avg_similarity_to_the_primary_parent /= self.number_of_generations
-        self.avg_similarity_to_the_second_parent /= self.number_of_generations
-        self.avg_similarities_to_both_parents /= self.number_of_generations
+
+        if self.number_of_generations != 0:
+            self.avg_similarity_to_the_primary_parent /= self.number_of_generations
+            self.avg_similarity_to_the_second_parent /= self.number_of_generations
+            self.avg_similarities_to_both_parents /= self.number_of_generations
 
         # if self.state_family_resemblance_analysis:
         #     print(self.avg_similarity_to_the_primary_parent, self.avg_similarity_to_the_second_parent,
@@ -421,7 +424,8 @@ class GeneticAlgorithm(Solution):
         dev_min_from_mean = 0
         for i in range(self.number_of_generations):
             dev_min_from_mean += abs((self.meanFitnessValues[i] - self.minFitnessValues[i]) / self.minFitnessValues[i])
-        dev_min_from_mean /= self.number_of_generations
+        if self.number_of_generations != 0:
+            dev_min_from_mean /= self.number_of_generations
         dev_min_from_mean *= 100
 
         return dev_min_from_mean
