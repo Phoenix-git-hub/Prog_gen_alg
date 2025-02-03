@@ -72,7 +72,7 @@ class MethodsOfSelection:
 
     def roulette_selection(self, population, new_population):
 
-        # продолджить работу над рулеткой
+
         value_fitness = np.array([0] * self.population_size * 2, dtype='float64')
         flag_min_val = True
         min_val = 0
@@ -104,7 +104,7 @@ class MethodsOfSelection:
         if min_val == max_val:
             min_val -= 0.000001
 
-        elit = np.argsort(value_fitness)[:int(self.population_size / 5)]
+        elit = np.argsort(value_fitness)[:int(self.population_size / 1.3)]
 
         value_fitness = np.delete(value_fitness, elit)
 
@@ -141,36 +141,6 @@ class MethodsOfSelection:
         for i in replace_ind:
             index = set_ind.pop()
             population[index] = new_population[i % self.population_size].copy()
-
-
-
-
-        # value_fitness = np.array([self.fitness_function(population[ind]) if ind < self.population_size
-        #                     else self.fitness_function(new_population[ind % self.population_size])
-        #                     for ind in range(self.population_size * 2)])
-        #
-        # summ = value_fitness.sum()
-        # value_fitness = value_fitness / summ
-        #
-        # elit = np.argsort(value_fitness)[:int(self.population_size/5)]
-        # ind = np.random.choice([i for i in range(self.population_size * 2)], self.population_size - len(elit), replace = False,
-        #                        p=value_fitness)
-        #
-        # ind = np.concatenate((elit, ind))
-        #
-        # set_ind = set([i for i in range(self.population_size)])
-        # replace_ind = []
-        # for i in ind:
-        #     if i < self.population_size:
-        #         set_ind.discard(i)
-        #     else:
-        #         replace_ind.append(i)
-        #
-        # for i in replace_ind:
-        #     index = set_ind.pop()
-        #     population[index] = new_population[i % self.population_size].copy()
-
-
 
     def tournament_with_parent(self, population, new_population):
 

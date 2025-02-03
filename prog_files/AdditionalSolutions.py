@@ -176,7 +176,6 @@ class SolutionByAntAlgorithm(Solution):
         self.init_ant_algorithm_parameters()
 
     def init_ant_algorithm_parameters(self):
-        """Initializes the hyperparameters for the algorithm."""
         self.ants = 100
         self.iter = 20
         self.a = 1.5
@@ -228,15 +227,6 @@ class SolutionByAntAlgorithm(Solution):
                 pm[indx[j]][indx[j + 1]] += delta
                 pm[indx[j + 1]][indx[j]] += delta
 
-    # def _calculate_dist(self, individual: list[int]) -> float:
-    #     # убрать этот метод у меня етсь отдельные для этот
-    #     """Calculates the path length based on the index list of the distance matrix."""
-    #     sum_vertexes = 0
-    #     for i in range(len(individual) - 1):
-    #         sum_vertexes += self.adjacency_matrix[individual[i]][individual[i + 1]]
-    #
-    #     # sum_vertexes += self.adjacency_matrix[individual[- 1]][individual[0]]
-    #     return sum_vertexes
     def run(self):
         pm = [[1 for _ in range(self.number_of_vertices)] for _ in range(self.number_of_vertices)]
         res_indx = []
@@ -261,10 +251,7 @@ class SolutionByAntAlgorithm(Solution):
 
     def solution(self):
         permutation, distance = self.solve_ant_algorithm()
-        # print(per)
-        # print(distance, self.fitness_function(per), self._calculate_dist(per))
         if distance != self.fitness_function(permutation):
-            # print(per)
             print(permutation)
             raise 'дистанция не совпадает с показанием'
         return np.array(permutation), distance
@@ -287,17 +274,6 @@ class SolutionAnnealingMethod(Solution):
         self.iter = 200000
         self.t = 100
         self.g = 0.6
-        # iter = 20000, t = 100, g = 0.6
-
-    # def _calculate_dist(self, individual: list[int]) -> float:
-    #     # убрать этот метод у меня етсь отдельные для этот
-    #     """Calculates the path length based on the index list of the distance matrix."""
-    #     sum_vertexes = 0
-    #     for i in range(len(individual) - 1):
-    #         sum_vertexes += self.adjacency_matrix[individual[i]][individual[i + 1]]
-    #
-    #     sum_vertexes += self.adjacency_matrix[individual[- 1]][individual[0]]
-    #     return sum_vertexes
 
     def solution(self):
 
@@ -312,8 +288,10 @@ class SolutionAnnealingMethod(Solution):
             prob = min(1, exp(-(prb_leng - tmp_leng) / self.t))
         except Exception:
             prob = 0
+
             if prb_leng - tmp_leng < 0:
                 prob = 1
+
         if prob > random():
             return True
 

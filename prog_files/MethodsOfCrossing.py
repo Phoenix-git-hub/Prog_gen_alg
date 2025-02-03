@@ -108,7 +108,7 @@ class MethodsOfCrossing:
         self.new_population = self.population.copy()
         self.searching_parent()
         return self.new_population
-        #return self.crossing_method(population)
+
 
     @staticmethod
     def crossing_pass(ind_1, ind_2):
@@ -176,7 +176,7 @@ class MethodsOfCrossing:
 
     def one_point_crossing_ox1(self, index, index_2):
         '''
-        Как предыдущее на одноточечное
+        Как предыдущее но одноточечное
         '''
         section_point = random.randrange(0, self.number_of_vertices)
         parent_1 = self.population[index].copy()

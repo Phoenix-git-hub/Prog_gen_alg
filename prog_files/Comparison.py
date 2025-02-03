@@ -2,7 +2,7 @@ from SolutionByGeneticAlgorithm import GeneticAlgorithm
 from prog_files.WorkWithVertices import WorkWithVertices
 import matplotlib.pyplot as plt
 from prog_files import VisualizationProgression
-
+import numpy as np
 
 class AlgorithmInformation:
     def __init__(self, number_of_generations):
@@ -105,7 +105,6 @@ class Comparison:
             self.second_gen_alg.start_solution()
 
             # обернуть в какю-нибуть функцию срочно
-            # поставить таймер на сбор данных
 
             self.average_time_to_crossing_1 += self.first_gen_alg.get_time_to_crossing()
             self.average_time_to_mutation_1 += self.first_gen_alg.get_time_to_mutation()
@@ -177,7 +176,37 @@ class Comparison:
 
     def visualization_progression(self):
         # print(self.average_min_val_2)
-        self.graph.set_min_mean_array([self.average_min_val_1, self.average_min_val_2], [self.average_mean_val_1, self.average_mean_val_2])
+        self.graph.set_min_mean_array([self.average_min_val_1, self.average_min_val_2],
+                                      [self.average_mean_val_1, self.average_mean_val_2])
+
+        # f = open('musor.txt', 'w')
+        #
+        # f.write(str(self.settings_mandatory_alg['selection_method']))
+        # f.write('\n')
+        # f.write('average_min_val_1')
+        # f.write('\n')
+        # for item in self.average_min_val_1:
+        #     f.write("%s\n" % item)
+        #
+        # f.write('average_mean_val_1')
+        # f.write('\n')
+        # for item in self.average_mean_val_1:
+        #     f.write("%s\n" % item)
+        #
+        # f.write(self.settings_additional_alg['selection_method'])
+        #
+        # f.write('average_min_val_2')
+        # f.write('\n')
+        # for item in self.average_min_val_2:
+        #     f.write("%s\n" % item)
+        #
+        # f.write('average_mean_val_2')
+        # f.write('\n')
+        # for item in self.average_mean_val_2:
+        #     f.write("%s\n" % item)
+        #
+        # f.close()
+
         self.graph.display()
 
     def visualization_deviation(self):

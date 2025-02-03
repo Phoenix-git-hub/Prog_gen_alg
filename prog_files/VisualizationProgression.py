@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 from abc import ABC
+import matplotlib.colors as mc
+import colorsys
 class Graph(ABC):
     def __init__(self, number_of_algorithms):
 
@@ -90,8 +92,7 @@ class ProgressionGraph(Graph):
         >> lighten_color('#F034A3', 0.6)
         >> lighten_color((.3,.55,.1), 0.5)
         """
-        import matplotlib.colors as mc
-        import colorsys
+
         try:
             c = mc.cnames[color]
         except:

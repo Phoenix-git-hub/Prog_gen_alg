@@ -29,12 +29,12 @@ class AlgorithmWindow:
                                  'crossover_ordered_ox_s', 'crossover_ordered_ox_b', 'partially_matched_crossover',
                                  'one_point_crossing_bb', 'greedy_crossover', 'crossover_order_OX5_upgrade',
                                  'crossover_ox3')
-        self.value_crossing_methods = tkinter.StringVar(value=self.crossing_methods[1])
+        self.value_crossing_methods = tkinter.StringVar(value=self.crossing_methods[2])
 
         self.mutation_methods = ('mutation_pass', 'mutation_turning_180_g', 'mutation_by_exchange',
                                  'mutation_by_shuffling', 'mutations_with_probability',
                                  'module_based_mutation', 'm2_based_mutation')
-        self.value_mutation_methods = tkinter.StringVar(value=self.mutation_methods[0])
+        self.value_mutation_methods = tkinter.StringVar(value=self.mutation_methods[1])
 
         self.selection_methods = ('selection_of_the_best', 'roulette_selection', 'tournament_with_parent',
                                   'random_tournament_selection')
@@ -66,9 +66,6 @@ class AlgorithmWindow:
         checkbutton.place(x=260, y=7, width=150, height=35)
 
     def gene_surfing_status(self):
-        # checkbutton = tkinter.Checkbutton(self.window, text='сёрфинг ген', font=("Arial Bold", 14),
-        #                                   variable=self.state_surfing)
-        # checkbutton.place(x=10, y=300, width=150, height=25)
 
         lab = tkinter.Label(self.window, text='Параметры серфинга:', font=("Arial Bold", 14))
         lab.place(x=10, y=290, width=200, height=25)

@@ -22,13 +22,12 @@ class MainWindow:
         self.status_of_generation_adjacency_matrix = tkinter.StringVar(value='generation_by_vertices')
         self.status_of_the_symmetry_adj_matrix = tkinter.StringVar(value='symmetric_adjacency_matrix')
 
-        self.value_ent_number_of_vertices = tkinter.StringVar(value='8')
-        self.value_ent_number_of_generations = tkinter.StringVar(value='1')
-        self.value_ent_population_size = tkinter.StringVar(value='10')
+        self.value_ent_number_of_vertices = tkinter.StringVar(value='17')
+        self.value_ent_number_of_generations = tkinter.StringVar(value='10000')
+        self.value_ent_population_size = tkinter.StringVar(value='20')
         self.value_ent_measure_of_disorder = tkinter.StringVar(value='0')
         self.name_file = tkinter.StringVar(value='')
-        # self.value_ent_assemblies_number = tkinter.StringVar(value='1')
-        # self.value_ent_assemblies_number.trace('w', self.on_assemblies_number_change)
+
 
         # вместо одного списка настроек нужно сделать несколько: solutions_settings, state_mode, gen_alg_settings
         settings = ('state_mode', 'status_of_generation_adjacency_matrix', 'state_dynamic',

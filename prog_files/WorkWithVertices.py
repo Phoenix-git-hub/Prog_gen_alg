@@ -23,8 +23,13 @@ class WorkWithVertices:
 
             # self.coordinates_of_vertices = np.array([np.array(i) for i in arr])
 
-        else:
+            # arr = [[100, 177], [23, 100], [177, 100], [100, 23], [44, 48], [156, 154], [45, 155], [156, 46],
+            #        [70, 171], [27, 126], [129, 172], [171, 130], [173, 73], [132, 30], [67, 30], [26, 76]]
+            #
+            # self.coordinates_of_vertices = np.array([np.array(i) for i in arr])
 
+
+        else:
             self.coordinates_of_vertices = np.random.choice(201, size=[self.number_of_vertices, 2], replace=True)
 
     def get_coordinates_of_vertices(self):
